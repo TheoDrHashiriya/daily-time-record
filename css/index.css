@@ -1,0 +1,18 @@
+#clock {
+	width: 100%;
+	font-size: 2rem;
+	font-family: monospace, "Courier New", Courier;
+	margin: 1rem 0;
+}
+
+.container#login-register {
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.container#login-register a {
+	margin: 1rem 0;
+	text-align: center;
+}

@@ -1,0 +1,85 @@
+:root {
+	--bg-color: #fff;
+	--bg-gradient: linear-gradient(to right, #ffffff, #cccccc);
+	--text-color: #000;
+	--link-color: blue;
+	--border-color: #ccc;
+	--error-color: red;
+}
+
+[data-theme="dark"] {
+	--bg-color: #121212;
+	--bg-gradient: linear-gradient(to right, #131313, #333333);
+	--text-color: #eee;
+	--link-color: rgb(138, 138, 255);
+	--border-color: #444;
+	--error-color: rgb(255, 83, 83);
+}
+
+@import url("https://fonts.googleapis.com/css?family=Inter");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background: var(--bg-gradient);
+	color: var(--text-color);
+}
+
+button,
+a.login,
+a.register {
+	width: 100%;
+	padding: 12px;
+	background-color: rgb(72, 90, 255);
+	border-radius: 6px;
+	border: none;
+	font-size: 16px;
+	font-weight: 500;
+	color: #fff;
+	margin-bottom: 20px;
+	transition: 0.5s;
+	cursor: pointer;
+}
+
+button:hover {
+	opacity: 0.8;
+}
+
+button#theme-toggle {
+	width: 100%;
+	background: none;
+	border: none;
+	font-size: 20px;
+}
+
+p {
+	font-size: 14.5px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+a {
+	text-decoration: none;
+	color: var(--link-color);
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+p.error,
+p.error-general,
+span {
+	margin-bottom: 20px;
+	text-align: left;
+	color: var(--error-color);
+}
+
+p.error-general {
+	text-align: center;
+}
