@@ -6,7 +6,7 @@ session_start();
 $dtr = new DailyTimeRecord();
 
 if (isset($_SESSION["user_id"]))
-	$userObj = new User($_SESSION["user_id"]);
+	$userObj = new User();
 
 $search = $genre = "";
 
