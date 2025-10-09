@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			session_start();
 			$_SESSION["user_id"] = $userData["id"];
 			$_SESSION["username"] = $userData["username"];
-			$_SESSION["user_type"] = $userData["user_type"];
+			$_SESSION["role"] = $userData["role"];
 			$_SESSION["first_name"] = $userData["first_name"];
 			header("Location: index.php");
 			exit;

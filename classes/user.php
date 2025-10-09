@@ -1,6 +1,5 @@
 <?php
 require_once "database.php";
-// require_once "../employee/view-employee.php";
 class User extends Database
 {
 	private $id = "";
@@ -9,6 +8,7 @@ class User extends Database
 	private $middle_name = "";
 	private $username = "";
 	private $password = "";
+	private $role = "";
 	public function userExists($username)
 	{
 		$sql = "SELECT * FROM user WHERE username = :username LIMIT 1;";

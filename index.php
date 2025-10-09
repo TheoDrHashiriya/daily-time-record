@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			<h2 id="clock"></h2>
 		</div>
 
-		<?php if (isset($_SESSION["user_id"]) && $_SESSION["user_type"] == "employee"): ?>
+		<?php if (isset($_SESSION["user_id"]) && $_SESSION["role"] == "employee"): ?>
 			<div class="card" id="time-in">
 				<a href="timein.php" id="time-in">Time In</a>
 			</div>
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		<?php endif; ?>
 
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["user_type"] == "admin"):
+			if ($_SESSION["role"] == "admin"):
 				$records = $dtr->getAllRecords();
 				?>
 				<div class="card">
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 					</div>
 				</div>
 			<?php endif;
-			if ($_SESSION["user_type"] == "employee"): ?>
+			if ($_SESSION["role"] == "employee"): ?>
 			<?php endif;
 		endif; ?>
 

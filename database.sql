@@ -8,7 +8,7 @@ CREATE TABLE user(
 	middle_name VARCHAR(50),
 	username VARCHAR(50) UNIQUE,
 	password VARCHAR(255),
-	user_type ENUM ('admin', 'employee') DEFAULT 'employee'
+	role ENUM ('admin', 'employee') DEFAULT 'employee'
 );
 
 CREATE TABLE daily_time_record(
@@ -21,7 +21,7 @@ CREATE TABLE daily_time_record(
 );
 
 -- Add the default admin account
-INSERT INTO user (first_name, last_name, middle_name, username, password, user_type) VALUES ('admin', 'admin', 'adminson', 'admin', '$2y$10$Q87R8xF.vM/Y6XhI/NYxVeDdVgA21h12LAj2fwmZQ4d6MHc7NVkkO', 'admin');
+INSERT INTO user (first_name, last_name, middle_name, username, password, role) VALUES ('admin', 'admin', 'adminson', 'admin', '$2y$10$Q87R8xF.vM/Y6XhI/NYxVeDdVgA21h12LAj2fwmZQ4d6MHc7NVkkO', 'admin');
 
 -- To generate new password hashes, use this:
 -- php -r "echo password_hash("YourPassword", PASSWORD_DEFAULT) . PHP_EOL;"
