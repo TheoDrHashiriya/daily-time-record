@@ -1,5 +1,5 @@
 <?php
-require_once "./classes/user.php";
+require_once "./classes/User.php";
 session_start();
 
 if (!isset($_SESSION["user_id"])) {

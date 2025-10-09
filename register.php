@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once "./classes/user.php";
+include_once "./classes/User.php";
 $userObj = new User();
 
 $errors = [];

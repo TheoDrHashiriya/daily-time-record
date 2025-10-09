@@ -1,5 +1,5 @@
 <?php
-require_once "./classes/database.php";
+require_once "Database.php";
 class DailyTimeRecord extends Database
 {
 	private $table = "daily_time_record";

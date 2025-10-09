@@ -1,6 +1,6 @@
 <?php
-require_once "./classes/user.php";
-require_once "./classes/daily-time-record.php";
+require_once "./classes/User.php";
+require_once "./classes/DailyTimeRecord.php";
 session_start();
 
 $dtr = new DailyTimeRecord();
@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	$genre = isset($_GET["genre"]) ? trim(htmlspecialchars($_GET["genre"])) : "";
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +114,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 											<td><?= htmlspecialchars($row["record_date"]) ?></td>
 											<td><?= htmlspecialchars($row["user_id"]) ?></td>
 											<td><?= htmlspecialchars(date("h:i A", strtotime($row["time_in"]))) ?></td>
-											<td><?= $row["time_out"] ? htmlspecialchars(strtotime($row["time_out"])) : "<em>No time out record.</em>" ?></td>
+											<td>
+												<?= $row["time_out"] ? htmlspecialchars(strtotime($row["time_out"])) : "<em>No time out record.</em>" ?>
+											</td>
 											<!-- <td>
 											<a class="button-edit" href="edit-book.php?id=<?= $book["id"] ?>"><button>Edit</button></a>
 											<a class="button-delete" href="delete-book.php?id=<?= $book["id"] ?>"
