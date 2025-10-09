@@ -18,6 +18,7 @@
 	--tertiary: #00aa00;
 	--highlight: rgba(255, 255, 0, 0.25);
 	--error: red;
+	--table: #b8b8b8;
 }
 
 [data-theme="dark"] {
@@ -37,6 +38,7 @@
 	--button: #0000ad;
 	--tertiary: #44cc44;
 	--error: rgb(255, 83, 83);
+	--table: #5e5e5e;
 }
 
 body {
@@ -79,8 +81,7 @@ body.loaded * {
 /* TABLES */
 
 table {
-	border: 1px solid black;
-	border-radius: 10px;
+	border: 1px solid var(--table);
 	border-collapse: collapse;
 	text-align: center;
 }
