@@ -1,5 +1,5 @@
 # Daily Time Record
-A simple time recording system with CRUD functionality.
+A simple time recording system with CRUD functionality and built on the MVC design.
 ## Main Features (TBI)
 - Dark Mode with smooth transitioning
 - Role-based authentication
