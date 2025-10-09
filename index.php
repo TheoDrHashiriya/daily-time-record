@@ -48,10 +48,16 @@ session_start();
 
 		<?php if (isset($_SESSION["user_id"]) && $_SESSION["user_type"] == "employee"): ?>
 			<div class="card" id="time-in">
-				<a href="" id="time-in">Time In</a>
+				<a href="timein.php" id="time-in">Time In</a>
 			</div>
 			<div class="card" id="time-out">
 				<a href="" id="time-in">Time Out</a>
+			</div>
+		<?php endif; ?>
+
+		<?php if (isset($_SESSION["user_id"]) && $_SESSION["user_type"] == "admin"): ?>
+			<div class="record-table">
+				
 			</div>
 		<?php endif; ?>
 
