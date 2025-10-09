@@ -1,7 +1,8 @@
-<?php require_once "../controllers/DTRController.php";
+<?php
 session_start();
 
 if (isset($_SESSION["user_id"])) {
+	require_once "../controllers/DailyTimeRecordController.php";
 	$dtrController = new DTRController();
 	$userId = $_SESSION["user_id"];
 
@@ -20,10 +21,10 @@ if (isset($_SESSION["user_id"])) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
-	<link rel="stylesheet" href="./css/global.css">
-	<link rel="stylesheet" href="./css/index.css">
-	<script src="./js/theme.js" defer></script>
-	<script src="./js/clock.js" defer></script>
+	<link rel="stylesheet" href="../css/global.css">
+	<link rel="stylesheet" href="../css/index.css">
+	<script src="../js/theme.js" defer></script>
+	<script src="../js/clock.js" defer></script>
 </head>
 
 <body>
@@ -49,7 +50,7 @@ if (isset($_SESSION["user_id"])) {
 		<?php if (isset($_SESSION["user_id"])): ?>
 			<div class="card" id="welcome">
 				<h3>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h3>
-				<a href="logout.php" id="logout">Logout</a>
+				<a href="index.php" id="logout">Logout</a>
 			</div>
 		<?php endif; ?>
 

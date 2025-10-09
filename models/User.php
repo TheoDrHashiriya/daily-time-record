@@ -9,6 +9,7 @@ class User extends Database
 	private $username = "";
 	private $password = "";
 	private $role = "";
+
 	protected function getById($id)
 	{
 		$sql = "SELECT * FROM user WHERE id = :id LIMIT 1;";
@@ -16,6 +17,20 @@ class User extends Database
 		$query->bindParam(":id", $id);
 		$query->execute();
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
+	}
+
+	protected function getByUsername($username)
+	{
+		$sql = "SELECT * FROM user WHERE username = :username LIMIT 1;";
+		$query = $this->connect()->prepare($sql);
+		$query->bindParam(":username", $username);
+		$query->execute();
+		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
+	}
+
+	public function userExists($username)
+	{
+		return !empty($this->getByUsername($username));
 	}
 	protected function createUser($first_name, $last_name, $middle_name, $username, $password)
 	{
@@ -29,14 +44,7 @@ class User extends Database
 		$query->bindParam(":password", $password);
 		return $query->execute();
 	}
-	public function userExists($username)
-	{
-		$sql = "SELECT * FROM user WHERE username = :username LIMIT 1;";
-		$query = $this->connect()->prepare($sql);
-		$query->bindParam(":username", $username);
-		$query->execute();
-		return $query->fetchColumn() > 0;
-	}
+
 	public function updateUser($id, $first_name, $last_name, $middle_name, $username, $password)
 	{
 		$sql = "UPDATE user

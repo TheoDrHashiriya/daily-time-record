@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once "./classes/controllers/UserController.php";
+require_once "../controllers/UserController.php";
 $userController = new UserController();
 
 $errors = [];
@@ -27,9 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (!$username)
 		$errors["username"] = "Please enter your username.";
 
-	if (!$password) {
+	if (!$password)
 		$errors["password"] = "Please enter your password.";
-	}
 
 	if (empty($errors)) {
 		$result = $userController->register($first_name, $last_name, $middle_name, $username, $password);
@@ -51,9 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="./css/global.css">
-	<link rel="stylesheet" href="./css/form.css">
-	<script src="./js/theme.js" defer></script>
+	<link rel="stylesheet" href="../css/global.css">
+	<link rel="stylesheet" href="../css/form.css">
+	<script src="../js/theme.js" defer></script>
 </head>
 
 <body>
