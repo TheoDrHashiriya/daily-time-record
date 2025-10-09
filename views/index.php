@@ -1,18 +1,15 @@
-<?php
-require_once "./classes/User.php";
-require_once "./classes/DailyTimeRecord.php";
+<?php require_once "../controllers/DTRController.php";
 session_start();
 
-$dtr = new DailyTimeRecord();
+if (isset($_SESSION["user_id"])) {
+	$dtrController = new DTRController();
+	$userId = $_SESSION["user_id"];
 
-if (isset($_SESSION["user_id"]))
-	$userObj = new User();
+	if ($_SESSION["role"] === "employee")
+		$records = $dtrController->dashboard($userId);
 
-$search = $genre = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-	$search = isset($_GET["search"]) ? trim(htmlspecialchars($_GET["search"])) : "";
-	$genre = isset($_GET["genre"]) ? trim(htmlspecialchars($_GET["genre"])) : "";
+	if ($_SESSION["role"] === "admin")
+		$records = $dtrController->getAllRecords();
 }
 ?>
 
@@ -36,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			<span class="line line2"></span>
 			<span class="line line3"></span>
 		</div>
+
 		<?php if (!isset($_SESSION["user_id"])): ?>
 			<a class="login" href="login.php">Login</a>
 			<a class="register" href="register.php">Register</a>
@@ -50,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	<main class="main">
 		<?php if (isset($_SESSION["user_id"])): ?>
 			<div class="card" id="welcome">
-				<h3>Welcome, <?= $_SESSION["first_name"] ?>!</h3>
+				<h3>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h3>
 				<a href="logout.php" id="logout">Logout</a>
 			</div>
 		<?php endif; ?>
@@ -70,30 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		<?php endif; ?>
 
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["role"] == "admin"):
-				$records = $dtr->getAllRecords();
-				?>
+			if ($_SESSION["role"] == "admin"): ?>
 				<div class="card">
-					<!-- <form action="" method="get">
-						<label for="search">Search:</label>
-						<input type="search" name="search" id="search" value="<?= $search ?>">
-
-						<select name="genre" id="genre">
-							<option value="">ALL</option>
-							<option value="History" <?= (isset($book["genre"]) && $book["genre"] == "History") ? "selected" : "" ?>>
-								History
-							</option>
-							<option value="Science" <?= (isset($book["genre"]) && $book["genre"] == "Science") ? "selected" : "" ?>>
-								Science
-							</option>
-							<option value="Fiction" <?= (isset($book["genre"]) && $book["genre"] == "Fiction") ? "selected" : "" ?>>
-								Fiction
-							</option>
-						</select>
-
-						<button type="submit">Search</button>
-					</form> -->
-
+					<h2>Daily Time Records</h2>
 					<div class="record-table">
 						<table>
 							<thead>
@@ -107,9 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 							<tbody>
 								<?php if (!empty($records)):
-									foreach ($records as $row):
-										// $message = "Are you sure you want to delete user " . $userObj["username"] . "?";
-										?>
+									foreach ($records as $row): ?>
 										<tr>
 											<td><?= htmlspecialchars($row["record_date"]) ?></td>
 											<td><?= htmlspecialchars($row["user_id"]) ?></td>
@@ -123,22 +98,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 												onclick="return confirm('<?= $message ?>')"><button>Delete</button></a>
 										</td> -->
 										</tr>
-									<?php endforeach;
-								else: ?>
-									<tr>
-										<td colspan="4">No records found.</td>
-									</tr>
-								<?php endif; ?>
-							</tbody>
-					</div>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					<?php else: ?>
+						<p>No records found.</p>
+					<?php endif; ?>
 				</div>
 			<?php endif;
 			if ($_SESSION["role"] == "employee"): ?>
 			<?php endif;
 		endif; ?>
-
-		<div class="card"></div>
-		<div class="card"></div>
 	</main>
 </body>
 

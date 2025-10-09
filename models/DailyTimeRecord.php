@@ -3,7 +3,7 @@ require_once "Database.php";
 class DailyTimeRecord extends Database
 {
 	private $table = "daily_time_record";
-	public function timeIn($id)
+	public function recordTimeIn($id)
 	{
 		$sql = "INSERT INTO {$this->table} (user_id, record_date, time_in)
 				  VALUES (:id, CURDATE(), NOW());";
@@ -14,7 +14,7 @@ class DailyTimeRecord extends Database
 
 		return $query->execute();
 	}
-	public function timeOut($id)
+	public function recordTimeOut($id)
 	{
 		$sql = "UPDATE {$this->table}
 				  SET time_out = NOW()

@@ -1,47 +1,44 @@
 <?php
 session_start();
 
-include_once "./classes/User.php";
-$userObj = new User();
+include_once "./classes/controllers/UserController.php";
+$userController = new UserController();
 
 $errors = [];
+$success = false;
 
 if (isset($_SESSION["user_id"])) {
 	header("Location: index.php");
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$user["first_name"] = trim(htmlspecialchars($_POST["first_name"]));
-	$user["last_name"] = trim(htmlspecialchars($_POST["last_name"]));
-	$user["middle_name"] = trim(htmlspecialchars($_POST["middle_name"]));
-	$user["username"] = trim(htmlspecialchars($_POST["username"]));
-	$user["password"] = trim(htmlspecialchars($_POST["password"]));
+	$first_name = trim($_POST["first_name"]);
+	$last_name = trim($_POST["last_name"]);
+	$middle_name = trim($_POST["middle_name"] ?? "");
+	$username = trim($_POST["username"]);
+	$password = trim($_POST["password"]);
 
-	if (empty($user["first_name"])) {
+	if (!$first_name)
 		$errors["first_name"] = "Please enter your first name.";
-	}
 
-	if (empty($user["last_name"])) {
+	if (!$last_name)
 		$errors["last_name"] = "Please enter your last name.";
-	}
 
-	if (empty($user["username"])) {
+	if (!$username)
 		$errors["username"] = "Please enter your username.";
-	} elseif ($userObj->userExists($user["username"])) {
-		$errors["username"] = "Username already taken.";
-	}
 
-	if (empty($user["password"])) {
+	if (!$password) {
 		$errors["password"] = "Please enter your password.";
 	}
 
-	if (empty(array_filter($errors))) {
-		$hashedPass = password_hash($user["password"], PASSWORD_DEFAULT);
+	if (empty($errors)) {
+		$result = $userController->register($first_name, $last_name, $middle_name, $username, $password);
 
-		if ($userObj->addUser($user["first_name"], $user["last_name"], $user["middle_name"], $user["username"], $hashedPass)) {
+		if (isset($result["success"])) {
 			header("Location: login.php");
+			exit;
 		} else {
-			echo "Error.";
+			$errors["general"] = $result["error"];
 		}
 	}
 }
@@ -70,19 +67,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<h1 class="title">Register</h1>
 			<form action="" method="post">
 				<label for="first_name">First Name</label>
-				<input placeholder="John" type="text" name="first_name" id="first_name">
+				<input value="<?= htmlspecialchars($_POST["first_name"] ?? "") ?>" placeholder="John" type="text"
+					name="first_name" id="first_name">
 				<p class="error"><?= $errors["first_name"] ?? "" ?></p>
 
 				<label for="middle_name">Middle Name (Optional)</label>
-				<input placeholder="Amery" type="text" name="middle_name" id="middle_name">
+				<input value="<?= htmlspecialchars($_POST["middle_name"] ?? "") ?>" placeholder="Amery" type="text"
+					name="middle_name" id="middle_name">
 				<p class="error"><?= $errors["middle_name"] ?? "" ?></p>
 
 				<label for="last_name">Last Name</label>
-				<input placeholder="Smith" type="text" name="last_name" id="last_name">
+				<input value="<?= htmlspecialchars($_POST["last_name"] ?? "") ?>" placeholder="Smith" type="text"
+					name="last_name" id="last_name">
 				<p class="error"><?= $errors["last_name"] ?? "" ?></p>
 
 				<label for="username">Username</label>
-				<input placeholder="JohnSmith123" type="text" name="username" id="username">
+				<input value="<?= htmlspecialchars($_POST["username"] ?? "") ?>" placeholder="JohnSmith123" type="text"
+					name="username" id="username">
 				<p class="error"><?= $errors["username"] ?? "" ?></p>
 
 				<label for="title">Password</label>
