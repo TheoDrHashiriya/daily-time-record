@@ -76,6 +76,32 @@ body.loaded * {
 	transition: color 0.3s, background-color 0.3s, border-color 0.3s;
 } */
 
+/* TABLES */
+
+table {
+	border: 1px solid black;
+	border-radius: 10px;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+th,
+td {
+	padding: 10px;
+}
+
+th {
+	font-weight: 500;
+	background-color: var(--border);
+	color: var(--header-text);
+}
+
+td {
+	color: var(--text);
+}
+
+/* BUTTONS */
+
 button,
 .login,
 .register {
@@ -104,6 +130,8 @@ button#theme-toggle {
 	border: none;
 	font-size: 20px;
 }
+
+/* TEXT */
 
 p {
 	font-size: 14.5px;
