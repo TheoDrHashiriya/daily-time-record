@@ -34,7 +34,6 @@ session_start();
 	</section>
 
 	<main class="main">
-
 		<?php if (isset($_SESSION["user_id"])): ?>
 			<div class="card" id="welcome">
 				<h3>Welcome, <?= $_SESSION["first_name"] ?>!</h3>
@@ -47,7 +46,15 @@ session_start();
 			<h2 id="clock"></h2>
 		</div>
 
-		<div class="card"></div>
+		<?php if (isset($_SESSION["user_id"]) && $_SESSION["user_type"] == "employee"): ?>
+			<div class="card" id="time-in">
+				<a href="" id="time-in">Time In</a>
+			</div>
+			<div class="card" id="time-out">
+				<a href="" id="time-in">Time Out</a>
+			</div>
+		<?php endif; ?>
+
 		<div class="card"></div>
 		<div class="card"></div>
 	</main>

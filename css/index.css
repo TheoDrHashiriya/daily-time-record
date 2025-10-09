@@ -1,7 +1,7 @@
 body {
 	height: 100vh;
 	display: grid;
-	grid-template-columns: 300px 1fr;
+	grid-template-columns: 200px 1fr;
 	grid-template-rows: 50px 1fr;
 	grid-template-areas:
 		"side header"
@@ -28,7 +28,7 @@ body {
 	background-color: var(--bg-gradient);
 	grid-area: main;
 	padding: 10px;
-	gap: 10px;
+	gap: 15px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: auto auto 1fr;
@@ -47,7 +47,7 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 .card:nth-child(1) {
 	grid-area: c1;
