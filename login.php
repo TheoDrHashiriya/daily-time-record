@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 				<p class="error-general"><?= $errors["general"] ?? "" ?></p>
 
-				<button class="submit" type="submit">Login</button>
+				<button class="login" type="submit">Login</button>
 
 				<p>Don't have an account? <a href="./register.php" style="text-decoration: none;">Register here</a>.</p>
 			</form>

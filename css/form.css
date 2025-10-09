@@ -14,8 +14,9 @@ body {
 	flex-direction: column;
 	width: 100%;
 	max-width: 450px;
+	margin: 2rem 0;
 	padding: 30px;
-	background-color: var(--bg-color);
+	background-color: var(--bg);
 	border-radius: 10px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
@@ -37,7 +38,6 @@ h1 {
 	font-weight: bolder;
 	font-size: 34px;
 	margin-bottom: 20px;
-	color: var(--text-color);
 	text-align: center;
 }
 
@@ -50,8 +50,8 @@ label {
 input {
 	width: 100%;
 	padding: 12px;
-	background-color: var(--border-color);
-	color: var(--text-color);
+	background-color: var(--border);
+	color: var(--text);
 	border-radius: 6px;
 	border: none;
 	outline: none;
@@ -60,4 +60,10 @@ input {
 
 button {
 	margin-top: 10px;
+}
+
+.login,
+.register {
+	width: 100%;
+	margin-bottom: 20px;
 }

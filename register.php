@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<input placeholder="12345" type="password" name="password" id="password">
 				<p class="error"><?= $errors["password"] ?? "" ?></p>
 
-				<button class="submit" type="submit">Register</button>
+				<button class="register" type="submit">Register</button>
 
 				<p>Already have an account? <a href="./login.php">Login here</a>.</p>
 			</form>
