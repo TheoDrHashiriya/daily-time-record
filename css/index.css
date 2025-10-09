@@ -35,7 +35,7 @@ body {
 	grid-template-areas:
 		"c1 c1 c1"
 		"c2 c2 c2"
-		"c3 c4 c5";
+		"c3 c3 c3";
 }
 
 .card {
@@ -88,7 +88,7 @@ body {
 		grid-template-areas:
 			"c1 c1"
 			"c2 c2"
-			"c3 c4"
+			"c3 c3"
 			"c5 c6";
 	}
 
