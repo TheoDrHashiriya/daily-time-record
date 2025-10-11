@@ -56,20 +56,20 @@
 			if ($_SESSION["role"] == "admin"): ?>
 				<div class="card">
 					<h2>Daily Time Records</h2>
-					<div class="record-table">
-						<table>
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>User</th>
-									<th>Time In</th>
-									<th>Time Out</th>
-								</tr>
-							</thead>
+					<?php if (!empty($records)): ?>
+						<div class="record-table">
+							<table>
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>User</th>
+										<th>Time In</th>
+										<th>Time Out</th>
+									</tr>
+								</thead>
 
-							<tbody>
-								<?php if (!empty($records)):
-									foreach ($records as $row): ?>
+								<tbody>
+									<?php foreach ($records as $row): ?>
 										<tr>
 											<td><?= htmlspecialchars($row["record_date"]) ?></td>
 											<td><?= htmlspecialchars($row["user"]) ?></td>
@@ -77,11 +77,6 @@
 											<td>
 												<?= $row["time_out"] ? htmlspecialchars(strtotime($row["time_out"])) : "<em>No time out record.</em>" ?>
 											</td>
-											<!-- <td>
-											<a class="button-edit" href="edit-book.php?id=<?= $book["id"] ?>"><button>Edit</button></a>
-											<a class="button-delete" href="delete-book.php?id=<?= $book["id"] ?>"
-												onclick="return confirm('<?= $message ?>')"><button>Delete</button></a>
-										</td> -->
 										</tr>
 									<?php endforeach; ?>
 								</tbody>
@@ -92,7 +87,40 @@
 					<?php endif; ?>
 				</div>
 			<?php endif;
+
 			if ($_SESSION["role"] == "employee"): ?>
+				<div class="card">
+					<h2>Daily Time Records</h2>
+					<?php if (!empty($records)): ?>
+						<div class="record-table">
+							<table>
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>User</th>
+										<th>Time In</th>
+										<th>Time Out</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<?php foreach ($records as $row): ?>
+										<tr>
+											<td><?= htmlspecialchars($row["record_date"]) ?></td>
+											<td><?= htmlspecialchars($row["user"]) ?></td>
+											<td><?= htmlspecialchars(date("h:i A", strtotime($row["time_in"]))) ?></td>
+											<td>
+												<?= $row["time_out"] ? htmlspecialchars(strtotime($row["time_out"])) : "<em>No time out record.</em>" ?>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+					<?php else: ?>
+						<p>No records found.</p>
+					<?php endif; ?>
+				</div>
 			<?php endif;
 		endif; ?>
 	</main>
