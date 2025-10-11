@@ -39,23 +39,14 @@
 		<?php endif; ?>
 
 		<div class="card" id="time">
-			<h1 class="title">Time Now</h1>
+			<h2 class="title header">Time Now</h2>
 			<h2 id="clock"></h2>
 		</div>
-
-		<?php if (isset($_SESSION["user_id"]) && $_SESSION["role"] == "employee"): ?>
-			<div class="card" id="time-in">
-				<a href="timein" id="time-in">Time In</a>
-			</div>
-			<div class="card" id="time-out">
-				<a href="timeout" id="time-in">Time Out</a>
-			</div>
-		<?php endif; ?>
 
 		<?php if (isset($_SESSION["user_id"])):
 			if ($_SESSION["role"] == "admin"): ?>
 				<div class="card">
-					<h2>Daily Time Records</h2>
+					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>
 						<div class="record-table">
 							<table>
@@ -90,7 +81,7 @@
 
 			if ($_SESSION["role"] == "employee"): ?>
 				<div class="card">
-					<h2>Daily Time Records</h2>
+					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>
 						<div class="record-table">
 							<table>
@@ -120,6 +111,13 @@
 					<?php else: ?>
 						<p>No records found.</p>
 					<?php endif; ?>
+				</div>
+
+				<div class="card" id="time-in">
+					<a href="timein" id="time-in">Time In</a>
+				</div>
+				<div class="card" id="time-out">
+					<a href="timeout" id="time-in">Time Out</a>
 				</div>
 			<?php endif;
 		endif; ?>

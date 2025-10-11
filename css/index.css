@@ -35,18 +35,19 @@ body {
 	grid-template-areas:
 		"c1 c1 c1"
 		"c2 c2 c2"
-		"c3 c3 c3";
+		"c3 c3 c3"
+		"c4 c5 c6";
 }
 
 .card {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
 	height: auto;
 	background-color: var(--card);
 	border-radius: 10px;
 	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 .card:nth-child(1) {
@@ -68,6 +69,14 @@ body {
 	grid-area: c6;
 }
 
+.card .header {
+	align-self: flex-start;
+	text-align: left;
+	margin-top: 0;
+	margin-bottom: 1rem;
+	font-weight: 600;
+}
+
 .card#welcome {
 	flex-direction: row;
 	justify-content: space-between;
@@ -84,12 +93,12 @@ body {
 
 	.main {
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: repeat(6, auto);
+		grid-template-rows: repeat(4, auto);
 		grid-template-areas:
 			"c1 c1"
 			"c2 c2"
 			"c3 c3"
-			"c5 c6";
+			"c4 c5";
 	}
 
 	.card {
