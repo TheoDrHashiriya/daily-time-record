@@ -4,6 +4,7 @@
 	/* INDEX PAGE */
 	--header: ;
 	--sidebar: #1c1f23;
+	--sidebar-link: #35bcfffd;
 	--main: ;
 	--card: #fafafa;
 
@@ -25,6 +26,7 @@
 	/* INDEX PAGE */
 	--header: ;
 	--sidebar: rgb(10, 11, 12);
+	--sidebar-link: #00aaff;
 	--main: ;
 	--card: #383131;
 
@@ -137,9 +139,7 @@ button#theme-toggle {
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
+h4 {
 	font-weight: 600;
 }
 
