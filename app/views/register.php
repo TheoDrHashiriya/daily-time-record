@@ -1,14 +1,11 @@
 <?php
-session_start();
-
-require_once "../controllers/UserController.php";
 $userController = new UserController();
 
 $errors = [];
 $success = false;
 
 if (isset($_SESSION["user_id"])) {
-	header("Location: index.php");
+	header("Location: index");
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -34,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$result = $userController->register($first_name, $last_name, $middle_name, $username, $password);
 
 		if (isset($result["success"])) {
-			header("Location: login.php");
+			header("Location: login");
 			exit;
 		} else {
 			$errors["general"] = $result["error"];
@@ -50,9 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="../css/global.css">
-	<link rel="stylesheet" href="../css/form.css">
-	<script src="../js/theme.js" defer></script>
+	<link rel="stylesheet" href="<?= BASE_URL ?>css/global.css">
+	<link rel="stylesheet" href="<?= BASE_URL ?>css/form.css">
+	<script src="<?= BASE_URL ?>js/theme.js" defer></script>
 </head>
 
 <body>
@@ -91,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 				<button class="register" type="submit">Register</button>
 
-				<p>Already have an account? <a href="./login.php">Login here</a>.</p>
+				<p>Already have an account? <a href="./login">Login here</a>.</p>
 			</form>
 		</div>
 	</div>

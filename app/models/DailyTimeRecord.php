@@ -51,7 +51,8 @@ class DailyTimeRecord extends Database
 	{
 		$sql = "SELECT dtr.*, CONCAT(u.first_name, ' ', u.last_name) AS user
 				  FROM {$this->table} dtr
-				  WHERE user_id = :id
+				  JOIN user u ON dtr.user_id = u.id
+				  WHERE dtr.user_id = :id
 				  ORDER BY dtr.record_date DESC;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);

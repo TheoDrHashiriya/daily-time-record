@@ -1,5 +1,5 @@
 <?php
-require_once "../models/User.php";
+require_once __DIR__ . "/../models/User.php";
 class UserController extends User
 {
 	private $userModel = "";
@@ -62,7 +62,7 @@ class UserController extends User
 		session_start();
 		session_unset();
 		session_destroy();
-		header("Location: index.php");
+		header("Location: " . BASE_URL);
 		exit;
 	}
 }

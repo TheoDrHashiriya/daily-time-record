@@ -1,12 +1,8 @@
 <?php
-session_start();
-
 if (isset($_SESSION["user_id"])) {
-	header("Location: index.php");
+	header("Location: index");
 	exit;
 }
-
-require_once "../controllers/UserController.php";
 
 $errors = [];
 
@@ -22,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 	if (isset($result["success"])) {
-		header("Location: index.php");
+		header("Location: .");
 		exit;
 	}
 }
@@ -35,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="../css/global.css">
-	<link rel="stylesheet" href="../css/form.css">
-	<script src="../js/theme.js" defer></script>
+	<link rel="stylesheet" href="<?= BASE_URL ?>css/global.css">
+	<link rel="stylesheet" href="<?= BASE_URL ?>css/form.css">
+	<script src="<?= BASE_URL ?>js/theme.js" defer></script>
 </head>
 
 <body>
@@ -63,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 				<button class="login" type="submit">Login</button>
 
-				<p>Don't have an account? <a href="./register.php" style="text-decoration: none;">Register here</a>.</p>
+				<p>Don't have an account? <a href="register" style="text-decoration: none;">Register here</a>.</p>
 			</form>
 		</div>
 	</div>

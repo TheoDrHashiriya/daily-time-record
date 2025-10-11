@@ -1,5 +1,5 @@
 <?php
-require_once "../models/DailyTimeRecord.php";
+require_once __DIR__ . "/../models/DailyTimeRecord.php";
 
 class DTRController extends DailyTimeRecord
 {
