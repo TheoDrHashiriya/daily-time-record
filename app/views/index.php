@@ -33,7 +33,7 @@
 	<main class="main">
 		<?php if (isset($_SESSION["user_id"])): ?>
 			<div class="card" id="welcome">
-				<h3>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h3>
+				<h4>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h4>
 				<a href="logout" id="logout">Logout</a>
 			</div>
 		<?php endif; ?>
