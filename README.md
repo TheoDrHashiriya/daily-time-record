@@ -30,3 +30,8 @@ datetime time_out
 
 USER||--o{DAILY_TIME_RECORD:"has"
 ```
+### Role-based Access
+| Role     |     Create     | Read                         | Update                       | Delete                       |
+| -------- | :------------: | ---------------------------- | ---------------------------- | ---------------------------- |
+| Admin    | Users, Records | Self, All users, All records | Self, All users, All records | Self, All users, All records |
+| Employee |     Users      | Self, Own records            | Self                         | None                         |
