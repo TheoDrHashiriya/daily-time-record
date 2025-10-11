@@ -11,7 +11,7 @@ class UserController extends User
 
 	// PAGE RENDERERS
 
-	public function home()
+	public function homePage()
 	{
 		if (isset($_SESSION["user_id"])) {
 			$dtrController = new DTRController();
@@ -30,7 +30,7 @@ class UserController extends User
 	public function loginPage()
 	{
 		if (isset($_SESSION["user_id"])) {
-			header("Location: index");
+			header("Location: /");
 			exit;
 		}
 
@@ -57,12 +57,13 @@ class UserController extends User
 
 	public function registerPage()
 	{
+		if (isset($_SESSION["user_id"])) {
+			header("Location: /");
+			exit;
+		}
+
 		$errors = [];
 		$success = false;
-
-		if (isset($_SESSION["user_id"])) {
-			header("Location: index");
-		}
 
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$first_name = trim($_POST["first_name"]);
@@ -96,6 +97,49 @@ class UserController extends User
 		}
 
 		require "views/register.php";
+	}
+
+	public function updatePage()
+	{
+		if (!isset($_SESSION["user_id"])) {
+			header("Location: /");
+			exit;
+		}
+
+		$errors = [];
+		$success = false;
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			$first_name = trim($_POST["first_name"]);
+			$last_name = trim($_POST["last_name"]);
+			$middle_name = trim($_POST["middle_name"] ?? "");
+			$username = trim($_POST["username"]);
+			$password = trim($_POST["password"]);
+
+			if (!$first_name)
+				$errors["first_name"] = "Please enter your first name.";
+
+			if (!$last_name)
+				$errors["last_name"] = "Please enter your last name.";
+
+			if (!$username)
+				$errors["username"] = "Please enter your username.";
+
+			if (!$password)
+				$errors["password"] = "Please enter your password.";
+
+			if (empty($errors)) {
+				$id = $_SERVER["user_id"];
+				$result = $this->updateUser($id, $first_name, $last_name, $middle_name, $username, $password);
+
+				if (isset($result["success"])) {
+					header("Location: /");
+					exit;
+				} else {
+					$errors["general"] = $result["error"];
+				}
+			}
+		}
 	}
 
 	// FUNCTIONS
