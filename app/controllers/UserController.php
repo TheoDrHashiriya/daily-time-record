@@ -21,6 +21,9 @@ class UserController extends User
 				$records = $dtrController->dashboard($userId);
 
 			if ($_SESSION["role"] === "admin")
+				$users = $this->showAllUsers();
+
+			if ($_SESSION["role"] === "admin" || $_SESSION["role"] === "manager")
 				$records = $dtrController->getAllRecords();
 		}
 
@@ -144,6 +147,29 @@ class UserController extends User
 
 	// FUNCTIONS
 
+	public function isAdmin()
+	{
+		return isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
+	}
+
+	public function requireAdmin()
+	{
+		if (!$this->isAdmin()) {
+			header("Location: /");
+			exit();
+		}
+	}
+
+	// ADMIN-ONLY
+
+	public function showAllUsers()
+	{
+		$this->requireAdmin();
+
+		return $this->getAllUsers();
+	}
+
+	// OTHERS
 	public function show($id)
 	{
 		return $this->getById($id);
