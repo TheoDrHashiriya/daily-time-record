@@ -28,6 +28,16 @@ class User extends Database
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function getAllUsers()
+	{
+		$sql = "SELECT u.*
+				  FROM user u
+				  ORDER BY u.id;";
+		$query = $this->connect()->prepare($sql);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public function userExists($username)
 	{
 		return !empty($this->getByUsername($username));
