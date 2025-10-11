@@ -1,29 +1,3 @@
-<?php
-if (isset($_SESSION["user_id"])) {
-	header("Location: index");
-	exit;
-}
-
-$errors = [];
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$username = trim($_POST["username"]);
-	$password = trim($_POST["password"]);
-
-	$userController = new UserController();
-	$result = $userController->login($username, $password);
-
-	if (isset($result["errors"])) {
-		$errors = $result["errors"];
-	}
-
-	if (isset($result["success"])) {
-		header("Location: .");
-		exit;
-	}
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 

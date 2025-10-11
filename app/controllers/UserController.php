@@ -9,6 +9,97 @@ class UserController extends User
 		$this->userModel = new User();
 	}
 
+	// PAGE RENDERERS
+
+	public function home()
+	{
+		if (isset($_SESSION["user_id"])) {
+			$dtrController = new DTRController();
+			$userId = $_SESSION["user_id"];
+
+			if ($_SESSION["role"] === "employee")
+				$records = $dtrController->dashboard($userId);
+
+			if ($_SESSION["role"] === "admin")
+				$records = $dtrController->getAllRecords();
+		}
+
+		require "views/index.php";
+	}
+
+	public function loginPage()
+	{
+		if (isset($_SESSION["user_id"])) {
+			header("Location: index");
+			exit;
+		}
+
+		$errors = [];
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			$username = trim($_POST["username"]);
+			$password = trim($_POST["password"]);
+
+			$result = $this->login($username, $password);
+
+			if (isset($result["errors"])) {
+				$errors = $result["errors"];
+			}
+
+			if (isset($result["success"])) {
+				header("Location: .");
+				exit;
+			}
+		}
+
+		require "views/login.php";
+	}
+
+	public function registerPage()
+	{
+		$errors = [];
+		$success = false;
+
+		if (isset($_SESSION["user_id"])) {
+			header("Location: index");
+		}
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			$first_name = trim($_POST["first_name"]);
+			$last_name = trim($_POST["last_name"]);
+			$middle_name = trim($_POST["middle_name"] ?? "");
+			$username = trim($_POST["username"]);
+			$password = trim($_POST["password"]);
+
+			if (!$first_name)
+				$errors["first_name"] = "Please enter your first name.";
+
+			if (!$last_name)
+				$errors["last_name"] = "Please enter your last name.";
+
+			if (!$username)
+				$errors["username"] = "Please enter your username.";
+
+			if (!$password)
+				$errors["password"] = "Please enter your password.";
+
+			if (empty($errors)) {
+				$result = $this->register($first_name, $last_name, $middle_name, $username, $password);
+
+				if (isset($result["success"])) {
+					header("Location: login");
+					exit;
+				} else {
+					$errors["general"] = $result["error"];
+				}
+			}
+		}
+
+		require "views/register.php";
+	}
+
+	// FUNCTIONS
+
 	public function show($id)
 	{
 		return $this->getById($id);

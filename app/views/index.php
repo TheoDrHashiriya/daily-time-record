@@ -1,16 +1,3 @@
-<?php
-if (isset($_SESSION["user_id"])) {
-	$dtrController = new DTRController();
-	$userId = $_SESSION["user_id"];
-
-	if ($_SESSION["role"] === "employee")
-		$records = $dtrController->dashboard($userId);
-
-	if ($_SESSION["role"] === "admin")
-		$records = $dtrController->getAllRecords();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,9 +1,12 @@
 <?php
 session_start();
 
-define("BASE_URL", "/theonary/");
+require_once "controllers/DailyTimeRecordController.php";
+require_once "controllers/UserController.php";
 
+define("BASE_URL", "/theonary/");
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
+$request = preg_replace("/\.php$/", "", $request);
 
 // echo "<pre>";
 // echo "Request: ";
@@ -12,27 +15,25 @@ $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 // var_dump(__DIR__);
 // echo "</pre>";
 
+$userController = new UserController();
+
 switch ($request) {
 	case "":
 	case "/":
-		require "controllers/DailyTimeRecordController.php";
-		require "views/index.php";
+	case "index":
+		$userController->home();
 		break;
 
 	case "login":
-		require "controllers/UserController.php";
-		require "views/login.php";
-		break;
-
-	case "logout":
-		require "controllers/UserController.php";
-		$userController = new UserController();
-		$userController->logout();
+		$userController->loginPage();
 		break;
 
 	case "register":
-		require "controllers/UserController.php";
-		require "views/register.php";
+		$userController->registerPage();
+		break;
+
+	case "logout":
+		$userController->logout();
 		break;
 
 	default:
