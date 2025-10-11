@@ -21,9 +21,10 @@ switch ($request) {
 	case "":
 	case "/":
 	case "index":
-		$userController->home();
+		$userController->homePage();
 		break;
 
+	// USER
 	case "login":
 		$userController->loginPage();
 		break;
@@ -32,8 +33,16 @@ switch ($request) {
 		$userController->registerPage();
 		break;
 
+	case "update":
+		$userController->updatePage();
+
 	case "logout":
 		$userController->logout();
+		break;
+
+	// ADMIN
+	case "create":
+		$userController->createPage();
 		break;
 
 	default:
