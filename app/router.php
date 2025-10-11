@@ -6,6 +6,8 @@ require_once "controllers/UserController.php";
 
 define("BASE_URL", "/theonary/");
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
+
+// Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
 
 // echo "<pre>";
