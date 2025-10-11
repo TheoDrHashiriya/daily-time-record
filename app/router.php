@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+echo "Session data:\n<prev>";
+foreach ($_SESSION as $key => $value)
+	echo "| $key = $value |\n";
+echo "</prev>";
+
 require_once "controllers/DailyTimeRecordController.php";
 require_once "controllers/UserController.php";
 
@@ -9,13 +14,6 @@ $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 
 // Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
-
-// echo "<pre>";
-// echo "Request: ";
-// var_dump($request);
-// echo "__DIR__: ";
-// var_dump(__DIR__);
-// echo "</pre>";
 
 $userController = new UserController();
 
