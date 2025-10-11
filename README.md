@@ -7,6 +7,7 @@ A simple time recording system with CRUD functionality, built on the MVC design.
 ## Technical Stuff
 - MVC design pattern
 - PHP routing and the use of .htaccess for SEO-friendly URLs
+- Passwords are hashed when stored on the database for security
 ### CRUD Access Overview
 | Role     |                   Create                    | Read                              | Update                            | Delete                            |
 | -------- | :-----------------------------------------: | --------------------------------- | --------------------------------- | --------------------------------- |
