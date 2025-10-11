@@ -99,7 +99,7 @@ class UserController extends User
 		require "views/register.php";
 	}
 
-	public function updatePage()
+	public function updateUserPage()
 	{
 		if (!isset($_SESSION["user_id"])) {
 			header("Location: /");

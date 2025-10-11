@@ -34,7 +34,7 @@ switch ($request) {
 		break;
 
 	case "update":
-		$userController->updatePage();
+		$userController->updateUserPage();
 
 	case "logout":
 		$userController->logout();
@@ -42,7 +42,7 @@ switch ($request) {
 
 	// ADMIN
 	case "create":
-		$userController->createPage();
+		$userController->createUserPage();
 		break;
 
 	default:
