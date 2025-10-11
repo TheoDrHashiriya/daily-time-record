@@ -1,9 +1,13 @@
 # Daily Time Record
 A simple time recording system with CRUD functionality and built on the MVC design.
 ## Main Features (TBI)
+- CRUD functionality scoped for admins and regular users
 - Dark Mode with smooth transitioning
 - Role-based authentication
 - Responsive dashboard layout
+## Technical Stuff
+- Implementation of MVC design
+- PHP routing and the use of .htaccess for SEO-friendly URLs
 ## Simple Entity-Relationship Diagram
 ```mermaid
 erDiagram
