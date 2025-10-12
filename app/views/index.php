@@ -5,7 +5,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>css/global.css">
 	<link rel="stylesheet" href="<?= BASE_URL ?>css/index.css">
 	<script src="<?= BASE_URL ?>js/theme.js" defer></script>
 	<script src="<?= BASE_URL ?>js/clock.js" defer></script>

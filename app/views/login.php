@@ -5,7 +5,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>css/global.css">
 	<link rel="stylesheet" href="<?= BASE_URL ?>css/form.css">
 	<script src="<?= BASE_URL ?>js/theme.js" defer></script>
 </head>
