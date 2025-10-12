@@ -31,8 +31,15 @@ body {
 }
 
 .sidebar a {
+	border-radius: 10px;
+	width: 100%;
 	color: var(--sidebar-link);
+	margin: 3px;
 	padding: 10px;
+}
+
+.sidebar a:hover {
+	background-color: color-mix(in srgb, var(--sidebar), white 15%);
 }
 
 .main {
