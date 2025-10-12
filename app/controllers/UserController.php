@@ -14,17 +14,17 @@ class UserController extends User
 	public function homePage()
 	{
 		if (isset($_SESSION["user_id"])) {
-			$dtrController = new DTRController();
+			$dtrModel = new DailyTimeRecord();
 			$userId = $_SESSION["user_id"];
 
 			if ($_SESSION["role"] === "employee")
-				$records = $dtrController->showUserRecords($userId);
+				$records = $dtrModel->getRecordsByUserId($userId);
 
 			if ($_SESSION["role"] === "admin")
 				$users = $this->showAllUsers();
 
 			if ($_SESSION["role"] === "admin" || $_SESSION["role"] === "manager")
-				$records = $dtrController->getAllRecords();
+				$records = $dtrModel->getAllRecords();
 		}
 
 		require "views/index.php";
