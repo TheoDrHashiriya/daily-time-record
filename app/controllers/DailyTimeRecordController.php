@@ -23,7 +23,7 @@ class DTRController extends DailyTimeRecord
 		return ["error" => "Failed to record time-in."];
 	}
 
-	public function dashboard($userId)
+	public function showUserRecords($userId)
 	{
 		return $this->dtrModel->getRecordsByUserId($userId);
 	}
