@@ -18,7 +18,7 @@ class UserController extends User
 			$userId = $_SESSION["user_id"];
 
 			if ($_SESSION["role"] === "employee")
-				$records = $dtrController->dashboard($userId);
+				$records = $dtrController->showUserRecords($userId);
 
 			if ($_SESSION["role"] === "admin")
 				$users = $this->showAllUsers();
