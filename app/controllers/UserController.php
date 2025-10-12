@@ -132,7 +132,7 @@ class UserController extends User
 				$errors["password"] = "Please enter your password.";
 
 			if (empty($errors)) {
-				$id = $_SERVER["user_id"];
+				$id = $_SESSION["user_id"];
 				$result = $this->updateUser($id, $first_name, $last_name, $middle_name, $username, $password);
 
 				if (isset($result["success"])) {
