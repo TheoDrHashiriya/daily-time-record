@@ -17,6 +17,9 @@ class UserController extends User
 			$dtrModel = new DailyTimeRecord();
 			$userId = $_SESSION["user_id"];
 
+			$records = [];
+			$users = [];
+
 			if ($_SESSION["role"] === "employee")
 				$records = $dtrModel->getRecordsByUserId($userId);
 
