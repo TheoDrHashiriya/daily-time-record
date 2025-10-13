@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-echo "Session data:\n<prev>";
-foreach ($_SESSION as $key => $value)
-	echo "| $key = $value |\n";
-echo "</prev>";
+// echo "Session data:\n<prev>";
+// foreach ($_SESSION as $key => $value)
+// 	echo "| $key = $value |\n";
+// echo "</prev>";
 
 require_once "controllers/DailyTimeRecordController.php";
 require_once "controllers/UserController.php";
