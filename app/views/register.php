@@ -45,7 +45,7 @@
 
 				<button class="register" type="submit">Register</button>
 
-				<p>Already have an account? <a href="./login">Login here</a>.</p>
+				<!-- <p>Already have an account? <a href="./login">Login here</a>.</p> -->
 			</form>
 		</div>
 	</div>

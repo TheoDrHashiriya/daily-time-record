@@ -32,7 +32,7 @@
 
 				<button class="login" type="submit">Login</button>
 
-				<p>Don't have an account? <a href="register" style="text-decoration: none;">Register here</a>.</p>
+				<!-- <p>Don't have an account? <a href="register" style="text-decoration: none;">Register here</a>.</p> -->
 			</form>
 		</div>
 	</div>
