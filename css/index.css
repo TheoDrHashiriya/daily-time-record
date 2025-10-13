@@ -42,6 +42,10 @@ body {
 	background-color: color-mix(in srgb, var(--sidebar), white 15%);
 }
 
+.sidebar a.active{
+	background-color: blue;
+}
+
 .main {
 	background-color: var(--bg-gradient);
 	grid-area: main;
