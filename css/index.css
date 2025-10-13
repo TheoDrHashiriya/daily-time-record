@@ -42,7 +42,7 @@ body {
 	background-color: color-mix(in srgb, var(--sidebar), white 15%);
 }
 
-.sidebar a.active{
+.sidebar a.active {
 	background-color: blue;
 }
 
@@ -120,7 +120,7 @@ body {
 			"main";
 	}
 
-	.main {
+	.main#home-section {
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: repeat(4, auto);
 		grid-template-areas:
@@ -131,7 +131,7 @@ body {
 	}
 
 	.card {
-		padding: 0 20px 0 20px;
+		padding: 20px;
 	}
 
 	.sidebar {
