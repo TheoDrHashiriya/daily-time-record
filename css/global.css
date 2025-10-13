@@ -84,12 +84,16 @@ body.loaded * {
 
 table {
 	border: 1px solid var(--table);
-	border-collapse: collapse;
+	border-spacing: 0;
+	border-radius: 10px;
+	border-collapse: separate;
 	text-align: center;
+	overflow: hidden;
 }
 
 th,
 td {
+	text-align: left;
 	padding: 10px;
 }
 
