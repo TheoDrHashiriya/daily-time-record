@@ -17,7 +17,9 @@ class UserController extends User
 			$dtrModel = new DailyTimeRecord();
 			$userRole = $_SESSION["role"];
 			$userId = $_SESSION["user_id"];
+
 			$isLoggedin = $this->isLoggedIn();
+			$hasTimedIn = $this->hasTimedIn();
 
 			$records = [];
 			$users = [];
@@ -48,7 +50,7 @@ class UserController extends User
 	public function loginPage()
 	{
 		if ($this->isLoggedIn()) {
-			header("Location: /");
+			header("Location: .");
 			exit;
 		}
 
@@ -120,7 +122,7 @@ class UserController extends User
 	public function updateUserPage()
 	{
 		if (!$this->isLoggedIn()) {
-			header("Location: /");
+			header("Location: .");
 			exit;
 		}
 
@@ -151,7 +153,7 @@ class UserController extends User
 				$result = $this->updateUser($id, $first_name, $last_name, $middle_name, $username, $password);
 
 				if (isset($result["success"])) {
-					header("Location: /");
+					header("Location: .");
 					exit;
 				} else {
 					$errors["general"] = $result["error"];
@@ -167,15 +169,20 @@ class UserController extends User
 		return isset($_SESSION["user_id"]);
 	}
 
+	public function hasTimedIn()
+	{
+
+	}
+
 	public function isAdmin()
 	{
-		return isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
+		return $this->isLoggedIn() && $_SESSION["role"] === "admin";
 	}
 
 	public function requireAdmin()
 	{
 		if (!$this->isAdmin()) {
-			header("Location: /");
+			header("Location: .");
 			exit();
 		}
 	}
