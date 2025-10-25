@@ -19,14 +19,15 @@
 			<span class="line line3"></span>
 		</div>
 
-		<?php if (!$isLoggedIn): ?>
+		<?php if (!$_SESSION["is_logged_in"]): ?>
 			<a class="login" href="login">Login</a>
 		<?php endif; ?>
+
 		<button type="button" id="theme-toggle"></button>
 	</header>
 
 	<section class="sidebar">
-		<?php if ($isLoggedin):
+		<?php if ($_SESSION["is_logged_in"]):
 			if ($userRole === "admin"): ?>
 				<a href="#" data-target="home-section">Home</a>
 				<a href="#" data-target="users-section">Users</a>
@@ -37,7 +38,7 @@
 	</section>
 
 	<main class="main section" id="home-section">
-		<?php if ($isLoggedin): ?>
+		<?php if ($_SESSION["is_logged_in"]): ?>
 			<div class="card" id="welcome">
 				<h4>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h4>
 				<a href="logout" id="logout">Logout</a>
@@ -49,7 +50,7 @@
 			<h2 id="clock"></h2>
 		</div>
 
-		<?php if ($isLoggedin):
+		<?php if ($_SESSION["is_logged_in"]):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
@@ -119,18 +120,21 @@
 					<?php endif; ?>
 				</div>
 
-				<div class="card" id="time-in">
-					<a href="timein" id="time-in">Time In</a>
-				</div>
-				<div class="card" id="time-out">
-					<a href="timeout" id="time-in">Time Out</a>
-				</div>
-			<?php endif;
+				<?php if (!$_SESSION["has_timed_in_today"]): ?>
+					<div class="card" id="time-in">
+						<a href="timein" id="time-in">Time In</a>
+					</div>
+				<?php else: ?>
+					<div class="card" id="time-out">
+						<a href="timeout" id="time-in">Time Out</a>
+					</div>
+				<?php endif;
+			endif;
 		endif; ?>
 	</main>
 
 	<main class="main section" id="users-section">
-		<?php if ($isLoggedin):
+		<?php if ($_SESSION["is_logged_in"]):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Users</h2>
@@ -203,22 +207,12 @@
 						<p>No records found.</p>
 					<?php endif; ?>
 				</div>
-
-				<?php if (!$hasTimedIn): ?>
-					<div class="card" id="time-in">
-						<a href="timein" id="time-in">Time In</a>
-					</div>
-				<?php else: ?>
-					<div class="card" id="time-out">
-						<a href="timeout" id="time-in">Time Out</a>
-					</div>
-				<?php endif;
-			endif;
+			<?php endif;
 		endif; ?>
 	</main>
 
 	<main class="main section" id="records-section">
-		<?php if ($isLoggedin):
+		<?php if ($_SESSION["is_logged_in"]):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
