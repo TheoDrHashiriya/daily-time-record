@@ -8,13 +8,33 @@ class DailyTimeRecord extends Database
 	{
 		$sql = "SELECT *
 				  FROM {$this->table}
-				  WHERE user_id = :id LIMIT 1
+				  WHERE user_id = :id
 				  AND record_date = CURDATE()
-				  AND time_in IS NOT NULL;";
+				  AND time_in IS NOT NULL
+				  LIMIT 1;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
-		return $query->fetchColumn() > 0;
+		return $query->fetch() !== false;
+	}
+
+	public function hasTimedOutToday($id)
+	{
+		$sql = "SELECT *
+				  FROM {$this->table}
+				  WHERE user_id = :id
+				  AND record_date = CURDATE()
+				  AND time_out IS NOT NULL
+				  LIMIT 1;";
+		$query = $this->connect()->prepare($sql);
+		$query->bindParam(":id", $id);
+		$query->execute();
+		return $query->fetch() !== false;
+	}
+
+	public function hasUnclosedRecord($id)
+	{
+
 	}
 
 	public function recordTimeIn($id)
@@ -22,7 +42,7 @@ class DailyTimeRecord extends Database
 		$sql = "INSERT INTO {$this->table} (user_id, record_date, time_in)
 				  VALUES (:id, CURDATE(), NOW());";
 		$query = $this->connect()->prepare($sql);
-		$query->bindParam(param: ":id", $id);
+		$query->bindParam(":id", $id);
 		return $query->execute();
 	}
 
@@ -49,7 +69,8 @@ class DailyTimeRecord extends Database
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function getLast($id){
+	public function getLast($id)
+	{
 		$sql = "SELECT *
 				  FROM {$this->table} dtr
 				  JOIN user u ON dtr.user_id = u.id
@@ -58,7 +79,7 @@ class DailyTimeRecord extends Database
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
-		return $query->fetchAll(PDO::FETCH_ASSOC);
+		return $query->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function getByUserId($id)
