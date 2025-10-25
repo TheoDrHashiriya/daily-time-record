@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . "/../models/User.php";
-require_once __DIR__ . "/../helpers/common.php";
 class UserController extends User
 {
 	private $userModel = "";
@@ -14,7 +13,7 @@ class UserController extends User
 
 	public function homePage()
 	{
-		if (isLoggedIn()) {
+		if ($this->isLoggedIn()) {
 			$dtrModel = new DailyTimeRecord();
 			$userRole = $_SESSION["role"];
 			$userId = $_SESSION["user_id"];
@@ -47,7 +46,7 @@ class UserController extends User
 
 	public function loginPage()
 	{
-		if (isLoggedIn()) {
+		if ($this->isLoggedIn()) {
 			header("Location: /");
 			exit;
 		}
@@ -75,7 +74,7 @@ class UserController extends User
 
 	public function registerPage()
 	{
-		if (isLoggedIn() || $_SESSION["role"] != "admin") {
+		if ($this->isLoggedIn() || $_SESSION["role"] != "admin") {
 			header("Location: .");
 			exit;
 		}
@@ -119,7 +118,7 @@ class UserController extends User
 
 	public function updateUserPage()
 	{
-		if (!isLoggedIn()) {
+		if (!$this->isLoggedIn()) {
 			header("Location: /");
 			exit;
 		}
@@ -161,6 +160,11 @@ class UserController extends User
 	}
 
 	// FUNCTIONS
+
+	public function isLoggedIn()
+	{
+		return isset($_SESSION["user_id"]);
+	}
 
 	public function isAdmin()
 	{
