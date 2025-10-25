@@ -1,12 +1,11 @@
 <?php
 session_start();
 
-// echo "Session data:\n<prev>";
-// foreach ($_SESSION as $key => $value)
-// 	echo "| $key = $value |\n";
-// echo "</prev>";
+ini_set("display_errors", 1);
+ini_set("display_startup_errors", 1);
+error_reporting(E_ALL);
 
-require_once __DIR__ . "controllers/PageController.php";
+require_once __DIR__ . "/controllers/PageController.php";
 
 define("BASE_URL", "/theonary/");
 
@@ -17,8 +16,15 @@ $request = preg_replace("/\.php$/", "", $request);
 
 $pageController = new PageController();
 
+var_dump($request);
+echo "Session data:\n<prev>";
+foreach ($_SESSION as $key => $value)
+	echo "| $key = $value \n";
+echo "</prev>";
+
 switch ($request) {
 	case "":
+	case ".";
 	case "/":
 	case "index":
 		$pageController->homePage();
