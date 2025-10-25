@@ -10,9 +10,14 @@ class DTRController extends DailyTimeRecord
 		$this->dtrModel = new DailyTimeRecord();
 	}
 
+	public function hasUnclosedRecord($id)
+	{
+
+	}
+
 	public function timeIn($userId)
 	{
-		if ($this->dtrModel->hasTimeInToday($userId)) {
+		if ($this->dtrModel->hasTimedInToday($userId)) {
 			return ["error" => "You have already clocked in today."];
 		}
 
@@ -25,6 +30,6 @@ class DTRController extends DailyTimeRecord
 
 	public function showUserRecords($userId)
 	{
-		return $this->dtrModel->getRecordsByUserId($userId);
+		return $this->dtrModel->getByUserId($userId);
 	}
 }

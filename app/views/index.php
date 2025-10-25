@@ -204,13 +204,16 @@
 					<?php endif; ?>
 				</div>
 
-				<div class="card" id="time-in">
-					<a href="timein" id="time-in">Time In</a>
-				</div>
-				<div class="card" id="time-out">
-					<a href="timeout" id="time-in">Time Out</a>
-				</div>
-			<?php endif;
+				<?php if (!$hasTimedIn): ?>
+					<div class="card" id="time-in">
+						<a href="timein" id="time-in">Time In</a>
+					</div>
+				<?php else: ?>
+					<div class="card" id="time-out">
+						<a href="timeout" id="time-in">Time Out</a>
+					</div>
+				<?php endif;
+			endif;
 		endif; ?>
 	</main>
 

@@ -19,7 +19,7 @@ class User extends Database
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
-	protected function getByUsername($username)
+	public function getByUsername($username)
 	{
 		$sql = "SELECT * FROM user WHERE username = :username LIMIT 1;";
 		$query = $this->connect()->prepare($sql);
@@ -42,6 +42,7 @@ class User extends Database
 	{
 		return !empty($this->getByUsername($username));
 	}
+
 	protected function createUser($first_name, $last_name, $middle_name, $username, $password)
 	{
 		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, password)
@@ -69,6 +70,7 @@ class User extends Database
 		$query->bindParam(":id", $id);
 		return $query->execute();
 	}
+
 	public function deleteUser($id)
 	{
 		$sql = "DELETE FROM user

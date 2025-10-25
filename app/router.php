@@ -6,8 +6,7 @@ session_start();
 // 	echo "| $key = $value |\n";
 // echo "</prev>";
 
-require_once "controllers/DailyTimeRecordController.php";
-require_once "controllers/UserController.php";
+require_once __DIR__ . "controllers/PageController.php";
 
 define("BASE_URL", "/theonary/");
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
@@ -15,34 +14,42 @@ $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 // Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
 
-$userController = new UserController();
+$pageController = new PageController();
 
 switch ($request) {
 	case "":
 	case "/":
 	case "index":
-		$userController->homePage();
+		$pageController->homePage();
 		break;
 
 	// USER
 	case "login":
-		$userController->loginPage();
+		$pageController->loginPage();
 		break;
 
-	case "register":
-		$userController->registerPage();
+	case "logout":
+		$pageController->logout();
 		break;
 
 	case "update":
-		$userController->updateUserPage();
+		$pageController->updateUserPage();
 
-	case "logout":
-		$userController->logout();
+	case "timein":
+		$pageController->timeIn();
+		break;
+
+	case "timeout":
+		$pageController->timeOut();
 		break;
 
 	// ADMIN
 	case "create":
-		$userController->createUserPage();
+		$pageController->createUserPage();
+		break;
+
+	case "register":
+		$pageController->registerPage();
 		break;
 
 	default:
