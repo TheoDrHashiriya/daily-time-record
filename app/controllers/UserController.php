@@ -14,7 +14,7 @@ class UserController extends User
 		return isset($_SESSION["user_id"]);
 	}
 
-	public function requireLogIn()
+	public function requireLogin()
 	{
 		if (!$this->isLoggedIn()) {
 			header("Location: .");
@@ -37,7 +37,7 @@ class UserController extends User
 
 	// ADMIN-ONLY
 
-	public function showAllUsers()
+	public function showAll()
 	{
 		$this->requireAdmin();
 
@@ -50,14 +50,25 @@ class UserController extends User
 		return $this->getById($id);
 	}
 
-	public function register($first_name, $last_name, $middle_name, $username, $password)
-	{
+	public function register(
+		$first_name,
+		$last_name,
+		$middle_name,
+		$username,
+		$password
+	) {
 		if ($this->userExists($username)) {
 			return ["error" => "Username already taken."];
 		}
 
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-		$created = $this->createUser($first_name, $last_name, $middle_name, $username, $hashedPassword);
+		$created = $this->createUser(
+			$first_name,
+			$last_name,
+			$middle_name,
+			$username,
+			$hashedPassword
+		);
 
 		return $created ? ["success" => true] : ["error" => "Failed to create account."];
 	}

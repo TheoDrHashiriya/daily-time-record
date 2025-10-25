@@ -9,6 +9,7 @@ session_start();
 require_once __DIR__ . "controllers/PageController.php";
 
 define("BASE_URL", "/theonary/");
+
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 
 // Removes .php in the request

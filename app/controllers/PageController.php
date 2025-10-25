@@ -70,26 +70,27 @@ class PageController
 				$records = $this->dtrController->getByUserId($userId);
 
 			if ($userRole === "admin")
-				$users = $this->userController->showAllUsers();
+				$users = $this->userController->showAll();
 
 			if ($userRole === "admin" || $userRole === "manager")
 				$records = $this->dtrController->getAll();
 		}
 
-		require "views/index.php";
+		require __DIR__ . "/../views/index.php";
 	}
 
 	public function timeIn()
 	{
-		$this->userController->requireLogIn();
+		$this->userController->requireLogin();
 
 		if ($this->dtrController->hasTime) {
+
 		}
 	}
 
 	public function loginPage()
 	{
-		$this->userController->requireLogIn();
+		$this->userController->requireLogin();
 
 		$errors = [];
 
@@ -109,12 +110,12 @@ class PageController
 			}
 		}
 
-		require "views/login.php";
+		require __DIR__ . "/../views/login.php";
 	}
 
 	public function registerPage()
 	{
-		$this->userController->requireLogIn();
+		$this->userController->requireLogin();
 		$this->userController->requireAdmin();
 
 		$errors = [];
@@ -157,12 +158,12 @@ class PageController
 			}
 		}
 
-		require "views/register.php";
+		require __DIR__ . "/../views/register.php";
 	}
 
 	public function updateUserPage()
 	{
-		$this->userController->requireLogIn();
+		$this->userController->requireLogin();
 		$this->userController->requireAdmin();
 
 		$errors = [];
