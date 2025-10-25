@@ -63,8 +63,8 @@ class UserController extends User
 
 	public function registerPage()
 	{
-		if (isset($_SESSION["user_id"])) {
-			header("Location: /");
+		if (isset($_SESSION["user_id"]) || $_SESSION["role"] != "admin") {
+			header("Location: .");
 			exit;
 		}
 
