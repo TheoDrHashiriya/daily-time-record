@@ -31,8 +31,6 @@
 				<p class="error-general"><?= $errors["general"] ?? "" ?></p>
 
 				<button class="login" type="submit">Login</button>
-
-				<!-- <p>Don't have an account? <a href="register" style="text-decoration: none;">Register here</a>.</p> -->
 			</form>
 		</div>
 	</div>

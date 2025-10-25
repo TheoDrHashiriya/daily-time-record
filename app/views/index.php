@@ -21,7 +21,6 @@
 
 		<?php if (!isset($_SESSION["user_id"])): ?>
 			<a class="login" href="login">Login</a>
-			<a class="register" href="register">Register</a>
 		<?php endif; ?>
 		<button type="button" id="theme-toggle"></button>
 	</header>
