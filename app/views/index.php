@@ -27,7 +27,7 @@
 
 	<section class="sidebar">
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["role"] === "admin"): ?>
+			if ($userRole === "admin"): ?>
 				<a href="#" data-target="home-section">Home</a>
 				<a href="#" data-target="users-section">Users</a>
 				<a href="#" data-target="records-section">Records</a>
@@ -50,7 +50,7 @@
 		</div>
 
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["role"] === "admin"): ?>
+			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>
@@ -85,7 +85,7 @@
 				</div>
 			<?php endif;
 
-			if ($_SESSION["role"] == "employee"): ?>
+			if ($userRole == "employee"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>
@@ -131,7 +131,7 @@
 
 	<main class="main section" id="users-section">
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["role"] === "admin"): ?>
+			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Users</h2>
 					<?php if (!empty($users)): ?>
@@ -170,7 +170,7 @@
 				</div>
 			<?php endif;
 
-			if ($_SESSION["role"] == "employee"): ?>
+			if ($userRole == "employee"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>
@@ -216,7 +216,7 @@
 
 	<main class="main section" id="records-section">
 		<?php if (isset($_SESSION["user_id"])):
-			if ($_SESSION["role"] === "admin"): ?>
+			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
 					<?php if (!empty($records)): ?>

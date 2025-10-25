@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../models/User.php";
+require_once __DIR__ . "/../helpers/common.php";
 class UserController extends User
 {
 	private $userModel = "";
@@ -13,29 +14,40 @@ class UserController extends User
 
 	public function homePage()
 	{
-		if (isset($_SESSION["user_id"])) {
+		if (isLoggedIn()) {
 			$dtrModel = new DailyTimeRecord();
+			$userRole = $_SESSION["role"];
 			$userId = $_SESSION["user_id"];
 
 			$records = [];
 			$users = [];
 
-			if ($_SESSION["role"] === "employee")
+			if ($userRole === "employee")
 				$records = $dtrModel->getRecordsByUserId($userId);
 
-			if ($_SESSION["role"] === "admin")
+			if ($userRole === "admin")
 				$users = $this->showAllUsers();
 
-			if ($_SESSION["role"] === "admin" || $_SESSION["role"] === "manager")
+			if ($userRole === "admin" || $userRole === "manager")
 				$records = $dtrModel->getAllRecords();
 		}
 
 		require "views/index.php";
 	}
 
+	public function userHomePage()
+	{
+
+	}
+
+	public function adminHomePage()
+	{
+
+	}
+
 	public function loginPage()
 	{
-		if (isset($_SESSION["user_id"])) {
+		if (isLoggedIn()) {
 			header("Location: /");
 			exit;
 		}
@@ -63,7 +75,7 @@ class UserController extends User
 
 	public function registerPage()
 	{
-		if (isset($_SESSION["user_id"]) || $_SESSION["role"] != "admin") {
+		if (isLoggedIn() || $_SESSION["role"] != "admin") {
 			header("Location: .");
 			exit;
 		}
@@ -107,7 +119,7 @@ class UserController extends User
 
 	public function updateUserPage()
 	{
-		if (!isset($_SESSION["user_id"])) {
+		if (!isLoggedIn()) {
 			header("Location: /");
 			exit;
 		}
