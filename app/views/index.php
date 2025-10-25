@@ -19,14 +19,14 @@
 			<span class="line line3"></span>
 		</div>
 
-		<?php if (!isset($_SESSION["user_id"])): ?>
+		<?php if (!$isLoggedIn): ?>
 			<a class="login" href="login">Login</a>
 		<?php endif; ?>
 		<button type="button" id="theme-toggle"></button>
 	</header>
 
 	<section class="sidebar">
-		<?php if (isset($_SESSION["user_id"])):
+		<?php if ($isLoggedin):
 			if ($userRole === "admin"): ?>
 				<a href="#" data-target="home-section">Home</a>
 				<a href="#" data-target="users-section">Users</a>
@@ -37,7 +37,7 @@
 	</section>
 
 	<main class="main section" id="home-section">
-		<?php if (isset($_SESSION["user_id"])): ?>
+		<?php if ($isLoggedin): ?>
 			<div class="card" id="welcome">
 				<h4>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h4>
 				<a href="logout" id="logout">Logout</a>
@@ -49,7 +49,7 @@
 			<h2 id="clock"></h2>
 		</div>
 
-		<?php if (isset($_SESSION["user_id"])):
+		<?php if ($isLoggedin):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>
@@ -130,7 +130,7 @@
 	</main>
 
 	<main class="main section" id="users-section">
-		<?php if (isset($_SESSION["user_id"])):
+		<?php if ($isLoggedin):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Users</h2>
@@ -215,7 +215,7 @@
 	</main>
 
 	<main class="main section" id="records-section">
-		<?php if (isset($_SESSION["user_id"])):
+		<?php if ($isLoggedin):
 			if ($userRole === "admin"): ?>
 				<div class="card">
 					<h2 class="header">Daily Time Records</h2>

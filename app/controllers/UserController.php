@@ -17,6 +17,7 @@ class UserController extends User
 			$dtrModel = new DailyTimeRecord();
 			$userRole = $_SESSION["role"];
 			$userId = $_SESSION["user_id"];
+			$isLoggedin = $this->isLoggedIn();
 
 			$records = [];
 			$users = [];
