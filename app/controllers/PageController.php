@@ -14,6 +14,34 @@ class PageController
 
 	}
 
+	public function redirectToHome()
+	{
+		header("Location: .");
+		exit();
+	}
+
+	public function homePage()
+	{
+		if ($this->userController->isLoggedIn()) {
+			$userRole = $_SESSION["role"];
+			$userId = $_SESSION["user_id"];
+
+			$records = [];
+			$users = [];
+
+			if ($userRole === "employee")
+				$records = $this->dtrController->getByUserId($userId);
+
+			if ($userRole === "admin")
+				$users = $this->userController->showAll();
+
+			if ($userRole === "admin" || $userRole === "manager")
+				$records = $this->dtrController->getAll();
+		}
+
+		require __DIR__ . "/../views/index.php";
+	}
+
 	public function login($username, $password)
 	{
 		$errors = [];
@@ -42,6 +70,9 @@ class PageController
 		$_SESSION["role"] = $userData["role"];
 		$_SESSION["first_name"] = $userData["first_name"];
 
+		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
+		$_SESSION["has_timed_in_today"] = $this->dtrController->hasTimedInToday($_SESSION["user_id"]) ?? false;
+
 		return ["success" => true];
 	}
 
@@ -50,47 +81,30 @@ class PageController
 		session_start();
 		session_unset();
 		session_destroy();
-		header("Location: .");
+		$this->redirectToHome();
 		exit();
-	}
-
-	public function homePage()
-	{
-		if ($this->userController->isLoggedIn()) {
-			$userRole = $_SESSION["role"];
-			$userId = $_SESSION["user_id"];
-
-			$isLoggedin = $this->userController->isLoggedIn();
-			$hasTimedIn = $this->dtrController->hasTimedInToday($userId);
-
-			$records = [];
-			$users = [];
-
-			if ($userRole === "employee")
-				$records = $this->dtrController->getByUserId($userId);
-
-			if ($userRole === "admin")
-				$users = $this->userController->showAll();
-
-			if ($userRole === "admin" || $userRole === "manager")
-				$records = $this->dtrController->getAll();
-		}
-
-		require __DIR__ . "/../views/index.php";
 	}
 
 	public function timeIn()
 	{
 		$this->userController->requireLogin();
+		$this->dtrController->timeIn($_SESSION["user_id"]);
+		$this->redirectToHome();
+	}
 
-		if ($this->dtrController->hasTime) {
-
-		}
+	public function timeOut()
+	{
+		$this->userController->requireLogin();
+		$this->dtrController->timeOut($_SESSION["user_id"]);
+		$this->redirectToHome();
 	}
 
 	public function loginPage()
 	{
-		$this->userController->requireLogin();
+		if ($this->userController->isLoggedIn()) {
+			$this->redirectToHome();
+			exit();
+		}
 
 		$errors = [];
 
@@ -105,7 +119,7 @@ class PageController
 			}
 
 			if (isset($result["success"])) {
-				header("Location: .");
+				$this->redirectToHome();
 				exit;
 			}
 		}
@@ -200,7 +214,7 @@ class PageController
 				);
 
 				if (isset($result["success"])) {
-					header("Location: .");
+					$this->redirectToHome();
 					exit;
 				} else {
 					$errors["general"] = $result["error"];
