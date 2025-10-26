@@ -20,7 +20,7 @@ class PageController
 		exit();
 	}
 
-	public function homePage()
+	public function dashboard()
 	{
 		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
 

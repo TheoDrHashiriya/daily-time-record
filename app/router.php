@@ -26,7 +26,7 @@ switch ($request) {
 	case ".";
 	case "/":
 	case "index":
-		$pageController->homePage();
+		$pageController->dashboard();
 		break;
 
 	// USER
