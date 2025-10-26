@@ -9,11 +9,11 @@ A simple time recording system with CRUD functionality, built on the MVC design.
 - PHP routing and the use of .htaccess for SEO-friendly URLs
 - Passwords are hashed when stored on the database for security
 ### CRUD Access Overview
-| Role     |                   Create                    | Read                              | Update                            | Delete                            |
-| -------- | :-----------------------------------------: | --------------------------------- | --------------------------------- | --------------------------------- |
-| Admin    |        Users (of all roles), Records        | Own profile, Any user, Any record | Own profile, Any user, Any record | Own profile, Any user, Any record |
+| Role     |                 Create                  | Read                              | Update                            | Delete                            |
+| -------- | :-------------------------------------: | --------------------------------- | --------------------------------- | --------------------------------- |
+| Admin    | Register Users (of all roles), Records  | Own profile, Any user, Any record | Own profile, Any user, Any record | Own profile, Any user, Any record |
 | Manager  | Register Users (employees), Own records | Own profile, Any record           | Own profile                       | None                              |
-| Employee |        Register Users (employees), Own records        | Own profile, Own records          | Own profile                       | None                              |
+| Employee |           Own records (daily)           | Own profile, Own records          | Own profile                       | None                              |
 ### Simple Entity-Relationship Diagram
 ```mermaid
 erDiagram
