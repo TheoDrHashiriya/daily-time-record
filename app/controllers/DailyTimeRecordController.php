@@ -30,15 +30,18 @@ class DTRController extends DailyTimeRecord
 
 	public function timeOut($userId)
 	{
-		if (!$this->dtrModel->hasTimedInToday($userId))
-			return ["error" => "You have not yet clocked in today."];
+		if (!$this->dtrModel->hasTimedInToday($userId)) {
+			$_SESSION["error"] = "You have not yet clocked in today.";
+			return;
+		}
 
-		if ($this->dtrModel->recordTimeOut($userId))
-			return ["success" => "Time-out recorded successfully."];
-
+		if ($this->dtrModel->recordTimeOut($userId)) {
+			$_SESSION["success"] = "Time-out recorded successfully.";
+			return;
+		}
+		
 		$_SESSION["has_timed_out_today"] = $this->dtrModel->hasTimedOutToday($userId);
-
-		return ["error" => "Failed to record time-in."];
+		$_SESSION["error"] = "Failed to record time-out.";
 	}
 
 	public function showUserRecords($userId)
