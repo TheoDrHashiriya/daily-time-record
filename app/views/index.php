@@ -88,7 +88,7 @@
 
 			if ($userRole == "employee"): ?>
 				<div class="card">
-					<h2 class="header">Daily Time Records</h2>
+					<h2 class="header">Newest Records</h2>
 					<?php if (!empty($records)): ?>
 						<div class="record-table">
 							<table>
@@ -102,15 +102,29 @@
 								</thead>
 
 								<tbody>
-									<?php foreach ($records as $row): ?>
+									<?php
+									$limit = 5;
+									$count = 0;
+									foreach ($records as $row): ?>
 										<tr>
 											<td><?= htmlspecialchars($row["record_date"]) ?></td>
 											<td><?= htmlspecialchars($row["user"]) ?></td>
-											<td><?= htmlspecialchars(date("h:i A", strtotime($row["time_in"]))) ?></td>
 											<td>
-												<?= $row["time_out"] ? htmlspecialchars(strtotime($row["time_out"])) : "<em>No time out record.</em>" ?>
+												<?= $row["time_in"] ? htmlspecialchars(
+													date("h:i A", strtotime($row["time_in"]))
+												) : "<em>No time in record.</em>" ?>
+											</td>
+											<td>
+												<?= $row["time_out"] ? htmlspecialchars(
+													date("h:i A", strtotime($row["time_out"]))
+												) : "<em>No time out record.</em>" ?>
 											</td>
 										</tr>
+										<?php
+										$count++;
+										if ($count === $limit)
+											break;
+										?>
 									<?php endforeach; ?>
 								</tbody>
 							</table>
