@@ -72,6 +72,7 @@ class PageController
 
 		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
 		$_SESSION["has_timed_in_today"] = $this->dtrController->hasTimedInToday($_SESSION["user_id"]) ?? false;
+		$_SESSION["has_timed_out_today"] = $this->dtrController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
 
 		return ["success" => true];
 	}
