@@ -16,7 +16,6 @@ $request = preg_replace("/\.php$/", "", $request);
 
 $pageController = new PageController();
 
-var_dump($request);
 echo "Session data:\n<prev>";
 foreach ($_SESSION as $key => $value)
 	echo "| $key = $value \n";
