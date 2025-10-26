@@ -22,7 +22,9 @@ class PageController
 
 	public function homePage()
 	{
-		if ($this->userController->isLoggedIn()) {
+		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
+
+		if ($_SESSION["is_logged_in"]) {
 			$userRole = $_SESSION["role"];
 			$userId = $_SESSION["user_id"];
 
@@ -70,7 +72,7 @@ class PageController
 		$_SESSION["role"] = $userData["role"];
 		$_SESSION["first_name"] = $userData["first_name"];
 
-		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
+		$_SESSION["is_logged_in"] = true;
 		$_SESSION["has_timed_in_today"] = $this->dtrController->hasTimedInToday($_SESSION["user_id"]) ?? false;
 		$_SESSION["has_timed_out_today"] = $this->dtrController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
 
