@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-ini_set("display_errors", 1);
-ini_set("display_startup_errors", 1);
-error_reporting(E_ALL);
-
 require_once __DIR__ . "/controllers/PageController.php";
 
 define("BASE_URL", "/theonary/");
@@ -16,10 +12,33 @@ $request = preg_replace("/\.php$/", "", $request);
 
 $pageController = new PageController();
 
-echo "Session data:\n<prev>";
-foreach ($_SESSION as $key => $value)
-	echo "| $key = $value \n";
-echo "</prev>";
+// ini_set("display_errors", 1);
+// ini_set("display_startup_errors", 1);
+// error_reporting(E_ALL);
+
+// echo "Session data:\n<prev>";
+// foreach ($_SESSION as $key => $value)
+// 	echo "| $key = $value \n";
+// echo "</prev>";
+
+// echo "POST data:\n<prev>";
+// foreach ($_POST as $key => $value)
+// 	echo "| $key = $value \n";
+// echo "</prev>";
+
+// echo password_hash("12345", PASSWORD_DEFAULT);
+
+// echo "GET data:\n<prev>";
+// foreach ($_GET as $key => $value)
+// 	echo "| $key = $value \n";
+// echo "</prev>";
+
+// echo "User data:\n<prev>";
+// foreach ($userData as $key => $value)
+// 	echo "| $key = $value \n";
+// echo "</prev>";
+
+// echo "Request: $request";
 
 switch ($request) {
 	case "":
@@ -31,15 +50,12 @@ switch ($request) {
 
 	// USER
 	case "login":
-		$pageController->loginPage();
+		$pageController->login();
 		break;
 
 	case "logout":
 		$pageController->logout();
 		break;
-
-	case "update":
-		$pageController->updateUserPage();
 
 	case "timein":
 		$pageController->timeIn();
@@ -50,12 +66,33 @@ switch ($request) {
 		break;
 
 	// ADMIN
-	case "create":
-		$pageController->createUserPage();
+	case "register":
+		$pageController->register();
 		break;
 
-	case "register":
-		$pageController->registerPage();
+	case "edit-user":
+		if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]))
+			$pageController->editUser($_POST["id"]);
+		else {
+			http_response_code(405);
+			echo "<p>Invalid request.</p>";
+		}
+		break;
+
+	case "delete-user":
+		if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]))
+			$pageController->deleteUser($_POST["id"]);
+		else
+			http_response_code(405);
+		echo "<p>Invalid request.</p>";
+		break;
+
+	case "delete-record":
+		if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]))
+			$pageController->deleteRecord($_POST["id"]);
+		else
+			http_response_code(405);
+		echo "<p>Invalid request.</p>";
 		break;
 
 	default:
