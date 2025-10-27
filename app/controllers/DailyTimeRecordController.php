@@ -50,4 +50,12 @@ class DTRController extends DailyTimeRecord
 	{
 		return $this->dtrModel->getByUserId($userId);
 	}
+
+	public function delete($id){
+		return $this->dtrModel->delete($id);
+	}
+
+	public function deleteAllFromUser($userId){
+		return $this->dtrModel->deleteAllFromUser($userId);
+	}
 }
