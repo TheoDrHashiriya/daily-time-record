@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const lastSection = localStorage.getItem("lastSection") || "home-section";
 	document.getElementById(lastSection).style.display = "grid";
 
-	document.querySelectorAll(".sidebar a").forEach((link) => {
+	document.querySelectorAll(".sidebar a.nav").forEach((link) => {
 		link.addEventListener("click", function (e) {
 			e.preventDefault();
 
@@ -14,5 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			document.getElementById(targetId).style.display = "grid";
 			localStorage.setItem("lastSection", targetId);
 		});
+	});
+
+	document.querySelector(".sidebar a#logout").addEventListener("click", () => {
+		localStorage.setItem("lastSection", "home-section");
 	});
 });
