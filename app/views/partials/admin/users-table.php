@@ -1,5 +1,9 @@
 <div class="card">
-	<h2 class="header">Users</h2>
+	<div class="top">
+		<h2 class="header">Users</h2>
+		<a href="register">Create New User</a>
+	</div>
+
 	<?php if (!empty($users)): ?>
 		<div class="record-table">
 			<table>
@@ -11,6 +15,7 @@
 						<th>Middle Name</th>
 						<th>Username</th>
 						<th>Role</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 
@@ -25,6 +30,18 @@
 							</td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
 							<td><?= htmlspecialchars($row["role"]) ?></td>
+							<td>
+								<form action="edit-user" method="post" class="action">
+									<input type="hidden" name="id" value="<?= $row["id"] ?>">
+									<button type="submit">Edit</button>
+								</form>
+
+								<form action="delete-user" method="post" class="action">
+									<input type="hidden" name="id" value="<?= $row["id"] ?>">
+									<button class="danger" type="submit"
+										onclick="return confirm('Are you sure you want to delete the user <?= $row['username'] ?>? This will also delete all existing records of them.')">Delete</button>
+								</form>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
