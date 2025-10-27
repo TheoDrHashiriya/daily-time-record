@@ -125,7 +125,15 @@ button,
 button:hover,
 button.login:hover,
 button.register:hover {
-	background-color: var(--tertiary);
+	background-color: color-mix(in srgb, var(--button), white 15%)
+}
+
+button.danger {
+	background-color: var(--error);
+}
+
+button.danger:hover {
+	background-color: color-mix(in srgb, var(--error), white 15%);
 }
 
 a:hover {
@@ -163,8 +171,7 @@ a:hover {
 }
 
 p.error,
-p.error-general,
-span {
+p.error-general {
 	margin-bottom: 20px;
 	text-align: left;
 	color: var(--error);
