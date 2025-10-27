@@ -3,4 +3,4 @@
 		<h4>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h4>
 		<a href="logout" id="logout">Logout</a>
 	</div>
-<?php endif; ?>v
+<?php endif; ?>
