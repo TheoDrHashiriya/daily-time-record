@@ -5,8 +5,9 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Date</th>
+						<th>ID</th>
 						<th>User</th>
+						<th>Date</th>
 						<th>Time In</th>
 						<th>Time Out</th>
 					</tr>
@@ -15,8 +16,9 @@
 				<tbody>
 					<?php foreach ($records as $row): ?>
 						<tr>
-							<td><?= htmlspecialchars($row["record_date"]) ?></td>
+							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
+							<td><?= htmlspecialchars($row["record_date"]) ?></td>
 							<td>
 								<?= $row["time_in"] ? htmlspecialchars(
 									date("h:i A", strtotime($row["time_in"]))
