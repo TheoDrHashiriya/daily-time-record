@@ -38,7 +38,6 @@ string role_name UK
 event_record{
 int id PK
 int user_id FK
-date event_date
 datetime event_time
 int event_type FK "references event_record_type(id)"
 }
