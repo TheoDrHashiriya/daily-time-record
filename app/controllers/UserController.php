@@ -24,7 +24,7 @@ class UserController extends User
 
 	public function isAdmin()
 	{
-		return $this->isLoggedIn() && $_SESSION["role"] === "admin";
+		return $this->isLoggedIn() && $_SESSION["user_role"] === 1;
 	}
 
 	public function requireAdmin()
@@ -50,7 +50,7 @@ class UserController extends User
 
 		$userData = $this->getByUsername($username);
 
-		if (!$userData || !password_verify($password, $userData["password"])) {
+		if (!$userData || !password_verify($password, $userData["hashed_password"])) {
 			// Error messages are vague so that pentesters won't try to
 			// bruteforce usernames until it stops saying "User not found".
 			$errors["general"] = "Incorrect credentials.";

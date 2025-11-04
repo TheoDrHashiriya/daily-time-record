@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . "/../controllers/DailyTimeRecordController.php";
+require_once __DIR__ . "/../controllers/EventRecordController.php";
 require_once __DIR__ . "/../controllers/UserController.php";
 
 class PageController
 {
-	private $dtrController = "";
+	private $erController = "";
 	private $userController = "";
 
 	public function __construct()
 	{
-		$this->dtrController = new DTRController();
+		$this->erController = new ERController();
 		$this->userController = new UserController();
 
 	}
@@ -20,39 +20,37 @@ class PageController
 		exit();
 	}
 
+	public function home()
+	{
+		$records = $this->erController->getAll();
+		require __DIR__ . "/../views/home.php";
+	}
+
 	public function dashboard()
 	{
-		$_SESSION["is_logged_in"] = $this->userController->isLoggedIn();
+		$this->userController->requireLogin();
+		$this->userController->requireAdmin();
 
-		if ($_SESSION["is_logged_in"]) {
-			$userRole = $_SESSION["role"];
-			$userId = $_SESSION["user_id"];
+		$users = [];
+		$users = $this->userController->getAll();
 
-			$users = [];
-			$records = [];
+		$records = [];
+		$records = $this->erController->getAll();
 
-			if ($userRole === "employee")
-				$records = $this->dtrController->getByUserId($userId);
-
-			if ($userRole === "admin" || $userRole === "manager") {
-				$users = $this->userController->getAll();
-				$records = $this->dtrController->getAll();
-			}
-		}
-		require __DIR__ . "/../views/dashboard.php";
+		require __DIR__ . "/../views/admin/dashboard.php";
 	}
 
 	public function timeIn()
 	{
 		$this->userController->requireLogin();
-		$this->dtrController->timeIn($_SESSION["user_id"]);
+		$this->erController->timeIn($_SESSION["user_id"]);
 		$this->redirectToHome();
 	}
 
 	public function timeOut()
 	{
 		$this->userController->requireLogin();
-		$this->dtrController->timeOut($_SESSION["user_id"]);
+		$this->erController->timeOut($_SESSION["user_id"]);
 		$this->redirectToHome();
 	}
 
@@ -81,14 +79,18 @@ class PageController
 
 				$_SESSION["user_id"] = $userData["id"];
 				$_SESSION["username"] = $userData["username"];
-				$_SESSION["role"] = $userData["role"];
+				$_SESSION["user_role"] = $userData["user_role"];
 				$_SESSION["first_name"] = $userData["first_name"];
 				$_SESSION["is_logged_in"] = true;
 
-				$_SESSION["has_timed_in_today"] = $this->dtrController->hasTimedInToday($_SESSION["user_id"]) ?? false;
-				$_SESSION["has_timed_out_today"] = $this->dtrController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
+				$_SESSION["has_timed_in_today"] = $this->erController->hasTimedInToday($_SESSION["user_id"]) ?? false;
+				$_SESSION["has_timed_out_today"] = $this->erController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
 
-				$this->redirectToHome();
+				if ($this->userController->isAdmin())
+					$this->dashboard();
+				else
+					$this->redirectToHome();
+
 				exit();
 			}
 		}
@@ -222,7 +224,7 @@ class PageController
 	{
 		$this->userController->requireLogin();
 		$this->userController->requireAdmin();
-		$this->dtrController->deleteAllFromUser($id);
+		$this->erController->deleteAllFromUser($id);
 		$this->userController->delete($id);
 		$this->redirectToHome();
 		exit();
@@ -234,7 +236,7 @@ class PageController
 	{
 		$this->userController->requireLogin();
 		$this->userController->requireAdmin();
-		$this->dtrController->delete($id);
+		$this->erController->delete($id);
 		$this->redirectToHome();
 		exit();
 	}

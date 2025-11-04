@@ -1,24 +1,24 @@
 <?php
-require_once __DIR__ . "/../models/DailyTimeRecord.php";
+require_once __DIR__ . "/../models/EventRecord.php";
 
-class DTRController extends DailyTimeRecord
+class ERController extends EventRecord
 {
-	private $dtrModel = "";
+	private $erModel = "";
 
 	public function __construct()
 	{
-		$this->dtrModel = new DailyTimeRecord();
+		$this->erModel = new EventRecord();
 	}
 
-	public function timeIn($userId)
+	public function timeIn($user_id)
 	{
-		if ($this->dtrModel->hasTimedInToday($userId)) {
+		if ($this->erModel->hasTimedInToday($user_id)) {
 			$_SESSION["error"] = "You have already clocked in today.";
 			$_SESSION["has_timed_in_today"] = true;
 			return;
 		}
 
-		if ($this->dtrModel->recordTimeIn($userId)) {
+		if ($this->erModel->recordTimeIn($user_id)) {
 			$_SESSION["success"] = "Time-in recorded successfully.";
 			$_SESSION["has_timed_in_today"] = true;
 			return;
@@ -28,15 +28,15 @@ class DTRController extends DailyTimeRecord
 		$_SESSION["has_timed_in_today"] = false;
 	}
 
-	public function timeOut($userId)
+	public function timeOut($user_id)
 	{
-		if (!$this->dtrModel->hasTimedInToday($userId)) {
+		if (!$this->erModel->hasTimedInToday($user_id)) {
 			$_SESSION["error"] = "You have not yet clocked in today.";
 			$_SESSION["has_timed_out_today"] = false;
 			return;
 		}
 
-		if ($this->dtrModel->recordTimeOut($userId)) {
+		if ($this->erModel->recordTimeOut($user_id)) {
 			$_SESSION["success"] = "Time-out recorded successfully.";
 			$_SESSION["has_timed_out_today"] = true;
 			return;
@@ -46,16 +46,16 @@ class DTRController extends DailyTimeRecord
 		$_SESSION["has_timed_out_today"] = false;
 	}
 
-	public function showUserRecords($userId)
+	public function getByUserId($user_id)
 	{
-		return $this->dtrModel->getByUserId($userId);
+		return $this->erModel->getByUserId($user_id);
 	}
 
 	public function delete($id){
-		return $this->dtrModel->delete($id);
+		return $this->erModel->delete($id);
 	}
 
-	public function deleteAllFromUser($userId){
-		return $this->dtrModel->deleteAllFromUser($userId);
+	public function deleteAllFromUser($user_id){
+		return $this->erModel->deleteAllFromUser($user_id);
 	}
 }
