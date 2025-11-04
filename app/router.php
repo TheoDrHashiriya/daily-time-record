@@ -12,9 +12,9 @@ $request = preg_replace("/\.php$/", "", $request);
 
 $pageController = new PageController();
 
-// ini_set("display_errors", 1);
-// ini_set("display_startup_errors", 1);
-// error_reporting(E_ALL);
+ini_set("display_errors", 1);
+ini_set("display_startup_errors", 1);
+error_reporting(E_ALL);
 
 // echo "Session data:\n<prev>";
 // foreach ($_SESSION as $key => $value)
@@ -45,6 +45,10 @@ switch ($request) {
 	case ".";
 	case "/":
 	case "index":
+		$pageController->home();
+		break;
+
+	case "dashboard":
 		$pageController->dashboard();
 		break;
 
@@ -93,6 +97,15 @@ switch ($request) {
 		else
 			http_response_code(405);
 		echo "<p>Invalid request.</p>";
+		break;
+
+	// AJAX & PARTIALS
+	case "ajax/auth-form":
+		include __DIR__ . "/views/partials/home/auth-form.php";
+		break;
+
+	case "ajax/auth-button":
+		include __DIR__ . "/views/partials/home/auth-button.php";
 		break;
 
 	default:
