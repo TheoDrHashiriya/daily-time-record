@@ -1,0 +1,65 @@
+@import url("global.css");
+@import url("form-elements.css");
+
+@media (max-width: 800px) {
+	main {
+		flex-direction: column-reverse;
+	}
+
+	div.left,
+	div.right {
+		width: 100% !important;
+		height: auto;
+	}
+}
+
+body {
+	height: 100vh;
+}
+
+header {}
+
+main {
+	height: 100vh;
+	display: flex;
+	justify-content: space-between;
+
+}
+
+main section {}
+
+div.left,
+div.right {
+	border: 1px solid black;
+}
+
+div.left {
+	height: 100vh;
+	flex: 1;
+}
+
+.table-pane {
+	margin: 0.5rem;
+}
+
+div.right {
+	margin-left: auto;
+	margin-right: 0;
+	width: 400px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.info-pane {
+	margin: 0.5rem;
+}
+
+.authentication-pane {
+	border: 1px solid green;
+	margin: 0.5rem;
+	margin: auto 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
