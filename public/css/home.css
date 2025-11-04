@@ -2,6 +2,10 @@
 @import url("form-elements.css");
 
 @media (max-width: 800px) {
+	body {
+		height: fit-content;
+	}
+
 	main {
 		flex-direction: column-reverse;
 	}
@@ -9,21 +13,26 @@
 	div.left,
 	div.right {
 		width: 100% !important;
-		height: auto;
+		height: auto !important;
+	}
+
+	.form-box {
+		margin: 0;
 	}
 }
 
 body {
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
 header {}
 
 main {
-	height: 100vh;
 	display: flex;
 	justify-content: space-between;
-
+	flex: 1;
 }
 
 main section {}
@@ -34,31 +43,30 @@ div.right {
 }
 
 div.left {
-	height: 100vh;
 	flex: 1;
 }
 
 .table-pane {
 	margin: 0.5rem;
+	border: 1px solid green;
 }
 
 div.right {
 	margin-left: auto;
 	margin-right: 0;
 	width: 400px;
-	height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
 
 .info-pane {
 	margin: 0.5rem;
+	border: 1px solid green;
 }
 
 .authentication-pane {
-	border: 1px solid green;
 	margin: 0.5rem;
-	margin: auto 0;
+	border: 1px solid green;
 	display: flex;
 	justify-content: center;
 	align-items: center;

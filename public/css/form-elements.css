@@ -7,7 +7,6 @@
 	flex-direction: column;
 	width: 100%;
 	max-width: 450px;
-	margin: 2rem 0;
 	padding: 30px;
 	background-color: var(--bg);
 	border-radius: 10px;
