@@ -9,7 +9,7 @@
 						<th>User</th>
 						<th>Type</th>
 						<th>Date</th>
-						<th>Time In</th>
+						<th>Time</th>
 					</tr>
 				</thead>
 
