@@ -25,27 +25,27 @@ string first_name
 string last_name
 string middle_name
 string username UK
-string password
+string hashed_password
 int created_by FK "references user(id)"
-int role FK "references user_role(id)"
+int user_role FK "references user_role(id)"
 }
 
 user_role{
 int id PK
-string name UK
+string role_name UK
 }
 
 event_record{
 int id PK
 int user_id FK
-date record_date
-datetime time
-int type FK "references event_record_type(id)"
+date event_date
+datetime event_time
+int event_type FK "references event_record_type(id)"
 }
 
 event_record_type{
 int id PK
-string name UK
+string type_name UK
 }
 
 user||--o{user:"creates"
