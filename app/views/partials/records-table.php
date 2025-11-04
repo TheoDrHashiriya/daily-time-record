@@ -7,9 +7,9 @@
 					<tr>
 						<th>User ID</th>
 						<th>User</th>
+						<th>Type</th>
 						<th>Date</th>
 						<th>Time In</th>
-						<th>Time Out</th>
 					</tr>
 				</thead>
 
@@ -18,16 +18,12 @@
 						<tr>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars(date("l, M. j, Y", strtotime($row["record_date"]))) ?></td>
+							<td><?= htmlspecialchars($row["event_type"]) ?></td>
+							<td><?= htmlspecialchars(date("l, M. j, Y", strtotime($row["event_date"]))) ?></td>
 							<td>
-								<?= $row["time_in"] ? htmlspecialchars(
-									date("h:i A", strtotime($row["time_in"]))
-								) : "<em>No time in record.</em>" ?>
-							</td>
-							<td>
-								<?= $row["time_out"] ? htmlspecialchars(
-									date("h:i A", strtotime($row["time_out"]))
-								) : "<em>No time out record.</em>" ?>
+								<?= $row["event_time"] ? htmlspecialchars(
+									date("h:i A", strtotime($row["event_time"]))
+								) : "<em>No record.</em>" ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
