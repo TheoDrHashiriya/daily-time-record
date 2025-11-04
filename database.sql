@@ -22,7 +22,7 @@ CREATE TABLE event_record_type(
 );
 CREATE TABLE event_record(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	record_date DATE NOT NULL,
+	event_date DATE NOT NULL,
 	event_time DATETIME NOT NULL,
 	event_type INT NOT NULL,
 	FOREIGN KEY (event_type) REFERENCES event_record_type(id),
