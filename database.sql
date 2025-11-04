@@ -22,7 +22,6 @@ CREATE TABLE event_record_type(
 );
 CREATE TABLE event_record(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	event_date DATE NOT NULL,
 	event_time DATETIME NOT NULL,
 	event_type INT NOT NULL,
 	FOREIGN KEY (event_type) REFERENCES event_record_type(id),
@@ -36,7 +35,7 @@ VALUES (1, 'admin'),
 	(2, 'employee'),
 	(3, 'manager');
 -- Same idea here, to be certain when querying
-INSERT INTO event_record_type(id, type_name)
+INSERT INTO event_record_type (id, type_name)
 VALUES (1, 'time_in'),
 	(2, 'time_out');
 -- Add the default admin account
