@@ -20,34 +20,15 @@
 		<main class="main section" id="home-section">
 			<?php include "partials/welcome-logout-card.php"; ?>
 			<?php include "partials/time-card.php"; ?>
-
-			<?php if (isset($_SESSION["is_logged_in"]) && $_SESSION["is_logged_in"]) {
-				include "partials/records-newest-table.php";
-				if ($userRole === "admin") {
-					// empty for now
-				}
-
-				if ($userRole == "employee")
-					include "partials/time-buttons.php";
-			} ?>
 		</main>
 
-		<?php if (isset($_SESSION["is_logged_in"]) && $_SESSION["is_logged_in"]):
-			if ($userRole === "admin"): ?>
-				<main class="main section" id="users-section">
-					<?php include "partials/admin/users-table.php"; ?>
-				</main>
+		<main class="main section" id="users-section">
+			<?php include "partials/admin/users-table.php"; ?>
+		</main>
 
-				<main class="main section" id="records-section">
-					<?php include "partials/admin/records-table.php"; ?>
-				</main>
-			<?php endif;
-			if ($userRole === "employee"): ?>
-				<main class="main section" id="records-section">
-					<?php include "partials/records-table.php"; ?>
-				</main>
-			<?php endif;
-		endif; ?>
+		<main class="main section" id="records-section">
+			<?php include "partials/admin/records-table.php"; ?>
+		</main>
 	</div>
 </body>
 
