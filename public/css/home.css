@@ -27,7 +27,15 @@ body {
 	flex-direction: column;
 }
 
-header {}
+header {
+	display: flex;
+	padding: 0.5rem;
+}
+
+header .left{
+	display: flex;
+	align-items: center;
+}
 
 main {
 	display: flex;
@@ -37,18 +45,12 @@ main {
 
 main section {}
 
-div.left,
-div.right {
-	border: 1px solid black;
-}
-
 div.left {
 	flex: 1;
 }
 
 .table-pane {
 	margin: 0.5rem;
-	border: 1px solid green;
 }
 
 div.right {
@@ -61,12 +63,10 @@ div.right {
 
 .info-pane {
 	margin: 0.5rem;
-	border: 1px solid green;
 }
 
 .authentication-pane {
 	margin: 0.5rem;
-	border: 1px solid green;
 	display: flex;
 	justify-content: center;
 	align-items: center;

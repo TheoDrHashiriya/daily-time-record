@@ -14,20 +14,23 @@
 
 <body>
 	<header>
-		header
-		<button type="button" id="theme-toggle"></button>
+		<div class="left">
+			<h3>theonary</h3>
+		</div>
+		
+		<div class="right">
+			<button type="button" id="theme-toggle"></button>
+		</div>
 	</header>
 
 	<main>
 		<div class="left">
-			left
 			<section class="table-pane">
 				<?php include "partials/records-table.php" ?>
 			</section>
 		</div>
 
 		<div class="right">
-			right
 			<section class="info-pane">
 				<?php include "partials/time-card.php" ?>
 			</section>
