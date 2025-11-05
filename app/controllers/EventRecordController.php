@@ -13,8 +13,14 @@ class ERController extends EventRecord
 	public function timeIn($user_id)
 	{
 		if ($this->erModel->hasTimedInToday($user_id)) {
-			$_SESSION["error"] = "You have already clocked in today.";
+			$_SESSION["error"] = "You have already clocked in for today.";
 			$_SESSION["has_timed_in_today"] = true;
+			return;
+		}
+
+		if ($this->erModel->hasTimedOutToday($user_id)) {
+			$_SESSION["error"] = "You have already clocked out for today.";
+			$_SESSION["has_timed_out_today"] = true;
 			return;
 		}
 
@@ -31,8 +37,14 @@ class ERController extends EventRecord
 	public function timeOut($user_id)
 	{
 		if (!$this->erModel->hasTimedInToday($user_id)) {
-			$_SESSION["error"] = "You have not yet clocked in today.";
+			$_SESSION["error"] = "You have not yet clocked in for today.";
 			$_SESSION["has_timed_out_today"] = false;
+			return;
+		}
+
+		if ($this->erModel->hasTimedOutToday($user_id)) {
+			$_SESSION["error"] = "You have already clocked out for today.";
+			$_SESSION["has_timed_out_today"] = true;
 			return;
 		}
 
@@ -51,11 +63,13 @@ class ERController extends EventRecord
 		return $this->erModel->getByUserId($user_id);
 	}
 
-	public function delete($id){
+	public function delete($id)
+	{
 		return $this->erModel->delete($id);
 	}
 
-	public function deleteAllFromUser($user_id){
+	public function deleteAllFromUser($user_id)
+	{
 		return $this->erModel->deleteAllFromUser($user_id);
 	}
 }
