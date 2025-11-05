@@ -43,13 +43,15 @@ main {
 	flex: 1;
 }
 
-main section {}
+main section {
+	margin: 0.5rem;
+}
 
 div.left {
 	flex: 1;
 }
 
-.table-pane {
+#table-pane {
 	margin: 0.5rem;
 }
 
@@ -61,12 +63,14 @@ div.right {
 	flex-direction: column;
 }
 
-.info-pane {
-	margin: 0.5rem;
+#time-pane {
 }
 
-.authentication-pane {
-	margin: 0.5rem;
+#info-pane{
+
+}
+
+#authentication-pane {
 	display: flex;
 	justify-content: center;
 	align-items: center;
