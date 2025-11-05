@@ -11,7 +11,6 @@ class PageController
 	{
 		$this->erController = new ERController();
 		$this->userController = new UserController();
-
 	}
 
 	public function redirectToHome()
@@ -23,21 +22,10 @@ class PageController
 	public function home()
 	{
 		$records = $this->erController->getAll();
+		$authData = $this->authenticate();
+		$errors = $authData["errors"] ?? [];
+		$username = $authData["username"] ?? [];
 		require __DIR__ . "/../views/home.php";
-	}
-
-	public function dashboard()
-	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
-
-		$users = [];
-		$users = $this->userController->getAll();
-
-		$records = [];
-		$records = $this->erController->getAll();
-
-		require __DIR__ . "/../views/admin/dashboard.php";
 	}
 
 	public function timeIn()
@@ -54,14 +42,10 @@ class PageController
 		$this->redirectToHome();
 	}
 
-	public function login()
+	public function authenticate()
 	{
-		if ($this->userController->isLoggedIn()) {
-			$this->redirectToHome();
-			exit();
-		}
-
 		$errors = [];
+		$username = "";
 
 		if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$username = trim($_POST["username"]);
@@ -73,29 +57,32 @@ class PageController
 				$errors = $result["errors"];
 			elseif (isset($result["success"])) {
 				$userData = $result["user"];
-
-				if (session_status() === PHP_SESSION_NONE)
-					session_start();
-
 				$_SESSION["user_id"] = $userData["id"];
-				$_SESSION["username"] = $userData["username"];
 				$_SESSION["user_role"] = $userData["user_role"];
+				$_SESSION["username"] = $userData["username"];
 				$_SESSION["first_name"] = $userData["first_name"];
 				$_SESSION["is_logged_in"] = true;
 
 				$_SESSION["has_timed_in_today"] = $this->erController->hasTimedInToday($_SESSION["user_id"]) ?? false;
 				$_SESSION["has_timed_out_today"] = $this->erController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
+				$hasTimedInToday = $_SESSION["has_timed_in_today"];
+				$hasTimedOutToday = $_SESSION["has_timed_out_today"];
 
-				if ($this->userController->isAdmin())
+				if ($this->userController->isAdmin()) {
 					$this->dashboard();
-				else
-					$this->redirectToHome();
+					exit();
+				}
 
+				if (!$hasTimedInToday)
+					$this->timeIn();
+				elseif (!$hasTimedOutToday)
+					$this->timeOut();
+
+				// $this->logout();
 				exit();
 			}
 		}
-
-		require __DIR__ . "/../views/login.php";
+		return ["errors" => $errors, "username" => $username];
 	}
 
 	public function logout()
@@ -105,6 +92,23 @@ class PageController
 		session_destroy();
 		$this->redirectToHome();
 		exit();
+	}
+
+	// ADMIN FUNCTIONS
+
+	public function redirectToDashboard()
+	{
+		header("Location: dashboard");
+		exit();
+	}
+
+	public function dashboard()
+	{
+		$this->userController->requireLogin();
+		$this->userController->requireAdmin();
+		$records = $this->erController->getAll();
+		$users = $this->userController->getAll();
+		require __DIR__ . "/../views/admin/dashboard.php";
 	}
 
 	// USERS
@@ -123,7 +127,7 @@ class PageController
 			$middle_name = trim($_POST["middle_name"] ?? "");
 			$username = trim($_POST["username"]);
 			$password = trim($_POST["password"]);
-			$role = trim($_POST["role"] ?? "");
+			$user_role = trim($_POST["user_role"] ?? "");
 
 			if (!$first_name)
 				$errors["first_name"] = "Please enter your first name.";
@@ -137,8 +141,8 @@ class PageController
 			if (!$password)
 				$errors["password"] = "Please enter your password.";
 
-			if (empty($role))
-				$errors["role"] = "Please enter your role.";
+			if (empty($user_role))
+				$errors["user_role"] = "Please enter your role.";
 
 			if (empty($errors)) {
 				$result = $this->userController->register(
@@ -147,11 +151,11 @@ class PageController
 					$middle_name,
 					$username,
 					$password,
-					$role
+					$user_role
 				);
 
 				if (isset($result["success"])) {
-					$this->redirectToHome();
+					$this->redirectToDashboard();
 					exit();
 				} else {
 					$errors["general"] = $result["error"];
@@ -183,7 +187,7 @@ class PageController
 			$middle_name = isset($_POST["middle_name"]) ? trim($_POST["middle_name"] ?? $user["middle_name"]) : "";
 			$username = trim($_POST["username"] ?? $user["username"]);
 			$password = trim($_POST["password"] ?? $user["password"]);
-			$role = trim($_POST["role"] ?? $user["role"]);
+			$user_role = trim($_POST["user_role"] ?? $user["user_role"]);
 
 			if (!$first_name)
 				$errors["first_name"] = "Please enter your first name.";
@@ -197,8 +201,8 @@ class PageController
 			if (!$password)
 				$errors["password"] = "Please enter your password.";
 
-			if (empty($role))
-				$errors["role"] = "Please enter your role.";
+			if (empty($user_role))
+				$errors["user_role"] = "Please enter your role.";
 
 			$result = $this->userController->update(
 				$id,
@@ -207,7 +211,7 @@ class PageController
 				$middle_name,
 				$username,
 				$password,
-				$role
+				$user_role
 			);
 
 			// if (isset($result["success"])) {
@@ -226,7 +230,7 @@ class PageController
 		$this->userController->requireAdmin();
 		$this->erController->deleteAllFromUser($id);
 		$this->userController->delete($id);
-		$this->redirectToHome();
+		$this->redirectToDashboard();
 		exit();
 	}
 
@@ -237,7 +241,7 @@ class PageController
 		$this->userController->requireLogin();
 		$this->userController->requireAdmin();
 		$this->erController->delete($id);
-		$this->redirectToHome();
+		$this->redirectToDashboard();
 		exit();
 	}
 }
