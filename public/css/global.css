@@ -19,7 +19,9 @@
 	--tertiary: #00aa00;
 	--highlight: rgba(255, 255, 0, 0.25);
 	--error: red;
-	--table: #b8b8b8;
+	--table-header: #ece5e5;
+	--table-border: #d1c7c7;
+	--table-even: #e9e0e0;
 }
 
 [data-theme="dark"] {
@@ -40,7 +42,9 @@
 	--button: #0000ad;
 	--tertiary: #44cc44;
 	--error: rgb(255, 83, 83);
-	--table: #5e5e5e;
+	--table-header: #202020;
+	--table-border: #5e5e5e;
+	--table-even: #272727;
 }
 
 body {
@@ -84,13 +88,18 @@ body.loaded * {
 
 table {
 	min-width: 100%;
-	border: 1px solid var(--table);
+	border: 1px solid var(--table-border);
 	border-spacing: 0;
 	border-radius: 10px;
 	border-collapse: separate;
 	text-align: center;
 	overflow: hidden;
 	font-size: 0.9rem;
+	table-layout: auto;
+}
+
+tr:nth-child(even) {
+	background: var(--table-even);
 }
 
 th,
@@ -101,7 +110,7 @@ td {
 
 th {
 	font-weight: 500;
-	background-color: var(--border);
+	background-color: var(--table-header);
 	color: var(--header-text);
 }
 
@@ -122,6 +131,7 @@ button,
 	font-weight: 500;
 	color: #fff;
 	cursor: pointer;
+	font-size: 0.9rem;
 }
 
 button:hover,
