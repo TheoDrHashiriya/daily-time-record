@@ -26,10 +26,10 @@ button#theme-toggle {
 	margin-left: auto;
 }
 
-h1 {
+h1,
+h2 {
 	font-weight: bolder;
-	font-size: 34px;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	text-align: center;
 }
 
@@ -68,5 +68,5 @@ button {
 .login,
 .register {
 	width: 100%;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
