@@ -1,1 +1,0 @@
-<button id="auth-button">Authenticate</button>
