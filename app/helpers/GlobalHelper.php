@@ -18,6 +18,6 @@ class GlobalHelper
 
 	public static function formatEventType($type_name)
 	{
-		return ucwords(str_replace("time_", '', $type_name));
+		return strtoupper(str_replace("time_", '', $type_name));
 	}
 }
