@@ -2,7 +2,6 @@
 A simple time recording system with CRUD functionality, built on the MVC design.
 ## Main Features
 - Role-based access control
-- Multi-punch recording
 - Responsive dashboard layout
 - Dark Mode with smooth transitioning (TBI)
 ## Technical Stuff
