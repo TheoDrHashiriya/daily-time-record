@@ -14,20 +14,20 @@
 
 <body>
 	<div class="dashboard-container">
-		<?php include "partials/header.php"; ?>
-		<?php include "partials/sidebar.php"; ?>
+		<?php include __DIR__ . "/../partials/admin/header.php"; ?>
+		<?php include __DIR__ . "/../partials/admin/sidebar.php"; ?>
 
 		<main class="main section" id="home-section">
-			<?php include "partials/welcome-logout-card.php"; ?>
-			<?php include "partials/time-card.php"; ?>
+			<?php include __DIR__ . "/../partials/admin/welcome-logout-card.php"; ?>
+			<?php include __DIR__ . "/../partials/time-card.php"; ?>
 		</main>
 
 		<main class="main section" id="users-section">
-			<?php include "partials/admin/users-table.php"; ?>
+			<?php include __DIR__ . "/../partials/admin/users-table.php"; ?>
 		</main>
 
 		<main class="main section" id="records-section">
-			<?php include "partials/admin/records-table.php"; ?>
+			<?php include __DIR__ . "/../partials/admin/records-table.php"; ?>
 		</main>
 	</div>
 </body>
