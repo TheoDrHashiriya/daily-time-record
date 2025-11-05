@@ -15,4 +15,9 @@ class GlobalHelper
 	{
 		return date("h:i A", strtotime($time));
 	}
+
+	public static function formatEventType($type_name)
+	{
+		return ucwords(str_replace("time_", '', $type_name));
+	}
 }

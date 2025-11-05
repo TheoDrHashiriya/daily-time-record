@@ -19,7 +19,7 @@
 						<tr>
 							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatText($row["type_name"])) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
 							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
 							<td>
 								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
