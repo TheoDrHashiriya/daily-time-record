@@ -39,20 +39,20 @@
 					name="username" id="username">
 				<p class="error"><?= $errors["username"] ?? "" ?></p>
 
-				<label for="role">Role</label>
-				<select name="role" id="role">
+				<label for="user_role">Role</label>
+				<select name="user_role" id="user_role">
 					<option value="">---SELECT---</option>
-					<option value="admin" <?= (isset($_POST["role"]) && $_POST["role"] === "admin") ? "selected" : "" ?>>
+					<option value="1" <?= (isset($_POST["user_role"]) && $_POST["user_role"] === "1") ? "selected" : "" ?>>
 						Admin
 					</option>
-					<option value="employee" <?= (isset($_POST["role"]) && $_POST["role"] === "employee") ? "selected" : "" ?>>
+					<option value="2" <?= (isset($_POST["user_role"]) && $_POST["user_role"] === "2") ? "selected" : "" ?>>
 						Employee
 					</option>
-					<option value="manager" <?= (isset($_POST["role"]) && $_POST["role"] === "manager") ? "selected" : "" ?>>
+					<option value="3" <?= (isset($_POST["user_role"]) && $_POST["user_role"] === "3") ? "selected" : "" ?>>
 						Manager
 					</option>
 				</select>
-				<p class="error"><?= $errors["role"] ?? "" ?></p>
+				<p class="error"><?= $errors["user_role"] ?? "" ?></p>
 
 				<label for="title">Password</label>
 				<input placeholder="12345" type="password" name="password" id="password">
