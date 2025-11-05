@@ -1,5 +1,5 @@
 <div class="form-box" id="login-form">
-	<h1 class="title">Authenticate</h1>
+	<h2 class="title">Authenticate</h2>
 	<form action="" method="post">
 		<label for="username">Username</label>
 		<input value="<?= htmlspecialchars($username ?? "") ?>" placeholder="Username" type="text" name="username"
