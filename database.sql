@@ -41,7 +41,6 @@ VALUES (1, 'time_in'),
 -- Add the default admin account
 INSERT INTO user (
 		first_name,
-		last_name,
 		middle_name,
 		username,
 		hashed_password,
@@ -49,8 +48,7 @@ INSERT INTO user (
 	)
 VALUES (
 		'John',
-		'Amery',
-		'Smith',
+		'Administrator',
 		'admin',
 		'$2y$10$Q87R8xF.vM/Y6XhI/NYxVeDdVgA21h12LAj2fwmZQ4d6MHc7NVkkO',
 		1
