@@ -32,20 +32,18 @@ class PageController
 	{
 		$this->userController->requireLogin();
 		$this->erController->timeIn($_SESSION["user_id"]);
-		$this->redirectToHome();
 	}
 
 	public function timeOut()
 	{
 		$this->userController->requireLogin();
 		$this->erController->timeOut($_SESSION["user_id"]);
-		$this->redirectToHome();
 	}
 
 	public function authenticate()
 	{
 		$errors = [];
-		$username = "";
+		$username = '';
 
 		if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$username = trim($_POST["username"]);
@@ -75,11 +73,12 @@ class PageController
 
 				if (!$hasTimedInToday)
 					$this->timeIn();
-				elseif (!$hasTimedOutToday)
+				else
 					$this->timeOut();
 
+				$this->redirectToHome();
+
 				// $this->logout();
-				exit();
 			}
 		}
 		return ["errors" => $errors, "username" => $username];
