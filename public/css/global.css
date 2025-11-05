@@ -109,7 +109,7 @@ td {
 }
 
 th {
-	font-weight: 500;
+	font-weight: 600;
 	background-color: var(--table-header);
 	color: var(--header-text);
 }
