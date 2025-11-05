@@ -1,20 +1,22 @@
 <?php
 session_start();
 
+require_once __DIR__ . "/helpers/GlobalHelper.php";
 require_once __DIR__ . "/controllers/PageController.php";
+
+$pageController = new PageController();
 
 define("BASE_URL", "/theonary/");
 
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
-
 // Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
-
-$pageController = new PageController();
 
 ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
+
+// echo password_hash("12345", PASSWORD_DEFAULT);
 
 // echo "Session data:\n<prev>";
 // foreach ($_SESSION as $key => $value)
@@ -25,8 +27,6 @@ error_reporting(E_ALL);
 // foreach ($_POST as $key => $value)
 // 	echo "| $key = $value \n";
 // echo "</prev>";
-
-// echo password_hash("12345", PASSWORD_DEFAULT);
 
 // echo "GET data:\n<prev>";
 // foreach ($_GET as $key => $value)
@@ -48,13 +48,9 @@ switch ($request) {
 		$pageController->home();
 		break;
 
-	case "dashboard":
-		$pageController->dashboard();
-		break;
-
 	// USER
-	case "login":
-		$pageController->login();
+	case "authenticate":
+		$pageController->authenticate();
 		break;
 
 	case "logout":
@@ -70,6 +66,10 @@ switch ($request) {
 		break;
 
 	// ADMIN
+	case "dashboard":
+		$pageController->dashboard();
+		break;
+
 	case "register":
 		$pageController->register();
 		break;
