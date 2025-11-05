@@ -9,10 +9,10 @@
 			<table>
 				<thead>
 					<tr>
-						<th>ID No.</th>
-						<th>Last Name</th>
+						<th>ID</th>
 						<th>First Name</th>
 						<th>Middle Name</th>
+						<th>Last Name</th>
 						<th>Username</th>
 						<th>Role</th>
 						<th>Actions</th>
@@ -23,13 +23,13 @@
 					<?php foreach ($users as $row): ?>
 						<tr>
 							<td><?= htmlspecialchars($row["id"]) ?></td>
-							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["first_name"]) ?></td>
 							<td>
 								<?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?>
 							</td>
+							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
-							<td><?= htmlspecialchars($row["role"]) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatText($row["role_name"])) ?></td>
 							<td>
 								<form action="edit-user" method="post" class="action">
 									<input type="hidden" name="id" value="<?= $row["id"] ?>">

@@ -18,12 +18,10 @@
 						<tr>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars($row["event_type"]) ?></td>
-							<td><?= htmlspecialchars(date("l, M. j, Y", strtotime($row["event_date"]))) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatText($row["type_name"])) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
 							<td>
-								<?= $row["event_time"] ? htmlspecialchars(
-									date("h:i A", strtotime($row["event_time"]))
-								) : "<em>No record.</em>" ?>
+								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

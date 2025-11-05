@@ -5,11 +5,11 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Date</th>
+						<th>ID</th>
 						<th>User</th>
-						<th>Username</th>
-						<th>Time In</th>
-						<th>Time Out</th>
+						<th>Type</th>
+						<th>Date</th>
+						<th>Time</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -17,18 +17,12 @@
 				<tbody>
 					<?php foreach ($records as $row): ?>
 						<tr>
-							<td><?= htmlspecialchars($row["record_date"]) ?></td>
+							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars($row["username"]) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatText($row["type_name"])) ?></td>
+							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
 							<td>
-								<?= $row["time_in"] ? htmlspecialchars(
-									date("h:i A", strtotime($row["time_in"]))
-								) : "<em>No time in record.</em>" ?>
-							</td>
-							<td>
-								<?= $row["time_out"] ? htmlspecialchars(
-									date("h:i A", strtotime($row["time_out"]))
-								) : "<em>No time out record.</em>" ?>
+								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
 							</td>
 							<td>
 								<form action="edit-record" method="post" class="action">
