@@ -2,10 +2,9 @@
 require_once "Database.php";
 class User extends Database
 {
-	private $table = "user";
 	protected function getById($id)
 	{
-		$sql = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1;";
+		$sql = "SELECT * FROM user WHERE id = :id LIMIT 1;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
@@ -14,7 +13,7 @@ class User extends Database
 
 	public function getByUsername($username)
 	{
-		$sql = "SELECT * FROM {$this->table} WHERE username = :username LIMIT 1;";
+		$sql = "SELECT * FROM user WHERE username = :username LIMIT 1;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":username", $username);
 		$query->execute();
@@ -23,7 +22,13 @@ class User extends Database
 
 	public function getAll()
 	{
-		$sql = "SELECT * FROM {$this->table} ORDER BY id;";
+		$sql = "
+			SELECT
+				u.*, ur.role_name
+			FROM
+				user u
+				JOIN user_role ur ON u.user_role = ur.id
+			ORDER BY u.id;";
 		$query = $this->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -36,7 +41,7 @@ class User extends Database
 
 	public function create($first_name, $last_name, $middle_name, $username, $hashed_password, $user_role)
 	{
-		$sql = "INSERT INTO {$this->table} (first_name, last_name, middle_name, username, hashed_password, user_role)
+		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, hashed_password, user_role)
 				  VALUES (:first_name, :last_name, :middle_name, :username, :hashed_password, :user_role);";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":first_name", $first_name);
@@ -50,7 +55,7 @@ class User extends Database
 
 	public function update($id, $first_name, $last_name, $middle_name, $username, $hashed_password, $user_role)
 	{
-		$sql = "UPDATE {$this->table}
+		$sql = "UPDATE user
 				  SET first_name = :first_name, last_name = :last_name, middle_name = :middle_name,
 				  username = :username, hashed_password = :hashed_password, user_role = :user_role
 				  WHERE id = :id;";
@@ -67,7 +72,7 @@ class User extends Database
 
 	public function updateRealName($id, $first_name, $last_name, $middle_name = NULL)
 	{
-		$sql = "UPDATE {$this->table}
+		$sql = "UPDATE user
 				  SET first_name = :first_name, last_name = :last_name, middle_name = :middle_name
 				  WHERE id = :id;";
 		$query = $this->connect()->prepare($sql);
@@ -80,7 +85,7 @@ class User extends Database
 
 	public function updateUsername($id, $username)
 	{
-		$sql = "UPDATE {$this->table}
+		$sql = "UPDATE user
 				  SET username = :username WHERE id = :id;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
@@ -90,7 +95,7 @@ class User extends Database
 
 	public function updatePassword($id, $hashed_password)
 	{
-		$sql = "UPDATE {$this->table}
+		$sql = "UPDATE user
 				  SET hashed_password = :hashed_password WHERE id = :id;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
@@ -100,7 +105,7 @@ class User extends Database
 
 	public function delete($id)
 	{
-		$sql = "DELETE FROM {$this->table} WHERE id = :id;";
+		$sql = "DELETE FROM user WHERE id = :id;";
 		$query = $this->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		return $query->execute();
