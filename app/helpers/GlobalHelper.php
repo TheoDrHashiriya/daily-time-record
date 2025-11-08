@@ -8,7 +8,7 @@ class GlobalHelper
 
 	public static function formatDate($date)
 	{
-		return date("l, M. j, Y", strtotime($date));
+		return date("D, M j, Y", strtotime($date));
 	}
 
 	public static function formatTime($time)
