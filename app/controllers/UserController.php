@@ -2,12 +2,22 @@
 require_once __DIR__ . "/../models/User.php";
 class UserController extends User
 {
-	private $userModel = "";
+	private $userModel;
 
 	public function __construct()
 	{
 		$this->userModel = new User();
 	}
+
+	// FOR KPIS
+
+	public function getTotal()
+	{
+		$users = $this->userModel->getAll();
+		return count($users);
+	}
+
+	// MAIN
 
 	public function isLoggedIn()
 	{
