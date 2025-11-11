@@ -1,13 +1,13 @@
 <div class="card">
-	<h2 class="header">Daily Time Records</h2>
+	<h1 class="header">Daily Time Records</h1>
 	<?php if (!empty($records)): ?>
-		<div class="record-table">
+		<div class="table-container">
 			<table>
 				<thead>
 					<tr>
-						<th>User ID</th>
-						<th>User</th>
-						<th>Type</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>IN/OUT</th>
 						<th>Date</th>
 						<th>Time</th>
 					</tr>
@@ -18,7 +18,7 @@
 						<tr>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
+							<td class="type"><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
 							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
 							<td>
 								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>

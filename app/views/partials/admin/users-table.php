@@ -1,11 +1,15 @@
 <div class="card">
 	<div class="top">
 		<h2 class="header">Users</h2>
-		<a href="register">Create New User</a>
+		<div class="right">
+			<a href="register">Create New User</a>
+			|
+			<a href="all-users" target="_blank">Print to PDF</a>
+		</div>
 	</div>
 
 	<?php if (!empty($users)): ?>
-		<div class="record-table">
+		<div class="table-container">
 			<table>
 				<thead>
 					<tr>

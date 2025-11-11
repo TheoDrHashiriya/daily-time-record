@@ -1,7 +1,10 @@
 <div class="card">
-	<h2 class="header">Daily Time Records</h2>
+	<div class="top">
+		<h2 class="header">Daily Time Records</h2>
+		<a href="all-events" target="_blank">Print to PDF</a>
+	</div>
 	<?php if (!empty($records)): ?>
-		<div class="record-table">
+		<div class="table-container">
 			<table>
 				<thead>
 					<tr>
@@ -17,9 +20,9 @@
 				<tbody>
 					<?php foreach ($records as $row): ?>
 						<tr>
-							<td><?= htmlspecialchars($row["id"]) ?></td>
+							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
+							<td class="type"><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
 							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
 							<td>
 								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
