@@ -2,6 +2,7 @@
 session_start();
 
 require_once __DIR__ . "/helpers/GlobalHelper.php";
+require_once __DIR__ . "/helpers/PdfHelper.php";
 require_once __DIR__ . "/controllers/PageController.php";
 
 $pageController = new PageController();
@@ -97,6 +98,15 @@ switch ($request) {
 		else
 			http_response_code(405);
 		echo "<p>Invalid request.</p>";
+		break;
+
+	// PDF HANDLING
+	case "all-events":
+		$pageController->previewAllEventsPdf();
+		break;
+
+	case "all-users":
+		$pageController->previewAllUsersPdf();
 		break;
 
 	// AJAX & PARTIALS
