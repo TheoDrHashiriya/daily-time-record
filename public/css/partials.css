@@ -1,0 +1,15 @@
+/* TIME CARD */
+
+#time {
+	text-align: center;
+}
+
+#time-text {
+	margin-bottom: 0;
+}
+
+/* RECORD TABLE */
+
+.table-container .type {
+	font-weight: bold;
+}

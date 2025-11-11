@@ -1,74 +1,5 @@
-/* THEMES */
-
-:root {
-	/* INDEX PAGE */
-	--header: ;
-	--sidebar: #1c1f23;
-	--sidebar-link: #35bcfffd;
-	--main: ;
-	--card: #fafafa;
-
-	/* OTHERS */
-	--bg: #fafafa;
-	--bg-gradient: linear-gradient(to right, #c0c0c0, #eeeeee);
-	--border: #c0c0c0;
-	--text: #202020;
-	--header-text: #000000;
-	--secondary: #0000aa;
-	--button: #0000aa;
-	--tertiary: #00aa00;
-	--highlight: rgba(255, 255, 0, 0.25);
-	--error: red;
-	--table-header: #ece5e5;
-	--table-border: #d1c7c7;
-	--table-even: #e9e0e0;
-}
-
-[data-theme="dark"] {
-	/* INDEX PAGE */
-	--header: ;
-	--sidebar: rgb(10, 11, 12);
-	--sidebar-link: #00aaff;
-	--main: ;
-	--card: #383131;
-
-	/* OTHERS */
-	--bg: #000000;
-	--bg-gradient: linear-gradient(to right, #0c0c0c, #272727);
-	--border: #2a2a2a;
-	--text: #dddddd;
-	--header-text: #ffffff;
-	--secondary: #00aaff;
-	--button: #0000ad;
-	--tertiary: #44cc44;
-	--error: rgb(255, 83, 83);
-	--table-header: #202020;
-	--table-border: #5e5e5e;
-	--table-even: #272727;
-}
-
-body {
-	background: var(--bg-gradient);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-	color: var(--header-text);
-}
-
-p,
-label {
-	color: var(--text);
-}
-
-a {
-	color: var(--secondary);
-}
-
-/* OTHERS */
+@import url("partials.css");
+@import url("themes.css");
 
 @import url("https://fonts.googleapis.com/css?family=Inter");
 
@@ -86,16 +17,21 @@ body.loaded * {
 
 /* TABLES */
 
+.table-container {
+	overflow-x: auto;
+	max-width: 100%;
+	height: 450px;
+}
+
 table {
-	min-width: 100%;
+	width: 100%;
 	border: 1px solid var(--table-border);
 	border-spacing: 0;
 	border-radius: 10px;
 	border-collapse: separate;
 	text-align: center;
-	overflow: hidden;
 	font-size: 0.9rem;
-	table-layout: auto;
+	overflow: hidden;
 }
 
 tr:nth-child(even) {
@@ -106,6 +42,7 @@ th,
 td {
 	text-align: left;
 	padding: 10px;
+	white-space: nowrap;
 }
 
 th {
