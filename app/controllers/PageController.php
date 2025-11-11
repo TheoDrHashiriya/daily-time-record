@@ -4,14 +4,52 @@ require_once __DIR__ . "/../controllers/UserController.php";
 
 class PageController
 {
-	private $erController = "";
-	private $userController = "";
+	private $erController;
+	private $userController;
 
 	public function __construct()
 	{
 		$this->erController = new ERController();
 		$this->userController = new UserController();
 	}
+
+	// PDF HANDLING
+
+	public function previewAllEventsPdf()
+	{
+		$this->userController->requireLogin();
+		$this->userController->requireAdmin();
+
+		$records = $this->erController->getAll();
+
+		ob_start();
+		require __DIR__ . "/../views/partials/pdf-styles.php";
+		require __DIR__ . "/../views/partials/records-table.php";
+		$html = ob_get_clean();
+
+		$dompdf = PdfHelper::generatePdfString($html);
+		$dompdf->stream("all-events.pdf", ["Attachment" => false]);
+		exit();
+	}
+
+	public function previewAllUsersPdf()
+	{
+		$this->userController->requireLogin();
+		$this->userController->requireAdmin();
+
+		$users = $this->userController->getAll();
+
+		ob_start();
+		require __DIR__ . "/../views/partials/pdf-styles.php";
+		require __DIR__ . "/../views/partials/users-table.php";
+		$html = ob_get_clean();
+
+		$dompdf = PdfHelper::generatePdfString($html);
+		$dompdf->stream("all-users.pdf", ["Attachment" => false]);
+		exit();
+	}
+
+	// MAIN
 
 	public function redirectToHome()
 	{
@@ -107,7 +145,18 @@ class PageController
 		$this->userController->requireAdmin();
 		$records = $this->erController->getAll();
 		$users = $this->userController->getAll();
+		$kpiData = $this->getKpiData();
 		require __DIR__ . "/../views/admin/dashboard.php";
+	}
+
+	public function getKpiData()
+	{
+		$kpiData["events_total"] = $this->erController->getTotal();
+		$kpiData["events_unclosed"] = $this->erController->getTotalUnclosed();
+
+		$kpiData["users_total"] = $this->userController->getTotal();
+
+		return $kpiData;
 	}
 
 	// USERS
