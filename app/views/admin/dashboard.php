@@ -5,8 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/index.css">
-	<script src="<?= BASE_URL ?>public/js/theme.js" defer></script>
+	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/dashboard.css">
+	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
 	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/page-toggle.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/sidebar-toggle.js" defer></script>
@@ -20,6 +20,23 @@
 		<main class="main section" id="home-section">
 			<?php include __DIR__ . "/../partials/admin/welcome-logout-card.php"; ?>
 			<?php include __DIR__ . "/../partials/time-card.php"; ?>
+
+			<div class="row">
+				<div class="card">
+					<h2>Total Events</h2>
+					<h3><?= $kpiData["events_total"] ?></h3>
+				</div>
+
+				<div class="card">
+					<h2>Total Users</h2>
+					<h3><?= $kpiData["users_total"] ?></h3>
+				</div>
+
+				<div class="card">
+					<h2>Unclosed Records</h2>
+					<h3><?= $kpiData["events_unclosed"] ?></h3>
+				</div>
+			</div>
 		</main>
 
 		<main class="main section" id="users-section">
