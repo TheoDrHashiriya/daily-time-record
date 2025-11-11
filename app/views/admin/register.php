@@ -13,7 +13,7 @@
 	<div class="container">
 		<div class="form-box" id="register-form">
 			<div class="container" id="top">
-				<a href=".">Home</a>
+				<a href="dashboard">Back</a>
 				<button id="theme-toggle"></button>
 			</div>
 
