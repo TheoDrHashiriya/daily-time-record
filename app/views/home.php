@@ -5,9 +5,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Daily Time Record | Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/index.css">
+	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/dashboard.css">
 	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/home.css">
-	<script src="<?= BASE_URL ?>public/js/theme.js" defer></script>
+	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
 	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/home/auth-form-info-pane.js" defer></script>
 </head>
@@ -41,7 +41,6 @@
 						<?php
 						if (!isset($_SESSION["error"]))
 							echo $_SESSION["success"] ?? "";
-
 						echo $_SESSION["error"] ?? "";
 						?>
 					</h4>
