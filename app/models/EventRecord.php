@@ -2,6 +2,8 @@
 require_once "Database.php";
 class EventRecord extends Database
 {
+	// MAIN
+
 	public function hasTimedInToday($user_id)
 	{
 		$sql = "SELECT *
@@ -28,6 +30,25 @@ class EventRecord extends Database
 		$query->bindParam(":user_id", $user_id);
 		$query->execute();
 		return $query->fetch() !== false;
+	}
+
+	public function getTotalUnclosed()
+	{
+		$sql = "
+			SELECT COUNT(*) AS total_unclosed
+			FROM event_record er
+			WHERE er.event_type = 1
+				AND NOT EXISTS (
+					SELECT 1
+					FROM event_record er2
+					wHERE er2.user_id = er.user_id
+						AND er2.event_type = 2
+						AND er2.event_time > er.event_time
+				);
+			";
+		$query = $this->connect()->prepare($sql);
+		$query->execute();
+		return $query->fetchColumn();
 	}
 
 	public function getAll()
