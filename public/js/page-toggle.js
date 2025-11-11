@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const lastSection = localStorage.getItem("lastSection") || "home-section";
-	document.getElementById(lastSection).style.display = "grid";
+	document.getElementById(lastSection).style.display = "flex";
 
 	document.querySelectorAll(".sidebar a.nav").forEach((link) => {
 		link.addEventListener("click", function (e) {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				.forEach((section) => (section.style.display = "none"));
 
 			const targetId = link.dataset.target;
-			document.getElementById(targetId).style.display = "grid";
+			document.getElementById(targetId).style.display = "flex";
 			localStorage.setItem("lastSection", targetId);
 		});
 	});
