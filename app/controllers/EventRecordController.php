@@ -3,12 +3,27 @@ require_once __DIR__ . "/../models/EventRecord.php";
 
 class ERController extends EventRecord
 {
-	private $erModel = "";
+	private $erModel;
 
 	public function __construct()
 	{
 		$this->erModel = new EventRecord();
 	}
+
+	// FOR KPIS
+
+	public function getTotal()
+	{
+		$records = $this->erModel->getAll();
+		return count($records);
+	}
+
+	public function getTotalUnclosed()
+	{
+		return $this->erModel->getTotalUnclosed(); 
+	}
+
+	// MAIN
 
 	public function timeIn($user_id)
 	{
@@ -56,6 +71,11 @@ class ERController extends EventRecord
 
 		$_SESSION["error"] = "Failed to record time-out.";
 		$_SESSION["has_timed_out_today"] = false;
+	}
+
+	public function getAll()
+	{
+		return $this->erModel->getAll();
 	}
 
 	public function getByUserId($user_id)
