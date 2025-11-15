@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . "/../libraries/dompdf/autoload.inc.php";
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
