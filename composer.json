@@ -1,0 +1,6 @@
+{
+    "require": {
+        "koolreport/core": "^6.6",
+        "dompdf/dompdf": "^3.1"
+    }
+}
