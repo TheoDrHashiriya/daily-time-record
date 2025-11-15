@@ -1,8 +1,13 @@
 <?php
+ini_set("display_errors", 1);
+ini_set("display_startup_errors", 1);
+error_reporting(E_ALL);
+
 session_start();
 
-require_once __DIR__ . "/helpers/GlobalHelper.php";
+require_once __DIR__ . "./../vendor/autoload.php";
 require_once __DIR__ . "/helpers/PdfHelper.php";
+require_once __DIR__ . "/helpers/GlobalHelper.php";
 require_once __DIR__ . "/controllers/PageController.php";
 
 $pageController = new PageController();
@@ -12,10 +17,6 @@ define("BASE_URL", "/theonary/");
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 // Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
-
-ini_set("display_errors", 1);
-ini_set("display_startup_errors", 1);
-error_reporting(E_ALL);
 
 // echo password_hash("12345", PASSWORD_DEFAULT);
 
