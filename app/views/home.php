@@ -9,6 +9,8 @@
 	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
 	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/home/auth-form-info-pane.js" defer></script>
+
+	<link rel="stylesheet" href="<?= BASE_URL ?>vendor/fortawesome/font-awesome/css/all.min.css" />
 </head>
 
 <body>
@@ -18,8 +20,7 @@
 		</div>
 
 		<div class="right">
-			<button type="button" id="theme-toggle"></button>
-		</div>
+			<div id="theme-toggle"></div>
 	</header>
 
 	<main>
