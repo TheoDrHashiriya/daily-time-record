@@ -9,6 +9,13 @@
 		<?php if (!isset($_SESSION["is_logged_in"]) || !$_SESSION["is_logged_in"]): ?>
 			<a class="login" href="login">Login</a>
 		<?php endif; ?>
-		<button type="button" id="theme-toggle"></button>
+
+		<div class="notification-wrapper" onclick="toggleNotification()">
+			<i id="notif-icon" class="fa-solid fa-bell"></i>
+			<span class="badge" id="notif-badge"></span>
+			<span class="notif-popup">Time In!</span>
+		</div>
+
+		<div id="theme-toggle"></div>
 	</div>
 </header>
