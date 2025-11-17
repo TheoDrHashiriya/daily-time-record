@@ -18,6 +18,17 @@ A simple time recording system with CRUD functionality, built on the MVC design.
 ### Simple Entity-Relationship Diagram
 ```mermaid
 erDiagram
+department{
+int id PK
+string department_name
+datetime created_at
+}
+
+user_role{
+int id PK
+string role_name UK
+}
+
 user{
 int id PK
 string first_name
@@ -25,13 +36,23 @@ string last_name
 string middle_name
 string username UK
 string hashed_password
+datetime created_at
 int created_by FK "references user(id)"
 int user_role FK "references user_role(id)"
+int department FK "references department(id)"
 }
 
-user_role{
+notification{
 int id PK
-string role_name UK
+string title
+string content
+boolean has_been_read
+datetime created_at
+}
+
+event_record_type{
+int id PK
+string type_name UK
 }
 
 event_record{
@@ -41,14 +62,10 @@ datetime event_time
 int event_type FK "references event_record_type(id)"
 }
 
-event_record_type{
-int id PK
-string type_name UK
-}
-
 user||--o{user:"creates"
 user_role||--o{user:"has"
-
+user}|--||department:"is in"
+user}|--o|notification:"creates"
 user||--o{event_record:"logs"
 event_record_type||--o{event_record:"has"
 ```
