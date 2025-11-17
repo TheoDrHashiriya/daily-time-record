@@ -7,6 +7,6 @@ window.addEventListener("DOMContentLoaded", () => {
 		setTimeout(() => {
 			infoPane.style.display = "none";
 			window.location.href = "logout";
-		 }, 5000);
+		}, 5000);
 	}
 });
