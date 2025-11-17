@@ -1,6 +1,7 @@
 {
     "require": {
         "koolreport/core": "^6.6",
-        "dompdf/dompdf": "^3.1"
+        "dompdf/dompdf": "^3.1",
+        "fortawesome/font-awesome": "^7.1"
     }
 }
