@@ -1,10 +1,7 @@
 <?php
-ini_set("display_errors", 1);
-ini_set("display_startup_errors", 1);
-error_reporting(E_ALL);
-
 session_start();
 
+require_once __DIR__ . "/config/config.php";
 require_once __DIR__ . "./../vendor/autoload.php";
 require_once __DIR__ . "/helpers/PdfHelper.php";
 require_once __DIR__ . "/helpers/GlobalHelper.php";
@@ -12,35 +9,9 @@ require_once __DIR__ . "/controllers/PageController.php";
 
 $pageController = new PageController();
 
-define("BASE_URL", "/theonary/");
-
 $request = trim(str_replace(BASE_URL, "", $_SERVER["REQUEST_URI"]), "/");
 // Removes .php in the request
 $request = preg_replace("/\.php$/", "", $request);
-
-// echo password_hash("12345", PASSWORD_DEFAULT);
-
-// echo "Session data:\n<prev>";
-// foreach ($_SESSION as $key => $value)
-// 	echo "| $key = $value \n";
-// echo "</prev>";
-
-// echo "POST data:\n<prev>";
-// foreach ($_POST as $key => $value)
-// 	echo "| $key = $value \n";
-// echo "</prev>";
-
-// echo "GET data:\n<prev>";
-// foreach ($_GET as $key => $value)
-// 	echo "| $key = $value \n";
-// echo "</prev>";
-
-// echo "User data:\n<prev>";
-// foreach ($userData as $key => $value)
-// 	echo "| $key = $value \n";
-// echo "</prev>";
-
-// echo "Request: $request";
 
 switch ($request) {
 	case "":
@@ -101,6 +72,14 @@ switch ($request) {
 		echo "<p>Invalid request.</p>";
 		break;
 
+	case "delete-notification":
+		if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]))
+			$pageController->deleteNotification($_POST["id"]);
+		else
+			http_response_code(405);
+		echo "<p>Invalid request.</p>";
+		break;
+
 	// PDF HANDLING
 	case "all-events":
 		$pageController->previewAllEventsPdf();
@@ -108,6 +87,14 @@ switch ($request) {
 
 	case "all-users":
 		$pageController->previewAllUsersPdf();
+		break;
+
+	case "all-notifications":
+		$pageController->previewAllNotificationsPdf();
+		break;
+
+	case "all-departments":
+		$pageController->previewAllDepartmentsPdf();
 		break;
 
 	// AJAX & PARTIALS
