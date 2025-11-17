@@ -62,6 +62,16 @@ label {
 	color: var(--text);
 }
 
-a {
+i {
+	color: var(--text);
+}
+
+a,
+a i {
 	color: var(--secondary);
+}
+
+a:hover,
+i:hover {
+	color: var(--tertiary);
 }

@@ -10,10 +10,14 @@
 		flex-direction: column-reverse;
 	}
 
-	div.left,
-	div.right {
+	main div.left,
+	main div.right {
 		width: 100% !important;
 		height: auto !important;
+	}
+
+	header .right {
+		width: fit-content;
 	}
 
 	.form-box {
@@ -59,7 +63,7 @@ div.left {
 	/* height: 100%; */
 }
 
-div.right {
+main div.right {
 	margin-left: auto;
 	margin-right: 0;
 	width: 400px;

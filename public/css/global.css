@@ -1,5 +1,5 @@
-@import url("partials.css");
 @import url("themes.css");
+@import url("partials.css");
 
 @import url("https://fonts.googleapis.com/css?family=Inter");
 
@@ -9,6 +9,12 @@
 	box-sizing: border-box;
 	font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* FONTAWESOME ICONS */
+i.fa-regular {
+	color: var(--text);
+}
+
 
 /* CARDS */
 
@@ -22,7 +28,6 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: stretch;
-	/* height: 100%; */
 	width: 100%;
 	background-color: var(--card);
 	border-radius: 10px;
@@ -42,12 +47,48 @@
 	margin-bottom: 1rem;
 }
 
+/* BUTTONS */
+
+button,
+.login,
+.register {
+	padding: 12px;
+	background-color: var(--button);
+	border-radius: 6px;
+	border: none;
+	font-size: 16px;
+	font-weight: 500;
+	color: #fff;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+button:hover,
+button.login:hover,
+button.register:hover {
+	background-color: color-mix(in srgb, var(--button), white 15%)
+}
+
+button.danger {
+	background-color: var(--error);
+}
+
+button.danger:hover {
+	background-color: color-mix(in srgb, var(--error), white 15%);
+}
+
+button#theme-toggle {
+	background: none;
+	border: none;
+	height: fit-content;
+}
+
 /* TABLES */
 
 .table-container {
 	overflow-x: auto;
 	max-width: 100%;
-	height: 450px;
+	max-height: 70vh;
 }
 
 table {
@@ -82,46 +123,6 @@ td {
 	color: var(--text);
 }
 
-/* BUTTONS */
-
-button,
-.login,
-.register {
-	padding: 12px;
-	background-color: var(--button);
-	border-radius: 6px;
-	border: none;
-	font-size: 16px;
-	font-weight: 500;
-	color: #fff;
-	cursor: pointer;
-	font-size: 0.9rem;
-}
-
-button:hover,
-button.login:hover,
-button.register:hover {
-	background-color: color-mix(in srgb, var(--button), white 15%)
-}
-
-button.danger {
-	background-color: var(--error);
-}
-
-button.danger:hover {
-	background-color: color-mix(in srgb, var(--error), white 15%);
-}
-
-a:hover {
-	color: var(--tertiary);
-}
-
-button#theme-toggle {
-	background: none;
-	border: none;
-	font-size: 20px;
-}
-
 /* TEXT */
 
 h1,
@@ -144,6 +145,15 @@ a {
 
 a:hover {
 	text-decoration: underline;
+}
+
+a i {
+	color: inherit;
+	margin-right: 5px;
+}
+
+i:hover {
+	cursor: pointer;
 }
 
 p.error,
