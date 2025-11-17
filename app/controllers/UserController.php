@@ -72,7 +72,6 @@ class UserController extends User
 
 	public function getAll()
 	{
-		$this->requireAdmin();
 		return $this->userModel->getAll();
 	}
 
