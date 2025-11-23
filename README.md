@@ -1,5 +1,5 @@
 # Daily Time Record
-A simple time recording system with CRUD functionality, built on the MVC design.
+A simple time recording system with CRUD functionality, built on the MVCS design.
 ## Main Features
 - Role-based access control
 - Responsive dashboard layout
