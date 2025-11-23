@@ -3,7 +3,7 @@ A simple time recording system with CRUD functionality, built on the MVCS design
 ## Main Features
 - Role-based access control
 - Responsive dashboard layout
-- Dark Mode with smooth transitioning (TBI)
+- Dark Mode
 ## Technical Stuff
 - MVCS (Models, Views, Controllers, Services) design pattern
 - PHP routing and the use of .htaccess for SEO-friendly URLs
