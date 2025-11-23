@@ -4,6 +4,9 @@ require_once __DIR__ . "/../controllers/UserController.php";
 require_once __DIR__ . "/../controllers/NotificationController.php";
 require_once __DIR__ . "/../controllers/DepartmentController.php";
 
+require_once __DIR__ . "/../services/AuthService.php";
+require_once __DIR__ . "/../services/PdfService.php";
+
 class PageController
 {
 	private $erController;
@@ -21,69 +24,57 @@ class PageController
 
 	public function previewAllEventsPdf()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$records = $this->erController->getAll();
-
-		ob_start();
-		require __DIR__ . "/../views/partials/pdf-styles.php";
-		require __DIR__ . "/../views/partials/records-table.php";
-		$html = ob_get_clean();
-
-		$dompdf = PdfHelper::generatePdfString($html);
-		$dompdf->stream("all-events.pdf", ["Attachment" => false]);
+		PdfService::streamPdf(
+			"all-events.pdf",
+			["partials/pdf-styles.php", "partials/records-table.php"],
+			["records" => $records]
+		);
 		exit();
 	}
 
 	public function previewAllNotificationsPdf()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$notifications = $this->notifController->getAll();
-
-		ob_start();
-		require __DIR__ . "/../views/partials/pdf-styles.php";
-		require __DIR__ . "/../views/partials/notifications-table.php";
-		$html = ob_get_clean();
-
-		$dompdf = PdfHelper::generatePdfString($html);
-		$dompdf->stream("all-notifications.pdf", ["Attachment" => false]);
+		PdfService::streamPdf(
+			"all-notifications.pdf",
+			["partials/pdf-styles.php", "partials/notifications.table.php"],
+			["notifications" => $notifications]
+		);
 		exit();
 	}
 
 	public function previewAllDepartmentsPdf()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$departments = $this->depController->getAll();
-
-		ob_start();
-		require __DIR__ . "/../views/partials/pdf-styles.php";
-		require __DIR__ . "/../views/partials/departments-table.php";
-		$html = ob_get_clean();
-
-		$dompdf = PdfHelper::generatePdfString($html);
-		$dompdf->stream("all-departments.pdf", ["Attachment" => false]);
+		PdfService::streamPdf(
+			"all-departments.pdf",
+			["partials/pdf-styles.php", "partials/departments.table.php"],
+			["departments" => $departments]
+		);
 		exit();
 	}
 
 	public function previewAllUsersPdf()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$users = $this->userController->getAll();
-
-		ob_start();
-		require __DIR__ . "/../views/partials/pdf-styles.php";
-		require __DIR__ . "/../views/partials/users-table.php";
-		$html = ob_get_clean();
-
-		$dompdf = PdfHelper::generatePdfString($html);
-		$dompdf->stream("all-users.pdf", ["Attachment" => false]);
+		PdfService::streamPdf(
+			"all-users.pdf",
+			["partials/pdf-styles.php", "partials/users.table.php"],
+			["users" => $users]
+		);
 		exit();
 	}
 
@@ -106,7 +97,7 @@ class PageController
 
 	public function timeIn()
 	{
-		$this->userController->requireLogin();
+		AuthService::requireLogin();
 		$this->erController->timeIn($_SESSION["user_id"]);
 
 		$now = GlobalHelper::getCurrentDate();
@@ -119,7 +110,7 @@ class PageController
 
 	public function timeOut()
 	{
-		$this->userController->requireLogin();
+		AuthService::requireLogin();
 		$this->erController->timeOut($_SESSION["user_id"]);
 
 		$now = GlobalHelper::getCurrentDate();
@@ -139,7 +130,7 @@ class PageController
 			$username = trim($_POST["username"]);
 			$password = trim($_POST["password"]);
 
-			$result = $this->userController->authenticate($username, $password);
+			$result = AuthService::authenticate($username, $password);
 
 			if (isset($result["errors"]))
 				$errors = $result["errors"];
@@ -156,7 +147,7 @@ class PageController
 				$hasTimedInToday = $_SESSION["has_timed_in_today"];
 				$hasTimedOutToday = $_SESSION["has_timed_out_today"];
 
-				if ($this->userController->isAdmin()) {
+				if (AuthService::isAdmin()) {
 					$this->dashboard();
 					exit();
 				}
@@ -193,8 +184,8 @@ class PageController
 
 	public function dashboard()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 		$records = $this->erController->getAll();
 		$users = $this->userController->getAll();
 		$notifications = $this->notifController->getAll();
@@ -218,8 +209,8 @@ class PageController
 
 	public function register()
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$errors = [];
 		$success = false;
@@ -271,8 +262,8 @@ class PageController
 
 	public function editUser($id)
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 
 		$user = $this->userController->getById($id);
 
@@ -329,8 +320,8 @@ class PageController
 
 	public function deleteUser($id)
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 		$this->erController->deleteAllFromUser($id);
 		$this->userController->delete($id);
 		$this->redirectToDashboard();
@@ -345,8 +336,8 @@ class PageController
 
 	public function deleteRecord($id)
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 		$this->erController->delete($id);
 		$this->redirectToDashboard();
 		exit();
@@ -355,8 +346,8 @@ class PageController
 	// NOTIFICATIONS
 	public function deleteNotification($id)
 	{
-		$this->userController->requireLogin();
-		$this->userController->requireAdmin();
+		AuthService::requireLogin();
+		AuthService::requireAdmin();
 		$this->notifController->delete($id);
 		$this->redirectToDashboard();
 		exit();
