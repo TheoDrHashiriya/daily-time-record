@@ -71,12 +71,14 @@ event_record_type||--o{event_record:"has"
 ```mermaid
 ---
 config:
-  layout: elk
+  layout: dagre
 ---
 flowchart TB
+    db["Database"] -- data --> mod["Model"]
     serv["Service"] -- business logic --> con["Controller"]
-    mod["Model"] -- data access --> serv
+    mod -- data access --> serv
     mod -- data for rendering --> con
     view["View"] -- user form data --> con
     con -- render data --> view
+    mod -- handle --> db
 ```
