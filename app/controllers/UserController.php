@@ -19,57 +19,6 @@ class UserController extends User
 
 	// MAIN
 
-	public function isLoggedIn()
-	{
-		return isset($_SESSION["user_id"]);
-	}
-
-	public function requireLogin()
-	{
-		if (!$this->isLoggedIn()) {
-			header("Location: .");
-			exit();
-		}
-	}
-
-	public function isAdmin()
-	{
-		return $this->isLoggedIn() && $_SESSION["user_role"] === 1;
-	}
-
-	public function requireAdmin()
-	{
-		if (!$this->isAdmin()) {
-			header("Location: .");
-			exit();
-		}
-	}
-
-	public function authenticate($username, $password)
-	{
-		$errors = [];
-
-		if (!$username)
-			$errors["username"] = "Please enter your username.";
-
-		if (!$password)
-			$errors["password"] = "Please enter your password.";
-
-		if ($errors)
-			return ["errors" => $errors];
-
-		$userData = $this->getByUsername($username);
-
-		if (!$userData || !password_verify($password, $userData["hashed_password"])) {
-			// Error messages are vague so that pentesters won't try to
-			// bruteforce usernames until it stops saying "User not found".
-			$errors["general"] = "Incorrect credentials.";
-			return ["errors" => $errors];
-		}
-
-		return ["success" => true, "user" => $userData];
-	}
-
 	public function getAll()
 	{
 		return $this->userModel->getAll();
