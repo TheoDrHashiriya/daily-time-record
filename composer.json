@@ -2,6 +2,7 @@
     "require": {
         "koolreport/core": "^6.6",
         "dompdf/dompdf": "^3.1",
-        "fortawesome/font-awesome": "^7.1"
+        "fortawesome/font-awesome": "^7.1",
+        "phpmailer/phpmailer": "^7.0"
     }
 }
