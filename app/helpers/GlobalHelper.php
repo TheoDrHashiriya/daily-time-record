@@ -1,4 +1,6 @@
 <?php
+namespace App\Helpers;
+
 class GlobalHelper
 {
 	public static function formatText($text)

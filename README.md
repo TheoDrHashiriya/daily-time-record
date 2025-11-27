@@ -22,50 +22,68 @@ config:
   layout: elk
 ---
 erDiagram
-department{
-int id PK
-string department_name
-datetime created_at
-}
-user_role{
-int id PK
-string role_name UK
-}
-user{
-int id PK
-string first_name
-string last_name
-string middle_name
-string username UK
-string hashed_password
-datetime created_at
-int created_by FK "references user(id)"
-int user_role FK "references user_role(id)"
-int department FK "references department(id)"
-}
-notification{
-int id PK
-string title
-string content
-boolean has_been_read
-datetime created_at
-}
-event_record_type{
-int id PK
-string type_name UK
-}
-event_record{
-int id PK
-int user_id FK
-datetime event_time
-int event_type FK "references event_record_type(id)"
-}
-user||--o{user:"creates"
-user_role||--o{user:"has"
-user}|--||department:"is in"
-user}|--o|notification:"creates"
-user||--o{event_record:"logs"
-event_record_type||--o{event_record:"has"
+	direction TB
+	department {
+		int id PK ""  
+		string department_name UK ""  
+		string abbreviation UK ""  
+		time standard_time_in  ""  
+		time standard_time_out  ""  
+		datetime created_at  ""  
+	}
+	user_role {
+		int id PK ""  
+		string role_name UK ""  
+	}
+	notification {
+		int id PK ""  
+		string title  ""  
+		string content  ""  
+		boolean has_been_read  ""  
+		datetime created_at  ""  
+		int created_by FK "references user(id)"  
+	}
+	event_record_type {
+		int id PK ""  
+		string type_name UK ""  
+	}
+	full_name {
+		int id PK ""  
+		string first_name  ""  
+		string middle_name  ""  
+		string last_name  ""  
+	}
+	employee_type {
+		int id PK ""  
+		string type_name  ""  
+	}
+	user {
+		int id PK ""  
+		int full_name FK "references full_name(id)"  
+		string username UK ""  
+		string email UK ""  
+		string hashed_password  ""  
+		datetime created_at  ""  
+		int employee_type FK "references employee_type(id)"  
+		int user_role FK "references user_role(id)"  
+		int department FK "references department(id)"  
+		int created_by FK "references user(id)"  
+	}
+	event_record {
+		int id PK ""  
+		int user_id FK ""  
+		datetime event_time  ""  
+		int event_type FK "references event_record_type(id)"  
+	}
+
+	user||--o{user:"creates"
+	user_role||--o{user:"of"
+	user}|--||department:"is in"
+	user||--o{notification:"creates"
+	user||--o{event_record:"logs"
+	event_record_type||--o{event_record:"has"
+	full_name||--|{user:"of"
+	employee_type}|--|{user:"of"
 ```
 ### MVCS Flow
 ```mermaid

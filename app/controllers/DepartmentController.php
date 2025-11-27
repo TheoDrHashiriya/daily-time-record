@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . "/../models/Department.php";
-class DepartmentController extends Department
+namespace App\Controllers;
+use App\Models\Department;
+
+class DepartmentController extends Controller
 {
 	private $depModel;
 

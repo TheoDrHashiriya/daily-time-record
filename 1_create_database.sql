@@ -20,14 +20,15 @@ CREATE TABLE user(
 	last_name VARCHAR(50) NOT NULL,
 	middle_name VARCHAR(50) NULL,
 	username VARCHAR(100) UNIQUE NOT NULL,
+	email VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password VARCHAR(255) NOT NULL,
-	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-	created_by INT NULL,
 	FOREIGN KEY (created_by) REFERENCES user(id),
 	user_role INT DEFAULT 2,
 	FOREIGN KEY (user_role) REFERENCES user_role(id),
 	department INT NOT NULL,
 	FOREIGN KEY (department) REFERENCES department(id)
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	created_by INT NULL,
 );
 CREATE TABLE notification(
 	id INT AUTO_INCREMENT PRIMARY KEY,

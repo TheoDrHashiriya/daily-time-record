@@ -1,11 +1,6 @@
 <?php
-require_once __DIR__ . "/../controllers/EventRecordController.php";
-require_once __DIR__ . "/../controllers/UserController.php";
-require_once __DIR__ . "/../controllers/NotificationController.php";
-require_once __DIR__ . "/../controllers/DepartmentController.php";
+namespace App\Controllers;
 
-require_once __DIR__ . "/../services/AuthService.php";
-require_once __DIR__ . "/../services/PdfService.php";
 
 class PageController
 {
@@ -16,7 +11,7 @@ class PageController
 
 	public function __construct()
 	{
-		$this->erController = new ERController();
+		$this->erController = new EventRecordController();
 		$this->userController = new UserController();
 		$this->notifController = new NotificationController();
 		$this->depController = new DepartmentController();
@@ -86,14 +81,14 @@ class PageController
 		exit();
 	}
 
-	public function home()
-	{
-		$records = $this->erController->getAll();
-		$authData = $this->authenticate();
-		$errors = $authData["errors"] ?? [];
-		$username = $authData["username"] ?? [];
-		require __DIR__ . "/../views/home.php";
-	}
+	// public function home()
+	// {
+	// 	$records = $this->erController->getAll();
+	// 	$authData = $this->authenticate();
+	// 	$errors = $authData["errors"] ?? [];
+	// 	$username = $authData["username"] ?? [];
+	// 	require __DIR__ . "/../views/home.php";
+	// }
 
 	public function timeIn()
 	{
@@ -121,59 +116,6 @@ class PageController
 		);
 	}
 
-	public function authenticate()
-	{
-		$errors = [];
-		$username = '';
-
-		if ($_SERVER["REQUEST_METHOD"] === "POST") {
-			$username = trim($_POST["username"]);
-			$password = trim($_POST["password"]);
-
-			$result = AuthService::authenticate($username, $password);
-
-			if (isset($result["errors"]))
-				$errors = $result["errors"];
-			elseif (isset($result["success"])) {
-				$userData = $result["user"];
-				$_SESSION["user_id"] = $userData["id"];
-				$_SESSION["user_role"] = $userData["user_role"];
-				$_SESSION["username"] = $userData["username"];
-				$_SESSION["first_name"] = $userData["first_name"];
-				$_SESSION["is_logged_in"] = true;
-
-				$_SESSION["has_timed_in_today"] = $this->erController->hasTimedInToday($_SESSION["user_id"]) ?? false;
-				$_SESSION["has_timed_out_today"] = $this->erController->hasTimedOutToday($_SESSION["user_id"]) ?? false;
-				$hasTimedInToday = $_SESSION["has_timed_in_today"];
-				$hasTimedOutToday = $_SESSION["has_timed_out_today"];
-
-				if (AuthService::isAdmin()) {
-					$this->dashboard();
-					exit();
-				}
-
-				if (!$hasTimedInToday)
-					$this->timeIn();
-				else
-					$this->timeOut();
-
-				$this->redirectToHome();
-
-				// $this->logout();
-			}
-		}
-		return ["errors" => $errors, "username" => $username];
-	}
-
-	public function logout()
-	{
-		session_start();
-		session_unset();
-		session_destroy();
-		$this->redirectToHome();
-		exit();
-	}
-
 	// ADMIN FUNCTIONS
 
 	public function redirectToDashboard()
@@ -193,6 +135,7 @@ class PageController
 		$departments = $this->depController->getAll();
 		$kpiData = $this->getKpiData();
 		require __DIR__ . "/../views/admin/dashboard.php";
+		exit();
 	}
 
 	public function getKpiData()

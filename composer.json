@@ -1,4 +1,12 @@
 {
+    "autoload": {
+        "psr-4": {
+            "App\\":"app/"
+        },
+        "classmap": [
+            "app/"
+        ]
+    },
     "require": {
         "koolreport/core": "^6.6",
         "dompdf/dompdf": "^3.1",

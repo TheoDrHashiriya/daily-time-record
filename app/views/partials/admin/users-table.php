@@ -47,8 +47,8 @@
 							</td>
 							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatText($row["role_name"])) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatText($row["department"])) ?></td>
+							<td><?= htmlspecialchars(App\Helpers\GlobalHelper::formatText($row["role_name"])) ?></td>
+							<td><?= htmlspecialchars(App\Helpers\GlobalHelper::formatText($row["department"])) ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>

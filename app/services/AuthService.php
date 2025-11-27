@@ -1,53 +1,74 @@
 <?php
+namespace App\Services;
+use App\Models\User;
 class AuthService
 {
-	public static function isLoggedIn()
+	private $userModel;
+
+	public function __construct(User $userModel)
+	{
+		$this->userModel = $userModel;
+	}
+
+	public function isLoggedIn()
 	{
 		return isset($_SESSION["user_id"]);
 	}
 
-	public static function requireLogin()
+	public function requireLogin()
 	{
-		if (!self::isLoggedIn()) {
+		if (!$this->isLoggedIn()) {
 			header("Location: .");
 			exit();
 		}
 	}
 
-	public static function isAdmin()
+	public function isAdmin()
 	{
-		return self::isLoggedIn() && $_SESSION["user_role"] === 1;
+		return $this->isLoggedIn() && $_SESSION["user_role"] === 1;
 	}
 
-	public static function requireAdmin()
+	public function requireAdmin()
 	{
-		if (!self::isAdmin()) {
+		if (!$this->isAdmin()) {
 			header("Location: .");
 			exit();
 		}
 	}
 
-	public static function authenticate($username, $password)
+	public function getCurrentUser()
 	{
-		$errors = [];
+		return $this->isLoggedIn()
+			? $this->userModel->getById($_SESSION["user_id"])
+			: null;
+	}
 
-		if (!$username)
-			$errors["username"] = "Please enter your username.";
-		if (!$password)
-			$errors["password"] = "Please enter your password.";
-		if ($errors)
-			return ["errors" => $errors];
+	public function authenticate(string $username, string $password)
+	{
+		$user = $this->userModel->getByUsername($username);
 
-		$userModel = new User();
-		$userData = $userModel->getByUsername($username);
-
-		if (!$userData || !password_verify($password, $userData["hashed_password"])) {
+		if (!$user || !password_verify($password, $user["hashed_password"])) {
 			// Error messages are vague so that pentesters won't try to
 			// bruteforce usernames until it stops saying "User not found".
-			$errors["general"] = "Incorrect credentials.";
-			return ["errors" => $errors];
+			return ["errors" => ["general" => "Incorrect credentials"]];
 		}
 
-		return ["success" => true, "user" => $userData];
+		return ["success" => true, "user" => $user];
+	}
+
+	public function login(array $user)
+	{
+		$_SESSION["user_id"] = $user["id"];
+		$_SESSION["user_role"] = $user["user_role"];
+		$_SESSION["username"] = $user["username"];
+		$_SESSION["first_name"] = $user["first_name"];
+		$_SESSION["is_logged_in"] = true;
+	}
+
+	public static function logout()
+	{
+		session_unset();
+		session_destroy();
+		exit();
 	}
 }

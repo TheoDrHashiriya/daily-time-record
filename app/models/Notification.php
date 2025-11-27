@@ -1,11 +1,21 @@
 <?php
-require_once "Database.php";
-class Notification extends Database
+namespace App\Models;
+use App\Models\Database;
+use PDO;
+
+class Notification
 {
-	protected function getById($id)
+	private $db;
+
+	public function __construct()
+	{
+		$this->db = new Database();
+	}
+
+	public function getById($id)
 	{
 		$sql = "SELECT * FROM notification WHERE id = :id LIMIT 1";
-		$query = $this->connect()->prepare($sql);
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
@@ -14,7 +24,7 @@ class Notification extends Database
 	public function getAll()
 	{
 		$sql = "SELECT * FROM notification ORDER BY created_at";
-		$query = $this->connect()->prepare($sql);
+		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -22,7 +32,7 @@ class Notification extends Database
 	public function getAllUnread()
 	{
 		$sql = "SELECT * FROM notification WHERE has_been_read IS FALSE ORDER BY created_at";
-		$query = $this->connect()->prepare($sql);
+		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -31,7 +41,7 @@ class Notification extends Database
 	{
 		$sql = "INSERT INTO notification (title, content, created_by)
 				  VALUES (:title, :content, :created_by)";
-		$query = $this->connect()->prepare($sql);
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":title", $title);
 		$query->bindParam(":content", $content);
 		$query->bindParam(":created_by", $created_by);
@@ -40,8 +50,8 @@ class Notification extends Database
 
 	public function delete($id)
 	{
-		$sql = "DELETE FROM notification WHERE id = :id;";
-		$query = $this->connect()->prepare($sql);
+		$sql = "DELETE FROM notification WHERE id = :id";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		return $query->execute();
 	}

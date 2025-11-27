@@ -35,7 +35,7 @@
 							</td>
 							<td><?= htmlspecialchars($row["department_name"]) ?></td>
 							<td>
-								<?= GlobalHelper::formatDate($row["created_at"]) . ", at " . GlobalHelper::formatTime($row["created_at"]) ?>
+								<?= App\Helpers\GlobalHelper::formatDate($row["created_at"]) . ", at " . App\Helpers\GlobalHelper::formatTime($row["created_at"]) ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

@@ -33,10 +33,10 @@
 							</td>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td class="type"><?= htmlspecialchars(GlobalHelper::formatEventType($row["type_name"])) ?></td>
-							<td><?= htmlspecialchars(GlobalHelper::formatDate($row["event_time"])) ?></td>
+							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
+							<td><?= htmlspecialchars($row["event_date_formatted"]) ?></td>
 							<td>
-								<?= $row["event_time"] ? htmlspecialchars(GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
+								<?= $row["event_time"] ? htmlspecialchars($row["event_time_formatted"]) : "<em>No record.</em>" ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

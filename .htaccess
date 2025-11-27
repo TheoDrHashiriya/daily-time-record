@@ -1,10 +1,13 @@
+# Hide file list
 Options -Indexes
-DirectoryIndex app/router.php
+# Set index page
+DirectoryIndex app/Router.php
 
+# Rules
 RewriteEngine On
-RewriteBase /theonary/
+# RewriteBase /theonary/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.*)$ app/router.php [QSA,L]
+RewriteRule ^(.*)$ app/Router.php [QSA,L]

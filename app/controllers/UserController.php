@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . "/../models/User.php";
-class UserController extends User
+namespace App\Controllers;
+use App\Models\User;
+
+class UserController extends Controller
 {
 	private $userModel;
 

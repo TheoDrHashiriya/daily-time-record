@@ -1,4 +1,7 @@
 <?php
+namespace App\Models;
+use PDO;
+
 class Database
 {
 	private $host = DB_HOST;
@@ -7,6 +10,7 @@ class Database
 	private $dbName = DB_NAME;
 	private $dbPort = DB_PORT;
 	protected $conn;
+	
 	public function connect()
 	{
 		$this->conn = new PDO(

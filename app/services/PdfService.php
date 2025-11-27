@@ -4,6 +4,7 @@ use Dompdf\Options;
 
 class PdfService
 {
+
 	public static function streamPdf(string $filename, $viewPaths, array $data = [], bool $download = false)
 	{
 		if (!is_array($viewPaths))

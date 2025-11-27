@@ -1,8 +1,16 @@
 <?php
-require_once "Database.php";
-class EventRecord extends Database
+namespace App\Models;
+use App\Models\Database;
+use PDO;
+
+class EventRecord
 {
-	// MAIN
+	private $db;
+
+	public function __construct()
+	{
+		$this->db = new Database();
+	}
 
 	public function hasTimedInToday($user_id)
 	{
@@ -11,8 +19,8 @@ class EventRecord extends Database
 				  WHERE user_id = :user_id
 				  AND DATE(event_time) = CURDATE()
 				  AND event_type = 1
-				  LIMIT 1;";
-		$query = $this->connect()->prepare($sql);
+				  LIMIT 1";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		$query->execute();
 		return $query->fetch() !== false;
@@ -25,8 +33,8 @@ class EventRecord extends Database
 				  WHERE user_id = :user_id
 				  AND DATE(event_time) = CURDATE()
 				  AND event_type = 2
-				  LIMIT 1;";
-		$query = $this->connect()->prepare($sql);
+				  LIMIT 1";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		$query->execute();
 		return $query->fetch() !== false;
@@ -44,9 +52,8 @@ class EventRecord extends Database
 					wHERE er2.user_id = er.user_id
 						AND er2.event_type = 2
 						AND er2.event_time > er.event_time
-				);
-			";
-		$query = $this->connect()->prepare($sql);
+				)";
+		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchColumn();
 	}
@@ -62,9 +69,8 @@ class EventRecord extends Database
 			FROM event_record er
 				JOIN user u ON er.user_id = u.id
 				JOIN event_record_type ert ON er.event_type = ert.id
-			ORDER BY er.event_time DESC;
-			";
-		$query = $this->connect()->prepare($sql);
+			ORDER BY er.event_time DESC";
+		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -76,9 +82,8 @@ class EventRecord extends Database
 			FROM event_record er
 				JOIN user u ON er.user_id = u.id
 			WHERE er.user_id = :id
-			ORDER BY er.event_date DESC 1;
-			";
-		$query = $this->connect()->prepare($sql);
+			ORDER BY er.event_date DESC 1";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
 		return $query->fetch(PDO::FETCH_ASSOC);
@@ -91,9 +96,8 @@ class EventRecord extends Database
 			FROM event_record er
 				JOIN user u ON er.user_id = u.id
 			WHERE er.user_id = :id
-			ORDER BY er.event_date DESC;
-			";
-		$query = $this->connect()->prepare($sql);
+			ORDER BY er.event_date DESC";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $user_id);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -105,8 +109,8 @@ class EventRecord extends Database
 				  FROM event_record er
 				  JOIN user u ON er.user_id = u.id
 				  WHERE er.user_id = :id AND er.event_date = :event_date
-				  ORDER BY er.event_date DESC;";
-		$query = $this->connect()->prepare($sql);
+				  ORDER BY er.event_date DESC";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $user_id);
 		$query->bindParam(":event_date", $event_date);
 		$query->execute();
@@ -119,8 +123,8 @@ class EventRecord extends Database
 				  FROM event_record er
 				  JOIN user u ON er.user_id = u.id
 				  WHERE er.id = :id
-				  ORDER BY er.event_date DESC;";
-		$query = $this->connect()->prepare($sql);
+				  ORDER BY er.event_date DESC";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -129,8 +133,8 @@ class EventRecord extends Database
 	public function recordTimeIn($user_id)
 	{
 		$sql = "INSERT INTO event_record (user_id, event_time, event_type)
-				  VALUES (:user_id, NOW(), 1);";
-		$query = $this->connect()->prepare($sql);
+				  VALUES (:user_id, NOW(), 1)";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		return $query->execute();
 	}
@@ -138,8 +142,8 @@ class EventRecord extends Database
 	public function recordTimeOut($user_id)
 	{
 		$sql = "INSERT INTO event_record (user_id, event_time, event_type)
-				  VALUES (:user_id, NOW(), 2);";
-		$query = $this->connect()->prepare($sql);
+				  VALUES (:user_id, NOW(), 2)";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		return $query->execute();
 	}
@@ -148,7 +152,7 @@ class EventRecord extends Database
 	{
 		$sql = "INSERT INTO event_record (user_id, event_time, event_type)
 				  VALUES (:user_id, :event_time, :event_type);";
-		$query = $this->connect()->prepare($sql);
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		$query->bindParam(":event_time", $event_time);
 		$query->bindParam(":event_type", $event_type);
@@ -159,8 +163,8 @@ class EventRecord extends Database
 	{
 		$sql = "UPDATE event_record
 				  SET user_id = :user_id, time_in = :time_in, time_out = :time_out
-				  WHERE id = :id;";
-		$query = $this->connect()->prepare($sql);
+				  WHERE id = :id";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->bindParam(":user_id", $user_id);
 		$query->bindParam(":time_in", $time_in);
@@ -171,8 +175,8 @@ class EventRecord extends Database
 	public function delete($id)
 	{
 		$sql = "DELETE FROM event_record
-				  WHERE id = :id;";
-		$query = $this->connect()->prepare($sql);
+				  WHERE id = :id";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		return $query->execute();
 	}
@@ -180,8 +184,8 @@ class EventRecord extends Database
 	public function deleteAllFromUser($user_id)
 	{
 		$sql = "DELETE FROM event_record
-				  WHERE user_id = :user_id;";
-		$query = $this->connect()->prepare($sql);
+				  WHERE user_id = :user_id";
+		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
 		return $query->execute();
 	}

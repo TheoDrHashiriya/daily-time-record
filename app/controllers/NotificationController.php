@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . "/../models/Notification.php";
-class NotificationController extends Notification
+namespace App\Controllers;
+use App\Models\Notification;
+
+class NotificationController
 {
 	private $notifModel;
 

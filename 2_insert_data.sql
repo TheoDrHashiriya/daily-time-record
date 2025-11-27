@@ -18,6 +18,12 @@ VALUES (
 		'17:00:00'
 	),
 	(
+		'College of Teacher Education',
+		'CTE',
+		'07:00:00',
+		'17:00:00'
+	),
+	(
 		'College of Engineering',
 		'COE',
 		'07:30:00',
@@ -35,6 +41,7 @@ INSERT INTO `user` (
 		`last_name`,
 		`middle_name`,
 		`username`,
+		`email`,
 		`hashed_password`,
 		`created_by`,
 		`user_role`,
@@ -46,6 +53,7 @@ VALUES (
 		'Amery',
 		'Smith',
 		'admin',
+		'admin@theonary',
 		'$2y$10$Q87R8xF.vM/Y6XhI/NYxVeDdVgA21h12LAj2fwmZQ4d6MHc7NVkkO',
 		NULL,
 		1,
@@ -57,6 +65,7 @@ VALUES (
 		'Saurus',
 		'Tyrant',
 		'trex445',
+		'trex@theonary',
 		'$2y$10$wiQf8w9SlyKP3l8hOxzqTeRNhh/RhtmhU.CkJ8t0xHNJL4TIU5tCi',
 		1,
 		2,
@@ -68,6 +77,7 @@ VALUES (
 		'Jomandado',
 		'Hashiriya',
 		'tva',
+		'tva@theonary',
 		'$2y$10$p8ko7/MPmLwe7nojRNcx4OgM4ig9kUJARkb1g/gfMNnPNScNn3Qxi',
 		1,
 		2,

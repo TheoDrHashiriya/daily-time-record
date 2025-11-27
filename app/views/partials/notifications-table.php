@@ -4,7 +4,7 @@
 	</div>
 
 	<?php if (!empty($notifications)):
-		$notifications = GlobalHelper::sortArrayByColumn($notifications, "created_at");
+		$notifications = App\Helpers\GlobalHelper::sortArrayByColumn($notifications, "created_at");
 		?>
 		<div class="table-container">
 			<table>
@@ -26,7 +26,7 @@
 							<td><?= htmlspecialchars($row["content"]) ?></td>
 							<td><?= htmlspecialchars($row["created_by"]) ?></td>
 							<td>
-								<?= GlobalHelper::formatDate($row["created_at"]) . ", at " . GlobalHelper::formatTime($row["created_at"]) ?>
+								<?= App\Helpers\GlobalHelper::formatDate($row["created_at"]) . ", at " . App\Helpers\GlobalHelper::formatTime($row["created_at"]) ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

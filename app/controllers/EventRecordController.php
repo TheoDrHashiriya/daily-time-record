@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . "/../models/EventRecord.php";
+namespace App\Controllers;
+use App\Models\EventRecord;
 
-class ERController extends EventRecord
+class EventRecordController extends EventRecord
 {
 	private $erModel;
 
