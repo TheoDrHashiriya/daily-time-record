@@ -1,14 +1,5 @@
-@import url("global.css");
-
-/* body {
-	min-height: 100vh;
-	display: grid;
-	grid-template-columns: 150px 1fr;
-	grid-template-rows: 50px 1fr;
-	grid-template-areas:
-	"side header"
-	"side main";
-	} */
+@import url("../_global.css");
+@import url("../forms.css");
 
 .dashboard-container {
 	height: 100vh;
@@ -28,7 +19,7 @@
 	grid-template-columns: 0 1fr;
 }
 
-.header {
+header.header {
 	background-color: var(--bg-gradient);
 	grid-area: header;
 	display: flex;
@@ -232,9 +223,9 @@
 		left: 0;
 	}
 
-	button {
+	/* button {
 		margin: 5px 0;
-	}
+	} */
 }
 
 #clock {

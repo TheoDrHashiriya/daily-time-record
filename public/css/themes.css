@@ -6,17 +6,25 @@
 	--main: ;
 	--card: #fafafa;
 
-	/* OTHERS */
+	/* BACKGROUND */
 	--bg: #fafafa;
 	--bg-gradient: linear-gradient(to right, #c0c0c0, #eeeeee);
 	--border: #c0c0c0;
+	--cross-border: #cfcfcf;
+
+	/* TEXT */
 	--text: #202020;
 	--header-text: #000000;
+	--label-text: #515151;
+
+	/* SEMANTIC */
 	--secondary: #0000aa;
 	--button: #0000aa;
 	--tertiary: #00aa00;
 	--highlight: rgba(255, 255, 0, 0.25);
 	--error: red;
+
+	/* TABLE */
 	--table-header: #ece5e5;
 	--table-border: #d1c7c7;
 	--table-even: #e9e0e0;
@@ -25,21 +33,29 @@
 [data-theme="dark"] {
 	/* INDEX PAGE */
 	--header: ;
-	--sidebar: rgb(10, 11, 12);
+	--sidebar: rgb(14, 16, 17);
 	--sidebar-link: #00aaff;
 	--main: ;
 	--card: #383131;
 
-	/* OTHERS */
+	/* BACKGROUND & BORDER */
 	--bg: #000000;
 	--bg-gradient: linear-gradient(to right, #0c0c0c, #272727);
 	--border: #2a2a2a;
+	--cross-border: #424242;
+
+	/* TEXT */
 	--text: #dddddd;
 	--header-text: #ffffff;
+	--label-text: #999999;
+
+	/* SEMANTIC */
 	--secondary: #00aaff;
-	--button: #0000ad;
+	--button: #3f3fd9;
 	--tertiary: #44cc44;
 	--error: rgb(255, 83, 83);
+
+	/* TABLE */
 	--table-header: #202020;
 	--table-border: #5e5e5e;
 	--table-even: #272727;
@@ -57,9 +73,12 @@ h5 {
 	color: var(--header-text);
 }
 
-p,
-label {
+p {
 	color: var(--text);
+}
+
+label {
+	color: var(--label-text);
 }
 
 i {

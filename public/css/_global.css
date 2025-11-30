@@ -1,0 +1,61 @@
+/* DEDICATED STYLE RULE FILES RULE! */
+@import url("buttons.css");
+@import url("cards.css");
+@import url("fonts.css");
+@import url("modals.css");
+@import url("partials.css");
+@import url("tables.css");
+@import url("themes.css");
+
+/* THE EVERYTHING RULE */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* TEXT */
+
+h1,
+h2,
+h3,
+h4 {
+	font-weight: 600;
+}
+
+p {
+	font-size: 14.5px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+a {
+	text-decoration: none;
+	color: var(--secondary);
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a i {
+	color: inherit;
+	margin-right: 5px;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+p.error,
+p.error-general {
+	margin-bottom: 20px;
+	text-align: left;
+	color: var(--error);
+}
+
+p.error-general {
+	text-align: center;
+}

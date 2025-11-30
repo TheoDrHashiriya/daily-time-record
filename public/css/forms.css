@@ -1,0 +1,45 @@
+.container {
+	margin: 0 15px;
+}
+
+div.column {
+	width: 100%;
+}
+
+@media (max-width: 800px) {
+	form div.row {
+		flex-direction: column;
+	}
+}
+
+div.row.header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	margin-bottom: 15px;
+	padding-bottom: 13px;
+	border-bottom: 1px solid var(--cross-border);
+}
+
+label {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+input,
+select {
+	width: 100%;
+	padding: 12px;
+	background-color: var(--border);
+	color: var(--text);
+	border-radius: 6px;
+	border: none;
+	outline: none;
+	font-size: 16px;
+}
+
+button.main {
+	width: 100%;
+	margin-bottom: 10px;
+}

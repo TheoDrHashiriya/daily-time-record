@@ -1,0 +1,66 @@
+.modal-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+}
+
+.modal-container.show {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.modal {
+	background: var(--card);
+	padding: 24px;
+	border-radius: 12px;
+	box-shadow: 0 5px 25px black;
+	width: fit-content;
+	max-width: 700px;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.modal-actions {
+	margin-top: 1rem;
+}
+
+.modal-container button.close-button {
+	font-weight: 400;
+}
+
+.modal-container button.close-button.icon {
+	background: none;
+	padding: 0;
+}
+
+.modal-container button.danger {
+	background-color: var(--error);
+	color: white;
+}
+
+.modal-container button.danger:hover {
+	background-color: color-mix(in srgb, var(--error), white 15%);
+}
+
+.modal-container .header i {
+	color: var(--header-text);
+}
+
+.modal-container .header i.symbol {
+	margin: 0 5px 0 0;
+}
+
+.modal-container .header i.symbol:hover {
+	color: inherit;
+	cursor: default;
+}

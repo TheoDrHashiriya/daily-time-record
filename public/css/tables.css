@@ -1,0 +1,48 @@
+.table-container {
+	overflow-x: auto;
+	max-width: 100%;
+	max-height: 70vh;
+}
+
+table {
+	width: 100%;
+	border: 1px solid var(--table-border);
+	border-spacing: 0;
+	border-radius: 10px;
+	border-collapse: separate;
+	text-align: center;
+	font-size: 0.85rem;
+	overflow: hidden;
+}
+
+tr:nth-child(even) {
+	background: var(--table-even);
+}
+
+th,
+td {
+	text-align: left;
+	padding: 7px 7px;
+	white-space: nowrap;
+}
+
+th {
+	font-weight: 600;
+	background-color: var(--table-header);
+	color: var(--header-text);
+}
+
+td {
+	color: var(--text);
+}
+
+td.actions {
+	display: flex;
+	gap: 10px;
+}
+
+/* RECORD TABLE */
+
+.table-container .type {
+	font-weight: bold;
+}

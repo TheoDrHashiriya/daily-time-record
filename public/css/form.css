@@ -1,9 +1,0 @@
-@import url("global.css");
-@import url("form-elements.css");
-
-body {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 100vh;
-}

@@ -1,0 +1,83 @@
+/* BUTTONS */
+
+button i {
+	color: inherit;
+}
+
+button,
+.login,
+.register {
+	padding: 12px;
+	background-color: var(--button);
+	border-radius: 6px;
+	border: none;
+	font-size: 16px;
+	font-weight: 500;
+	color: #fff;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+button:hover,
+button.login:hover,
+button.register:hover {
+	background-color: color-mix(in srgb, var(--button), white 15%)
+}
+
+button.danger {
+	color: var(--error);
+}
+
+button.danger:hover {
+	color: color-mix(in srgb, var(--error), white 15%);
+}
+
+button#theme-toggle {
+	background: none;
+	border: none;
+	height: fit-content;
+}
+
+/* ROW ACTIONS */
+
+.open-button {
+	background: none;
+	padding: 0;
+	color: var(--secondary);
+}
+
+.open-button i {
+	color: inherit;
+}
+
+.open-button:hover {
+	background: none;
+	color: color-mix(in srgb, var(--secondary), white 30%);
+	text-decoration: underline;
+}
+
+.action button i {
+	color: inherit;
+}
+
+.action button {
+	background: none;
+	padding: 0;
+	color: var(--secondary);
+}
+
+.action button:hover {
+	background: none;
+	color: color-mix(in srgb, var(--secondary), white 30%);
+	text-decoration: underline;
+}
+
+.open-button button.danger {
+	background: none;
+	color: var(--error);
+}
+
+.action button.danger:hover {
+	background: none;
+	color: color-mix(in srgb, var(--error), white 30%);
+}
