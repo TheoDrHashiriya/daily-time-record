@@ -23,7 +23,11 @@ class Notification
 
 	public function getAll()
 	{
-		$sql = "SELECT * FROM notification ORDER BY created_at";
+		$sql = "SELECT n.id, n.title, n.content, n.has_been_read, n.created_at,
+			u.first_name, u.middle_name, u.last_name
+			FROM notification n 
+			JOIN user u ON n.created_by = u.id
+			ORDER BY created_at";
 		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);

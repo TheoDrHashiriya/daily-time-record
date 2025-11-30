@@ -63,6 +63,8 @@ class EventRecord
 		$sql = "
 			SELECT er.id,
 				er.event_time,
+				er.event_type,
+				er.user_id,
 				ert.type_name,
 				u.id AS user_id,
 				CONCAT (u.first_name, ' ', u.last_name) AS user
@@ -70,6 +72,14 @@ class EventRecord
 				JOIN user u ON er.user_id = u.id
 				JOIN event_record_type ert ON er.event_type = ert.id
 			ORDER BY er.event_time DESC";
+		$query = $this->db->connect()->prepare($sql);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getAllTypes()
+	{
+		$sql = "SELECT id, type_name FROM event_record_type";
 		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -158,17 +168,17 @@ class EventRecord
 		$query->bindParam(":event_type", $event_type);
 		return $query->execute();
 	}
-	// Need to update update()
-	public function update($id, $user_id, $time_in, $time_out)
+
+	public function update($id, $event_time, $event_type, $user_id)
 	{
 		$sql = "UPDATE event_record
-				  SET user_id = :user_id, time_in = :time_in, time_out = :time_out
+				  SET event_time = :event_time, event_type = :event_type, user_id = :user_id
 				  WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
+		$query->bindParam(":event_time", $event_time);
+		$query->bindParam(":event_type", $event_type);
 		$query->bindParam(":user_id", $user_id);
-		$query->bindParam(":time_in", $time_in);
-		$query->bindParam(":time_out", $time_out);
 		return $query->execute();
 	}
 
