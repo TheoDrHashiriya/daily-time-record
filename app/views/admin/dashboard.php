@@ -5,12 +5,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/dashboard.css">
-	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
+	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/pages/dashboard.css">
 	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
+	<script src="<?= BASE_URL ?>public/js/modal.js" defer></script>
+	<script src="<?= BASE_URL ?>public/js/modal-prefill.js" defer></script>
+	<script src="<?= BASE_URL ?>public/js/notification-toggle.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/page-toggle.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/sidebar-toggle.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/notification-toggle.js" defer></script>
+	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
 
 	<link rel="stylesheet" href="<?= BASE_URL ?>vendor/fortawesome/font-awesome/css/all.min.css" />
 </head>
@@ -55,18 +57,28 @@
 		</main>
 
 		<main class="main section" id="notifications-section">
+			<?php include __DIR__ . "/../partials/modals/edit-notification.php"; ?>
+			<?php include __DIR__ . "/../partials/modals/delete-notification.php"; ?>	
 			<?php include __DIR__ . "/../partials/admin/notifications-table.php"; ?>
 		</main>
 
 		<main class="main section" id="records-section">
+			<?php include __DIR__ . "/../partials/modals/edit-record.php"; ?>
+			<?php include __DIR__ . "/../partials/modals/delete-record.php"; ?>
 			<?php include __DIR__ . "/../partials/admin/records-table.php"; ?>
+			<?php include __DIR__ . "/../partials/admin/record-types-table.php"; ?>
 		</main>
-
+		
 		<main class="main section" id="users-section">
+			<?php include __DIR__ . "/../partials/modals/edit-user.php"; ?>
+			<?php include __DIR__ . "/../partials/modals/delete-user.php"; ?>
 			<?php include __DIR__ . "/../partials/admin/users-table.php"; ?>
+			<?php include __DIR__ . "/../partials/admin/user-roles-table.php"; ?>
 		</main>
-
+		
 		<main class="main section" id="departments-section">
+			<?php include __DIR__ . "/../partials/modals/edit-department.php"; ?>
+			<?php include __DIR__ . "/../partials/modals/delete-department.php"; ?>
 			<?php include __DIR__ . "/../partials/admin/departments-table.php"; ?>
 		</main>
 	</div>
