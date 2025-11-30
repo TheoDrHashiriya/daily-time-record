@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<?php if (!empty($notifications)):
-		$notifications = App\Helpers\GlobalHelper::sortArrayByColumn($notifications, "created_at");
+		$notifications = App\Services\FormattingService::sortArrayByColumn($notifications, "created_at");
 		?>
 		<div class="table-container">
 			<table>
@@ -40,9 +40,9 @@
 							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["title"]) ?></td>
 							<td><?= htmlspecialchars($row["content"]) ?></td>
-							<td><?= htmlspecialchars($row["created_by"]) ?></td>
+							<td><?= htmlspecialchars($row["created_by_full_name_formatted"]) ?></td>
 							<td>
-								<?= App\Helpers\GlobalHelper::formatDate($row["created_at"]) . ", at " . App\Helpers\GlobalHelper::formatTime($row["created_at"]) ?>
+								<?= App\Services\FormattingService::formatDate($row["created_at"]) . ", at " . App\Services\FormattingService::formatTime($row["created_at"]) ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

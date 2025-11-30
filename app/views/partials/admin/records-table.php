@@ -9,7 +9,8 @@
 				<thead>
 					<tr>
 						<th>Actions</th>
-						<th>ID</th>
+						<th>Event ID</th>
+						<th>User ID</th>
 						<th>User</th>
 						<th>Type</th>
 						<th>Date</th>
@@ -21,16 +22,24 @@
 					<?php foreach ($records as $row): ?>
 						<tr>
 							<td class="actions">
-								<button type="button" class="edit-btn action"><i class="fa-regular fa-pen-to-square"></i>Edit</button>
-								<input type="hidden" name="row-id" value="<?= $row["id"] ?>">
+								<button type="button" class="open-button" data-target="#edit-record" data-modal-type="edit-record"
+									data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
+									  	htmlspecialchars(
+									  		json_encode([
+									  			"user_id" => $row["user_id"],
+									  			"event_type" => $row["event_type"],
+									  			"event_time" => $row["event_time"]
+									  		])
+									  	) ?>">
+									<i class="fa-regular fa-pen-to-square"></i>Edit
+								</button>
 
-								<form action="delete-record" method="post" class="action">
-									<input type="hidden" name="row-id" value="<?= $row["id"] ?>">
-									<button class="danger" type="submit"
-										onclick="return confirm('Are you sure you want to delete the current record for <?= $row['user'] ?>?')"><i
-											class="fa-regular fa-trash-can"></i>Delete</button>
-								</form>
+								<button type="button" class="open-button danger" data-target="#delete-record"
+									data-modal-type="delete-record" data-entity-id="<?= $row["id"] ?>">
+									<i class="fa-regular fa-trash-can"></i>Delete
+								</button>
 							</td>
+							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
 							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>

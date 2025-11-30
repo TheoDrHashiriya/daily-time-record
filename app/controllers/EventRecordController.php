@@ -1,8 +1,9 @@
 <?php
 namespace App\Controllers;
 use App\Models\EventRecord;
+use Seld\JsonLint\JsonParser;
 
-class EventRecordController extends EventRecord
+class EventRecordController extends Controller
 {
 	private $erModel;
 
@@ -21,7 +22,7 @@ class EventRecordController extends EventRecord
 
 	public function getTotalUnclosed()
 	{
-		return $this->erModel->getTotalUnclosed(); 
+		return $this->erModel->getTotalUnclosed();
 	}
 
 	// MAIN
@@ -84,9 +85,30 @@ class EventRecordController extends EventRecord
 		return $this->erModel->getByUserId($user_id);
 	}
 
-	public function delete($id)
+	public function edit()
 	{
-		return $this->erModel->delete($id);
+		$id = trim($_POST["entity_id"]);
+		$user_id = trim($_POST["user_id"] ?? "");
+		$event_time = trim($_POST["event_time"] ?? "");
+		$event_type = trim($_POST["event_type"] ?? "");
+
+		$errors = [];
+		// Validate user input
+		if ($event_time === "")
+			$errors["event_time"] = "Please enter the time of the event.";
+
+		$this->erModel->update($id, $event_time, $event_type, $user_id);
+
+		header("Location: dashboard");
+		exit();
+	}
+
+	public function delete()
+	{
+		$id = trim($_POST["entity_id"]);
+		$this->erModel->delete($id);
+		header("Location: dashboard");
+		exit();
 	}
 
 	public function deleteAllFromUser($user_id)

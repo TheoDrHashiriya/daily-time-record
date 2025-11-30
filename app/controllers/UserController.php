@@ -41,15 +41,42 @@ class UserController extends Controller
 		return $created ? ["success" => true] : ["error" => "Failed to create account."];
 	}
 
-	public function update($id, $first_name, $last_name, $middle_name, $username, $password, $role)
+	public function edit()
 	{
-		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-		$updated = $this->userModel->update($id, $first_name, $last_name, $middle_name, $username, $hashedPassword, $role);
-		return $updated ? ["success" => true] : ["error" => "Failed to update account."];
+		$id = trim($_POST["entity_id"]);
+		$first_name = trim($_POST["first_name"]);
+		$middle_name = trim($_POST["middle_name"]);
+		$last_name = trim($_POST["last_name"]);
+		$username = trim($_POST["username"]);
+		$user_role = trim($_POST["user_role"]);
+		$department = trim($_POST["department"]);
+		$created_at = trim($_POST["created_at"] ?? "");
+
+		$this->userModel->update(
+			$id,
+			$first_name,
+			$middle_name,
+			$last_name,
+			$username,
+			$user_role,
+			$department,
+			$created_at
+		);
+
+		$created_by = trim($_POST["created_by"] ?? "");
+
+		if ($created_by !== "")
+			$this->userModel->updateCreator($id, $created_by);
+
+		header("Location: dashboard");
+		exit();
 	}
 
-	public function delete($id)
+	public function delete()
 	{
-		return $this->userModel->delete($id);
+		$id = trim($_POST["entity_id"]);
+		$this->userModel->delete($id);
+		header("Location: dashboard");
+		exit();
 	}
 }
