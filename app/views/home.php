@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Daily Time Record | Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/home.css">
+	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/pages/home.css">
 	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
 	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
 	<script src="<?= BASE_URL ?>public/js/home/auth-form-info-pane.js" defer></script>
@@ -48,23 +48,7 @@
 			</section>
 
 			<section id="authentication-pane">
-				<!-- <?php include "partials/home/auth-form.php" ?> -->
-				<div class="form-box" id="login-form">
-					<h2 class="title">Authenticate</h2>
-					
-					<form action="authenticate" method="post">
-						<label for="username">Username</label>
-						<input value="<?= htmlspecialchars($username ?? "") ?>" placeholder="Username" type="text"
-							name="username" id="username">
-						<p class="error"><?= $errors["username"] ?? "" ?></p>
-
-						<label for="title">Password</label>
-						<input placeholder="Password" type="password" name="password" id="password">
-						<p class="error"><?= $errors["password"] ?? "" ?></p>
-
-						<p class="error-general"><?= $errors["general"] ?? "" ?></p>
-
-						<button class="login" type="submit">Authenticate</button>
+				<?php include "partials/home/auth-form.php" ?> 
 					</form>
 				</div>
 			</section>
