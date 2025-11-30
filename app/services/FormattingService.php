@@ -1,11 +1,18 @@
 <?php
-namespace App\Helpers;
+namespace App\Services;
 
-class GlobalHelper
+class FormattingService
 {
-	public static function formatText($text)
+	// TEXT
+
+	public static function formatText(string $text)
 	{
 		return ucwords(str_replace('_', ' ', $text));
+	}
+
+	public static function formatFullName(string $first, string $middle = "", string $last = "")
+	{
+		return ucfirst($first) . ' ' . ucfirst($middle) . ' ' . ucfirst($last);
 	}
 
 	// DATE & TIME
