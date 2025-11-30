@@ -18,10 +18,11 @@
 						<tr>
 							<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
-							<td class="type"><?= htmlspecialchars(App\Helpers\GlobalHelper::formatEventType($row["type_name"])) ?></td>
-							<td><?= htmlspecialchars(App\Helpers\GlobalHelper::formatDate($row["event_time"])) ?></td>
+							<td class="type">
+								<?= htmlspecialchars(App\Services\FormattingService::formatEventType($row["type_name"])) ?></td>
+							<td><?= htmlspecialchars(App\Services\FormattingService::formatDate($row["event_time"])) ?></td>
 							<td>
-								<?= $row["event_time"] ? htmlspecialchars(App\Helpers\GlobalHelper::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
+								<?= $row["event_time"] ? htmlspecialchars(App\Services\FormattingService::formatTime($row["event_time"])) : "<em>No record.</em>" ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

@@ -2,7 +2,6 @@
 namespace App\Services;
 use App\Models\EventRecord;
 use App\Models\User;
-use App\Helpers\GlobalHelper;
 
 class HomeService
 {
@@ -19,11 +18,12 @@ class HomeService
 	{
 		$records = $this->erModel->getAll();
 
-		foreach ($records as $record) {
-			$record["type_name_formatted"] = GlobalHelper::formatEventType($record["type_name"]);
-			$record["event_date_formatted"] = GlobalHelper::formatDate($record["event_time"]);
-			$record["event_time_formatted"] = GlobalHelper::formatTime($record["event_time"]);
+		foreach ($records as &$record) {
+			$record["type_name_formatted"] = FormattingService::formatEventType($record["type_name"]);
+			$record["event_date_formatted"] = FormattingService::formatDate($record["event_time"]);
+			$record["event_time_formatted"] = FormattingService::formatTime($record["event_time"]);
 		}
+		unset($record);
 
 		return ["records" => $records];
 	}
