@@ -1,4 +1,4 @@
-<div class="modal-container" id="edit-record">
+<div class="modal-container" id="record-edit">
 	<div class="modal">
 		<div class="row header">
 			<h2 class="header"><i class="symbol fa-solid fa-pen-to-square"></i>Edit Record</h2>
@@ -6,7 +6,6 @@
 		</div>
 
 		<form class="edit-form" method="post" action="edit-record">
-			<!-- <input type="hidden" name="action" value="edit-record"> -->
 			<input type="hidden" name="entity_id" value="">
 
 			<label for="user_id">Created By</label>

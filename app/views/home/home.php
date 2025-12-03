@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Daily Time Record | Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/pages/home.css">
-	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
-	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/home/auth-form-info-pane.js" defer></script>
+	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/home.css">
+	<script src="<?= JS_URL ?>/theme.js"></script>
+	<script src="<?= JS_URL ?>/clock.js" defer></script>
+	<script src="<?= JS_URL ?>/home/auth-form-info-pane.js" defer></script>
 
-	<link rel="stylesheet" href="<?= BASE_URL ?>vendor/fortawesome/font-awesome/css/all.min.css" />
+	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 </head>
 
 <body>
@@ -26,13 +26,13 @@
 	<main>
 		<div class="left">
 			<section id="table-pane">
-				<?php include "partials/records-table.php" ?>
+				<?php include VIEWS_PATH . "/components/tables/records.php" ?>
 			</section>
 		</div>
 
 		<div class="right">
 			<section id="time-pane">
-				<?php include "partials/time-card.php" ?>
+				<?php include VIEWS_PATH . "/components/cards/time.php" ?>
 			</section>
 
 			<section id="info-pane" style="display: none;">
@@ -48,10 +48,10 @@
 			</section>
 
 			<section id="authentication-pane">
-				<?php include "partials/home/auth-form.php" ?> 
-					</form>
-				</div>
-			</section>
+				<?php include VIEWS_PATH . "/components/forms/auth-form.php" ?>
+				</form>
+		</div>
+		</section>
 		</div>
 	</main>
 </body>

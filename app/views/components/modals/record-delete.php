@@ -1,14 +1,14 @@
-<div class="modal-container" id="delete-user">
+<div class="modal-container" id="record-delete">
 	<div class="modal">
 		<div class="row header">
-			<h2 class="header"><i class="symbol fa-solid fa-exclamation"></i>Delete User</h2>
+			<h2 class="header"><i class="symbol fa-solid fa-exclamation"></i>Delete Record</h2>
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="delete-form" method="post" action="delete-user">
+		<form class="delete-form" method="post" action="record-delete">
 			<input type="hidden" name="entity_id" value="">
 
-			<p>Are you sure you want to delete the current user?</p>
+			<p>Are you sure you want to delete the current record?</p>
 
 			<div class="modal-actions">
 				<button class="close-button" type="button" id="cancel">Cancel</button>

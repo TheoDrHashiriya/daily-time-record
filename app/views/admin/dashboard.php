@@ -5,26 +5,27 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
-	<link rel="stylesheet" href="<?= BASE_URL ?>public/css/pages/dashboard.css">
-	<script src="<?= BASE_URL ?>public/js/clock.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/modal.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/modal-prefill.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/notification-toggle.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/page-toggle.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/sidebar-toggle.js" defer></script>
-	<script src="<?= BASE_URL ?>public/js/theme.js"></script>
+	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
+	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
+	<script src="<?= JS_URL ?>/clock.js" defer></script>
+	<script src="<?= JS_URL ?>/modal.js" defer></script>
+	<script src="<?= JS_URL ?>/modal-prefill.js" defer></script>
+	<script src="<?= JS_URL ?>/notification-toggle.js" defer></script>
+	<script src="<?= JS_URL ?>/page-toggle.js" defer></script>
+	<script src="<?= JS_URL ?>/sidebar-toggle.js" defer></script>
+	<script src="<?= JS_URL ?>/theme.js"></script>
 
-	<link rel="stylesheet" href="<?= BASE_URL ?>vendor/fortawesome/font-awesome/css/all.min.css" />
+	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 </head>
 
 <body>
 	<div class="dashboard-container">
-		<?php include __DIR__ . "/../partials/admin/header.php"; ?>
-		<?php include __DIR__ . "/../partials/admin/sidebar.php"; ?>
+		<?php include VIEWS_PATH . "/layouts/header.php"; ?>
+		<?php include VIEWS_PATH . "/layouts/sidebar.php"; ?>
 
 		<main class="main section" id="home-section">
-			<?php include __DIR__ . "/../partials/admin/welcome-logout-card.php"; ?>
-			<?php include __DIR__ . "/../partials/time-card.php"; ?>
+			<?php include VIEWS_PATH . "/components/cards/welcome-logout.php"; ?>
+			<?php include VIEWS_PATH . "/components/cards/time.php"; ?>
 
 			<div class="row">
 				<div class="card">
@@ -57,29 +58,35 @@
 		</main>
 
 		<main class="main section" id="notifications-section">
-			<?php include __DIR__ . "/../partials/modals/edit-notification.php"; ?>
-			<?php include __DIR__ . "/../partials/modals/delete-notification.php"; ?>	
-			<?php include __DIR__ . "/../partials/admin/notifications-table.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/notification-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/notification-edit.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/notification-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/notifications.php"; ?>
 		</main>
 
 		<main class="main section" id="records-section">
-			<?php include __DIR__ . "/../partials/modals/edit-record.php"; ?>
-			<?php include __DIR__ . "/../partials/modals/delete-record.php"; ?>
-			<?php include __DIR__ . "/../partials/admin/records-table.php"; ?>
-			<?php include __DIR__ . "/../partials/admin/record-types-table.php"; ?>
+			<?php include VIEWS_PATH . "/components/cards/message.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/record-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/record-edit.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/record-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/records.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/record-types.php"; ?>
 		</main>
 		
 		<main class="main section" id="users-section">
-			<?php include __DIR__ . "/../partials/modals/edit-user.php"; ?>
-			<?php include __DIR__ . "/../partials/modals/delete-user.php"; ?>
-			<?php include __DIR__ . "/../partials/admin/users-table.php"; ?>
-			<?php include __DIR__ . "/../partials/admin/user-roles-table.php"; ?>
+			<?php include VIEWS_PATH . "/components/cards/message.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/user-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/user-edit.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/user-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/users.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/user-roles.php"; ?>
 		</main>
-		
+
 		<main class="main section" id="departments-section">
-			<?php include __DIR__ . "/../partials/modals/edit-department.php"; ?>
-			<?php include __DIR__ . "/../partials/modals/delete-department.php"; ?>
-			<?php include __DIR__ . "/../partials/admin/departments-table.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/department-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/department-edit.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/department-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/departments.php"; ?>
 		</main>
 	</div>
 </body>

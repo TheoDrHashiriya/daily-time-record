@@ -1,4 +1,4 @@
-<div class="modal-container" id="edit-user">
+<div class="modal-container" id="user-edit">
 	<div class="modal">
 		<div class="row header">
 			<h2 class="header"><i class="symbol fa-solid fa-pen-to-square"></i>Edit User</h2>
