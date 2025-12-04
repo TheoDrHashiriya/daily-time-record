@@ -38,7 +38,7 @@ button#theme-toggle {
 	height: fit-content;
 }
 
-/* ROW ACTIONS */
+/* ACTIONS */
 
 .open-button {
 	background: none;
@@ -50,34 +50,38 @@ button#theme-toggle {
 	color: inherit;
 }
 
-.open-button:hover {
+/* CARD ACTIONS */
+div.card div.actions button.open-button i {
+	margin-right: 4px;
+}
+
+div.card div.actions button.open-button:hover {
+	background: none;
+	color: var(--tertiary);
+	text-decoration: underline;
+}
+
+/* TABLE ROW ACTIONS */
+
+
+td.actions .open-button:hover {
 	background: none;
 	color: color-mix(in srgb, var(--secondary), white 30%);
 	text-decoration: underline;
 }
 
-.action button i {
-	color: inherit;
-}
-
-.action button {
-	background: none;
-	padding: 0;
-	color: var(--secondary);
-}
-
-.action button:hover {
+td.actions button:hover {
 	background: none;
 	color: color-mix(in srgb, var(--secondary), white 30%);
 	text-decoration: underline;
 }
 
-.open-button button.danger {
+button.open-button.danger {
 	background: none;
 	color: var(--error);
 }
 
-.action button.danger:hover {
+button.open-button.danger:hover {
 	background: none;
 	color: color-mix(in srgb, var(--error), white 30%);
 }

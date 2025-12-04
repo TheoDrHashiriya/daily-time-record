@@ -39,6 +39,11 @@ select {
 	font-size: 16px;
 }
 
+input#code {
+	text-align: center;
+	font-size: xx-large;
+}
+
 button.main {
 	width: 100%;
 	margin-bottom: 10px;

@@ -33,7 +33,7 @@
 [data-theme="dark"] {
 	/* INDEX PAGE */
 	--header: ;
-	--sidebar: rgb(14, 16, 17);
+	--sidebar: rgb(21, 24, 26);
 	--sidebar-link: #00aaff;
 	--main: ;
 	--card: #383131;
@@ -86,11 +86,10 @@ i {
 }
 
 a,
-a i {
+a {
 	color: var(--secondary);
 }
 
-a:hover,
-i:hover {
+a:hover {
 	color: var(--tertiary);
 }

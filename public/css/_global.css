@@ -1,4 +1,5 @@
 /* DEDICATED STYLE RULE FILES RULE! */
+@import url("animations.css");
 @import url("buttons.css");
 @import url("cards.css");
 @import url("fonts.css");
@@ -14,6 +15,13 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* INPUTS */
+
+input:hover,
+select:hover {
+	cursor: pointer;
 }
 
 /* TEXT */

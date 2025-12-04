@@ -22,7 +22,8 @@
 
 .card .top .right {
 	display: flex;
-	gap: 15px;
+	align-items: flex-start;
+	gap: 20px;
 }
 
 .card .header {
