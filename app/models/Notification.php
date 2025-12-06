@@ -23,7 +23,7 @@ class Notification
 
 	public function getAll()
 	{
-		$sql = "SELECT n.id, n.title, n.content, n.has_been_read, n.created_at,
+		$sql = "SELECT n.id, n.title, n.content, n.has_been_read, n.created_at, n.created_by,
 			u.first_name, u.middle_name, u.last_name
 			FROM notification n 
 			JOIN user u ON n.created_by = u.id
@@ -46,6 +46,19 @@ class Notification
 		$sql = "INSERT INTO notification (title, content, created_by)
 				  VALUES (:title, :content, :created_by)";
 		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":title", $title);
+		$query->bindParam(":content", $content);
+		$query->bindParam(":created_by", $created_by);
+		return $query->execute();
+	}
+
+	public function update($id, $title, $content, $created_by)
+	{
+		$sql = "UPDATE notification
+				  SET title = :title, content = :content, created_by = :created_by
+				  WHERE id = :id";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":id", $id);
 		$query->bindParam(":title", $title);
 		$query->bindParam(":content", $content);
 		$query->bindParam(":created_by", $created_by);

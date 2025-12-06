@@ -56,10 +56,10 @@ class User
 		return !empty($this->getByUsername($username));
 	}
 
-	public function create($first_name, $last_name, $middle_name, $username, $hashed_password, $user_role)
+	public function create($first_name, $last_name, $middle_name, $username, $hashed_password, $user_role, $department, $created_by)
 	{
-		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, hashed_password, user_role)
-				  VALUES (:first_name, :last_name, :middle_name, :username, :hashed_password, :user_role)";
+		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, hashed_password, user_role, department, created_by)
+				  VALUES (:first_name, :last_name, :middle_name, :username, :hashed_password, :user_role, :department, :created_by)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":first_name", $first_name);
 		$query->bindParam(":last_name", $last_name);
@@ -67,24 +67,27 @@ class User
 		$query->bindParam(":username", $username);
 		$query->bindParam(":hashed_password", $hashed_password);
 		$query->bindParam(":user_role", $user_role);
+		$query->bindParam(":department", $department);
+		$query->bindParam(":created_by", $created_by);
 		return $query->execute();
 	}
 
-	public function update($id, $first_name, $last_name, $middle_name, $username, $user_role, $department, $created_at)
+	public function update($id, $first_name, $middle_name, $last_name, $username, $user_role, $department, $created_at, $created_by)
 	{
 		$sql = "UPDATE user
-				  SET first_name = :first_name, last_name = :last_name, middle_name = :middle_name,
-				  username = :username, user_role = :user_role, department = :department, created_at = :created_at
+				  SET first_name = :first_name, middle_name = :middle_name, last_name = :last_name,
+				  username = :username, user_role = :user_role, department = :department, created_at = :created_at, created_by = :created_by
 				  WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->bindParam(":first_name", $first_name);
-		$query->bindParam(":last_name", $last_name);
 		$query->bindParam(":middle_name", $middle_name);
+		$query->bindParam(":last_name", $last_name);
 		$query->bindParam(":username", $username);
 		$query->bindParam(":user_role", $user_role);
 		$query->bindParam(":department", $department);
 		$query->bindParam(":created_at", $created_at);
+		$query->bindParam(":created_by", $created_by);
 		return $query->execute();
 	}
 
