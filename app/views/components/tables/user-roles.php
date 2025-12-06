@@ -32,8 +32,8 @@
 									<i class="fa-regular fa-pen-to-square"></i>Edit
 								</button>
 
-								<button type="button" class="open-button danger" data-target="#delete-user-role"
-									data-modal-type="delete-user-role" data-entity-id="<?= $row["id"] ?>">
+								<button type="button" class="open-button danger" data-target="#user-role-delete"
+									data-modal-type="user-role-delete" data-entity-id="<?= $row["id"] ?>">
 									<i class="fa-regular fa-trash-can"></i>Delete
 								</button>
 							</td>

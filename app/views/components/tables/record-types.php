@@ -3,7 +3,8 @@
 		<h2 class="header">Record Types</h2>
 		<?php if ($isAdmin): ?>
 			<div class="right actions">
-				<button type="button" class="open-button" data-target="#record-type-create" data-modal-type="record-type-create">
+				<button type="button" class="open-button" data-target="#record-type-create"
+					data-modal-type="record-type-create">
 					<i class="fa-solid fa-user-plus"></i>Add Record Type
 				</button>
 
@@ -37,12 +38,10 @@
 										  	htmlspecialchars(json_encode(["type_name" => $row["type_name"]])) ?>"><i
 											class="fa-regular fa-pen-to-square"></i>Edit</button>
 
-									<form action="delete-record-type" method="post" class="action">
-										<input type="hidden" name="row-id" value="<?= $row["id"] ?>">
-										<button class="danger" type="submit"
-											onclick="return confirm('Are you sure you want to delete the current record type <?= $row['type_name_formatted'] ?>?')"><i
-												class="fa-regular fa-trash-can"></i>Delete</button>
-									</form>
+									<button type="button" class="open-button danger" data-target="#record-type-delete"
+										data-modal-type="record-type-delete" data-entity-id="<?= $row["id"] ?>">
+										<i class="fa-regular fa-trash-can"></i>Delete
+									</button>
 								</td>
 							<?php endif ?>
 							<td><?= htmlspecialchars($row["id"]) ?></td>

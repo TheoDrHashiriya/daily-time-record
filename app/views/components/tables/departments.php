@@ -1,48 +1,64 @@
 <div class="card">
 	<div class="top">
 		<h2 class="header">Departments</h2>
-		<a href="all-departments" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+		<?php if (isset($isAdmin) && $isAdmin): ?>
+			<div class="right actions">
+				<button type="button" class="open-button" data-target="#department-create" data-modal-type="department-create">
+					<i class="fa-solid fa-building"></i>Add Department
+				</button>
+
+				<a href="all-departments" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+			</div>
+		<?php endif ?>
 	</div>
-	<?php if (!empty($departments)): ?>
+	<?php if (empty($departments)): ?>
+		<p>No departments found.</p>
+	<?php else: ?>
 		<div class="table-container">
 			<table>
 				<thead>
 					<tr>
-						<th>Actions</th>
+						<?php if (isset($isAdmin) && $isAdmin): ?>
+							<th>Actions</th>
+						<?php endif ?>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Created At</th>
+						<th>Abbreviation</th>
+						<th>Created On</th>
 					</tr>
 				</thead>
 
 				<tbody>
 					<?php foreach ($departments as $row): ?>
 						<tr>
-							<td class="actions">
-								<form action="edit-record" method="post" class="action">
-									<input type="hidden" name="id" value="<?= $row["id"] ?>">
-									<button type="submit"><i class="fa-regular fa-pen-to-square"></i>Edit</button>
-								</form>
+							<?php if (isset($isAdmin) && $isAdmin): ?>
+								<td class="actions">
+									<button type="button" class="open-button" data-target="#department-edit"
+										data-modal-type="department-edit" data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
+										  	htmlspecialchars(
+										  		json_encode([
+										  			"department_name" => $row["department_name"],
+										  			"abbreviation" => $row["abbreviation"],
+										  			"created_at" => $row["created_at"],
+										  		])
+										  	) ?>">
+										<i class="fa-regular fa-pen-to-square"></i>Edit
+									</button>
 
-								<form action="delete-record" method="post" class="action">
-									<input type="hidden" name="id" value="<?= $row["id"] ?>">
-									<button class="danger" type="submit"
-										onclick="return confirm('Are you sure you want to delete the current record for <?= $row['department_name'] ?>?')"><i
-											class="fa-regular fa-trash-can"></i>Delete</button>
-								</form>
-							</td>
+									<button type="button" class="open-button danger" data-target="#department-delete"
+										data-modal-type="department-delete" data-entity-id="<?= $row["id"] ?>">
+										<i class="fa-regular fa-trash-can"></i>Delete
+									</button>
+								</td>
+							<?php endif ?>
 							<td><?= htmlspecialchars($row["id"]) ?></td>
-							</td>
 							<td><?= htmlspecialchars($row["department_name"]) ?></td>
-							<td>
-								<?= App\Helpers\GlobalHelper::formatDate($row["created_at"]) . ", at " . App\Helpers\GlobalHelper::formatTime($row["created_at"]) ?>
-							</td>
+							<td><?= htmlspecialchars($row["abbreviation"]) ?></td>
+							<td><?= htmlspecialchars($row["created_on_formatted"] . ", " . $row["created_at_formatted"]) ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>
-	<?php else: ?>
-		<p>No departments found.</p>
 	<?php endif; ?>
 </div>

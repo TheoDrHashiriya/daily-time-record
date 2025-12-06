@@ -55,7 +55,7 @@
 								</td>
 								<td><?= htmlspecialchars($row["id"]) ?></td>
 							<?php endif ?>
-							<td><?= htmlspecialchars($row["user_id"]) ?></td>
+							<td><?= htmlspecialchars($row["user_id_code"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
 							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["event_date_formatted"]) ?></td>
