@@ -3,14 +3,14 @@ namespace App\Services;
 use App\Models\User;
 class AuthService
 {
-	private $userModel;
+	private User $userModel;
 
 	public function __construct(User $userModel)
 	{
 		$this->userModel = $userModel;
 	}
 
-	public function isLoggedIn()
+	public static function isLoggedIn()
 	{
 		return isset($_SESSION["user_id"]);
 	}
@@ -23,9 +23,9 @@ class AuthService
 		}
 	}
 
-	public function isAdmin()
+	public static function isAdmin()
 	{
-		return $this->isLoggedIn() && $_SESSION["user_role"] === 1;
+		return self::isLoggedIn() && $_SESSION["user_role"] === 1;
 	}
 
 	public function requireAdmin()
@@ -36,6 +36,13 @@ class AuthService
 		}
 	}
 
+	public function codeIsAdmin($code)
+	{
+		$user_id = (int) $code;
+		$user = $this->userModel->getById($user_id);
+		return $user["user_role"] === 1;
+	}
+
 	public function getCurrentUser()
 	{
 		return $this->isLoggedIn()
@@ -43,15 +50,26 @@ class AuthService
 			: null;
 	}
 
-	public function authenticate(string $username, string $password)
+	public function authenticateUsernamePassword(string $username, string $password)
 	{
-		$user = $this->userModel->getByUsername($username);
+		$user = $this->userModel->getByUsername($username) ?? null;
 
-		if (!$user || !password_verify($password, $user["hashed_password"])) {
+		if (!$user || !password_verify($password, $user["hashed_password"]))
 			// Error messages are vague so that pentesters won't try to
 			// bruteforce usernames until it stops saying "User not found".
-			return ["errors" => ["general" => "Incorrect credentials"]];
-		}
+			return ["errors" => ["general" => "Incorrect credentials."]];
+
+
+		return ["success" => true, "user" => $user];
+	}
+
+	public function authenticateCode($code)
+	{
+		$user_id = (int) $code;
+		$user = $this->userModel->getById($user_id);
+
+		if (!$user || empty($user))
+			return ["errors" => ["code" => "Incorrect code."]];
 
 		return ["success" => true, "user" => $user];
 	}
