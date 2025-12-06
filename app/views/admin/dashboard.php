@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
+	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
 	<script src="<?= JS_URL ?>/clock.js" defer></script>
 	<script src="<?= JS_URL ?>/modal.js" defer></script>
@@ -14,9 +15,26 @@
 	<script src="<?= JS_URL ?>/page-toggle.js" defer></script>
 	<script src="<?= JS_URL ?>/sidebar-toggle.js" defer></script>
 	<script src="<?= JS_URL ?>/theme.js"></script>
-
-	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 </head>
+
+<!-- GENERAL MODALS -->
+<?php include VIEWS_PATH . "/components/modals/success.php"; ?>
+<?php include VIEWS_PATH . "/components/modals/error.php"; ?>
+
+<?php if (isset($_SESSION["message"]["success"])): ?>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			showSuccessModal()
+		});
+	</script>
+<?php elseif (isset($_SESSION["message"]["error"])): ?>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			showErrorModal()
+		});
+	</script>
+<?php endif;
+unset($_SESSION["message"]) ?>
 
 <body>
 	<div class="dashboard-container">
@@ -65,16 +83,14 @@
 		</main>
 
 		<main class="main section" id="records-section">
-			<?php include VIEWS_PATH . "/components/cards/message.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/record-create.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/record-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/record-delete.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/records.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/record-types.php"; ?>
 		</main>
-		
+
 		<main class="main section" id="users-section">
-			<?php include VIEWS_PATH . "/components/cards/message.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-create.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-delete.php"; ?>
