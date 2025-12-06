@@ -15,6 +15,12 @@ class FormattingService
 		return ucfirst($first) . ' ' . ucfirst($middle) . ' ' . ucfirst($last);
 	}
 
+	// NUMBERS
+
+	public static function formatIdToCode($id){
+		return str_pad($id, 4, '0', STR_PAD_LEFT);
+	}
+
 	// DATE & TIME
 
 	public static function getCurrentDate()
