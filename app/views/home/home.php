@@ -6,14 +6,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Daily Time Record | Theonary</title>
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/home.css">
+	<!-- Theming script must start early to avoid flash of light mode -->
 	<script src="<?= JS_URL ?>/theme.js"></script>
-	<script src="<?= JS_URL ?>/clock.js" defer></script>
 	<script src="<?= JS_URL ?>/home/auth-form-info-pane.js" defer></script>
+	<script src="<?= JS_URL ?>/home/auth-form-code.js" defer></script>
+	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
+	<script src="<?= JS_URL ?>/clock.js" defer></script>
+	<?php if (!empty($_SESSION["code_is_admin"])): ?>
+		<script src="<?= JS_URL ?>/modal.js" defer></script>
+		<script src="<?= JS_URL ?>/home/show-login-modal.js" defer></script>
+	<?php endif ?>
 
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 </head>
 
 <body>
+	<!-- MODALS -->
+	<?php include VIEWS_PATH . "/components/modals/admin-login.php" ?>
+
 	<header>
 		<div class="left">
 			<h3>theonary</h3>
@@ -49,7 +59,6 @@
 
 			<section id="authentication-pane">
 				<?php include VIEWS_PATH . "/components/forms/auth-form.php" ?>
-				</form>
 		</div>
 		</section>
 		</div>
