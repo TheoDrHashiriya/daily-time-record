@@ -2,6 +2,15 @@ const openButtons = document.querySelectorAll(".open-button");
 const closeButtons = document.querySelectorAll(".close-button");
 const modalContainers = document.querySelectorAll(".modal-container");
 
+function showSuccessModal() {
+	const successModal = document.querySelector("#success");
+	successModal.classList.add("show");
+}
+
+function showErrorModal() {
+	const errorModal = document.querySelector("#error");
+	errorModal.classList.add("show");
+}
 
 openButtons.forEach(button => {
 	button.addEventListener("click", () => {
@@ -10,12 +19,9 @@ openButtons.forEach(button => {
 
 		if (!modalToShow) return;
 
-		// const requestId = button.dataset.requestId;
-		// if (requestId) {
-		// 	const hiddenRequestIdInput = modalToShow.querySelector("#release-request-id");
-		// 	if (hiddenRequestIdInput)
-		// 		hiddenRequestIdInput.value = requestId;
-		// }
+		// Clear previous errors
+		modalToShow.querySelectorAll(".error").forEach(line => line.textContent = "");
+		modalToShow.querySelectorAll(".error-general").forEach(line => line.textContent = "");
 		modalToShow.classList.add("show");
 	});
 });
