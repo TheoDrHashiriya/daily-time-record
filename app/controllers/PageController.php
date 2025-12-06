@@ -1,20 +1,18 @@
 <?php
 namespace App\Controllers;
-
+use App\Services\AuthService;
 
 class PageController
 {
-	private $erController;
+	private $recordController;
 	private $userController;
 	private $notifController;
 	private $depController;
 
-	public function __construct()
+	public function __construct(EventRecordController $recordController)
 	{
-		$this->erController = new EventRecordController();
+		$this->recordController = $recordController;
 		$this->userController = new UserController();
-		$this->notifController = new NotificationController();
-		$this->depController = new DepartmentController();
 	}
 
 	public function previewAllEventsPdf()
@@ -22,7 +20,7 @@ class PageController
 		AuthService::requireLogin();
 		AuthService::requireAdmin();
 
-		$records = $this->erController->getAll();
+		$records = $this->recordController->getAll();
 		PdfService::streamPdf(
 			"all-events.pdf",
 			["partials/pdf-styles.php", "partials/records-table.php"],
@@ -83,38 +81,12 @@ class PageController
 
 	// public function home()
 	// {
-	// 	$records = $this->erController->getAll();
+	// 	$records = $this->recordController->getAll();
 	// 	$authData = $this->authenticate();
 	// 	$errors = $authData["errors"] ?? [];
 	// 	$username = $authData["username"] ?? [];
 	// 	require __DIR__ . "/../views/home.php";
 	// }
-
-	public function timeIn()
-	{
-		AuthService::requireLogin();
-		$this->erController->timeIn($_SESSION["user_id"]);
-
-		$now = GlobalHelper::getCurrentDate();
-		$this->notifController->create(
-			"Time In",
-			$_SESSION["username"] . " has timed in on " . GlobalHelper::formatDate($now) . ", at " . GlobalHelper::formatTime($now) . ".",
-			$_SESSION["user_id"]
-		);
-	}
-
-	public function timeOut()
-	{
-		AuthService::requireLogin();
-		$this->erController->timeOut($_SESSION["user_id"]);
-
-		$now = GlobalHelper::getCurrentDate();
-		$this->notifController->create(
-			"Time Out",
-			$_SESSION["username"] . " has timed out on " . GlobalHelper::formatDate($now) . ", at " . GlobalHelper::formatTime($now) . ".",
-			$_SESSION["user_id"]
-		);
-	}
 
 	// ADMIN FUNCTIONS
 
@@ -128,7 +100,7 @@ class PageController
 	{
 		AuthService::requireLogin();
 		AuthService::requireAdmin();
-		$records = $this->erController->getAll();
+		$records = $this->recordController->getAll();
 		$users = $this->userController->getAll();
 		$notifications = $this->notifController->getAll();
 		$notifications_unread = $this->notifController->getAllUnread();
@@ -140,8 +112,8 @@ class PageController
 
 	public function getKpiData()
 	{
-		$kpiData["events_total"] = $this->erController->getTotal();
-		$kpiData["events_unclosed"] = $this->erController->getTotalUnclosed();
+		$kpiData["events_total"] = $this->recordController->getTotal();
+		$kpiData["events_unclosed"] = $this->recordController->getTotalUnclosed();
 		$kpiData["users_total"] = $this->userController->getTotal();
 		$kpiData["notifications_total"] = $this->notifController->getTotal();
 		$kpiData["departments_total"] = $this->depController->getTotal();
@@ -265,7 +237,7 @@ class PageController
 	{
 		AuthService::requireLogin();
 		AuthService::requireAdmin();
-		$this->erController->deleteAllFromUser($id);
+		$this->recordController->deleteAllFromUser($id);
 		$this->userController->delete($id);
 		$this->redirectToDashboard();
 		exit();
@@ -273,15 +245,11 @@ class PageController
 
 	// RECORDS
 
-	public function editRecord()
-	{
-	}
-
 	public function deleteRecord($id)
 	{
 		AuthService::requireLogin();
 		AuthService::requireAdmin();
-		$this->erController->delete($id);
+		$this->recordController->delete($id);
 		$this->redirectToDashboard();
 		exit();
 	}

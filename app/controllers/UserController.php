@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use PDOException;
 
 class UserController extends Controller
 {
@@ -31,14 +32,52 @@ class UserController extends Controller
 		return $this->userModel->getById($id);
 	}
 
-	public function register($first_name, $last_name, $middle_name, $username, $password, $role)
+	public function create()
 	{
-		if ($this->userModel->exists($username))
-			return ["error" => "Username already taken."];
+		$first_name = trim($_POST["first_name"]);
+		$middle_name = trim($_POST["middle_name"]);
+		$last_name = trim($_POST["last_name"]);
+		$username = trim($_POST["username"]);
+		$password = trim($_POST["password"]);
+		$user_role = trim($_POST["user_role"]);
+		$department = trim($_POST["department"]);
+		$created_by = trim($_SESSION["user_id"] ?? "");
 
-		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-		$created = $this->userModel->create($first_name, $last_name, $middle_name, $username, $hashedPassword, $role);
-		return $created ? ["success" => true] : ["error" => "Failed to create account."];
+		$errors = [];
+
+		if ($this->userModel->exists($username))
+			$errors["username"] = "Username already taken.";
+		if (empty($first_name))
+			$errors["first_name"] = "First name is required.";
+		if (empty($last_name))
+			$errors["last_name"] = "Last name is required.";
+		if (empty($username))
+			$errors["username"] = "Username is required.";
+		if (empty($password))
+			$errors["password"] = "Password is required.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+		$created = $this->userModel->create(
+			$first_name,
+			$middle_name,
+			$last_name,
+			$username,
+			$hashed_password,
+			$user_role,
+			$department,
+			$created_by
+		);
+
+		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode(["success" => $created, "message" => $created ? "User created successfully." : "Failed to create user."]);
+		exit();
 	}
 
 	public function edit()
@@ -51,22 +90,29 @@ class UserController extends Controller
 		$user_role = trim($_POST["user_role"]);
 		$department = trim($_POST["department"]);
 		$created_at = trim($_POST["created_at"] ?? "");
-
-		$this->userModel->update(
-			$id,
-			$first_name,
-			$middle_name,
-			$last_name,
-			$username,
-			$user_role,
-			$department,
-			$created_at
-		);
-
 		$created_by = trim($_POST["created_by"] ?? "");
 
-		if ($created_by !== "")
-			$this->userModel->updateCreator($id, $created_by);
+		if ($this->userModel->exists($username))
+			$errors["username"] = "Username already taken.";
+		if (empty($first_name))
+			$errors["first_name"] = "First name is required.";
+		if (empty($last_name))
+			$errors["last_name"] = "Last name is required.";
+		if (empty($username))
+			$errors["username"] = "Username is required.";
+		if (empty($password))
+			$errors["password"] = "Password is required.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$updated = $this->userModel->update($id, $first_name, $middle_name, $last_name, $username, $user_role, $department, $created_at, $created_by);
+		$updated ? $message["success"] = "User updated successfully." : $message["error"] = "User to update notification.";
+
+		$_SESSION["message"] = $message;
 
 		header("Location: dashboard");
 		exit();
@@ -75,7 +121,24 @@ class UserController extends Controller
 	public function delete()
 	{
 		$id = trim($_POST["entity_id"]);
-		$this->userModel->delete($id);
+		$message = [];
+
+		try {
+			$deleted = $this->userModel->delete($id);
+			$deleted ? $message["success"] = "User deleted successfully." : $message["error"] = "Failed to delete user.";
+		} catch (PDOException $e) {
+			switch ($e->getCode()) {
+				case 23000:
+					$message["error"] = "Cannot delete user because it is referenced elsewhere.";
+					break;
+
+				default:
+					$message["error"] = "Database error: " . $e->getMessage();
+					break;
+			}
+		}
+
+		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
 	}

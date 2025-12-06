@@ -2,19 +2,19 @@
 namespace App\Controllers;
 use App\Models\Notification;
 
-class NotificationController
+class NotificationController extends Controller
 {
-	private $notifModel;
+	private Notification $notificationModel;
 
-	public function __construct()
+	public function __construct(Notification $notificationModel)
 	{
-		$this->notifModel = new Notification();
+		$this->notificationModel = $notificationModel;
 	}
 
 	// FOR KPIS
 	public function getTotal()
 	{
-		$notifications = $this->notifModel->getAll();
+		$notifications = $this->notificationModel->getAll();
 		return count($notifications);
 	}
 
@@ -22,21 +22,72 @@ class NotificationController
 
 	public function getAll()
 	{
-		return $this->notifModel->getAll();
+		return $this->notificationModel->getAll();
 	}
 
 	public function getById($id)
 	{
-		return $this->notifModel->getById($id);
+		return $this->notificationModel->getById($id);
 	}
 
-	public function create($title, $content, $created_by)
+	public function create()
 	{
-		return $this->notifModel->create($title, $content, $created_by);
+		$title = trim($_POST["title"]);
+		$content = trim($_POST["content"]);
+		$created_by = trim($_POST["created_by"]);
+
+		if (empty($title))
+			$errors["title"] = "Title is required.";
+		if (empty($content))
+			$errors["content"] = "Content is required.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$created = $this->notificationModel->create($title, $content, $created_by);
+		$created ? $message["success"] = "Notification created successfully." : $message["error"] = "Failed to create notification.";
+		$_SESSION["message"] = $message;
+		header("Location: dashboard");
+		exit();
 	}
 
-	public function delete($id)
+	public function edit()
 	{
-		return $this->notifModel->delete($id);
+		$id = trim($_POST["entity_id"]);
+		$title = trim($_POST["title"]);
+		$content = trim($_POST["content"]);
+		$created_by = trim($_POST["created_by"]);
+
+		if (empty($title))
+			$errors["title"] = "Title is required.";
+		if (empty($content))
+			$errors["content"] = "Content is required.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$updated = $this->notificationModel->update($id, $title, $content, $created_by);
+		$updated ? $message["success"] = "Notification updated successfully." : $message["error"] = "Failed to update notification.";
+
+		$_SESSION["message"] = $message;
+
+		header("Location: dashboard");
+		exit();
+	}
+
+	public function delete()
+	{
+		$id = trim($_POST["entity_id"]);
+		$deleted = $this->notificationModel->delete($id);
+		$deleted ? $message["success"] = "Notification deleted successfully." : $message["error"] = "Failed to delete notification.";
+		$_SESSION["message"] = $message;
+		header("Location: dashboard");
+		exit();
 	}
 }

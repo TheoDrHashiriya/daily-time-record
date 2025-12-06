@@ -1,15 +1,14 @@
 <?php
 namespace App\Controllers;
 use App\Models\EventRecord;
-use Seld\JsonLint\JsonParser;
 
 class EventRecordController extends Controller
 {
-	private $erModel;
+	private EventRecord $erModel;
 
-	public function __construct()
+	public function __construct(EventRecord $erModel)
 	{
-		$this->erModel = new EventRecord();
+		$this->erModel = $erModel;
 	}
 
 	// FOR KPIS
@@ -26,54 +25,6 @@ class EventRecordController extends Controller
 	}
 
 	// MAIN
-
-	public function timeIn($user_id)
-	{
-		if ($this->erModel->hasTimedInToday($user_id)) {
-			$_SESSION["error"] = "You have already clocked in for today.";
-			$_SESSION["has_timed_in_today"] = true;
-			return;
-		}
-
-		if ($this->erModel->hasTimedOutToday($user_id)) {
-			$_SESSION["error"] = "You have already clocked out for today.";
-			$_SESSION["has_timed_out_today"] = true;
-			return;
-		}
-
-		if ($this->erModel->recordTimeIn($user_id)) {
-			$_SESSION["success"] = "Time-in recorded successfully.";
-			$_SESSION["has_timed_in_today"] = true;
-			return;
-		}
-
-		$_SESSION["error"] = "Failed to record time-in.";
-		$_SESSION["has_timed_in_today"] = false;
-	}
-
-	public function timeOut($user_id)
-	{
-		if (!$this->erModel->hasTimedInToday($user_id)) {
-			$_SESSION["error"] = "You have not yet clocked in for today.";
-			$_SESSION["has_timed_out_today"] = false;
-			return;
-		}
-
-		if ($this->erModel->hasTimedOutToday($user_id)) {
-			$_SESSION["error"] = "You have already clocked out for today.";
-			$_SESSION["has_timed_out_today"] = true;
-			return;
-		}
-
-		if ($this->erModel->recordTimeOut($user_id)) {
-			$_SESSION["success"] = "Time-out recorded successfully.";
-			$_SESSION["has_timed_out_today"] = true;
-			return;
-		}
-
-		$_SESSION["error"] = "Failed to record time-out.";
-		$_SESSION["has_timed_out_today"] = false;
-	}
 
 	public function getAll()
 	{
