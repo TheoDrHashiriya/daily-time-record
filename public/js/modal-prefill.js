@@ -1,5 +1,4 @@
-const openFormButtons = document.querySelectorAll(".open-button[data-entity-data]");
-
+const openFormButtons = document.querySelectorAll(".open-button");
 
 openFormButtons.forEach(button => {
 	button.addEventListener("click", () => {
@@ -13,13 +12,16 @@ openFormButtons.forEach(button => {
 
 		const form = modalToShow.querySelector("form");
 		const entityId = button.dataset.entityId;
+		
 		let entityData = {};
 
-		try {
-			entityData = JSON.parse(button.dataset.entityData);
-		} catch (e) {
-			console.error("Failed to parse entity data:", e);
-			return;
+		if (button.dataset.entityData) {
+			try {
+				entityData = JSON.parse(button.dataset.entityData);
+			} catch (e) {
+				console.error("Invalid entity data JSON:", e);
+				entityData = {};
+			}
 		}
 
 		// PREFILLS
@@ -31,8 +33,9 @@ openFormButtons.forEach(button => {
 			const input = form.querySelector(`#${key}`);
 			if (!input) continue;
 
-			if (input.type === "datetime-local" && entityData[key]) {
-				const date = new Date(entityData[key]);
+			if (input.type === "datetime-local") {
+				const rawValue = entityData[key] || new Date();
+				const date = new Date(rawValue);
 				const yyyy = date.getFullYear();
 				const mm = String(date.getMonth() + 1).padStart(2, '0');
 				const dd = String(date.getDate()).padStart(2, '0');
