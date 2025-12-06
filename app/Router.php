@@ -1,33 +1,66 @@
 <?php
 namespace Router;
-session_start();
-// Composer autoload
-require_once __DIR__ . "./../vendor/autoload.php";
-// Configs
-require_once __DIR__ . "/config/db_config.php";
-require_once __DIR__ . "/config/email_config.php";
+
+require_once __DIR__ . "/bootstrap.php";
+
 // Controllers
 use App\Controllers\HomeController;
 use App\Controllers\DashboardController;
-use App\Controllers\UserController;
+use App\Controllers\DepartmentController;
 use App\Controllers\EventRecordController;
+use App\Controllers\NotificationController;
+use App\Controllers\UserController;
 use App\Controllers\PageController;
+use App\Models\Department;
+use App\Models\EventRecord;
+use App\Models\Notification;
+use App\Models\User;
+use App\Models\UserRole;
+use App\Services\AuthService;
+use App\Services\DashboardService;
+use App\Services\HomeService;
 
 class Router
 {
-	private $homeController;
-	private $dashboardController;
-	private $pageController;
-	private $userController;
-	private $erController;
+	private HomeController $homeController;
+	private DashboardController $dashboardController;
+	private DepartmentController $departmentController;
+	private EventRecordController $recordController;
+	private NotificationController $notificationController;
+	private PageController $pageController;
+	private UserController $userController;
 
 	public function __construct()
 	{
-		$this->homeController = new HomeController();
-		$this->dashboardController = new DashboardController();
-		$this->pageController = new PageController();
+		// Initiations, DI stuff
+
+		// Models
+		$departmentModel = new Department();
+		$notificationModel = new Notification();
+		$recordModel = new EventRecord();
+		$userModel = new User();
+		$userRoleModel = new UserRole();
+
+		// Services
+		$authService = new AuthService($userModel);
+		$homeService = new HomeService();
+		$dashboardService = new DashboardService(
+			$authService,
+			$departmentModel,
+			$notificationModel,
+			$recordModel,
+			$userModel,
+			$userRoleModel
+		);
+
+		// Controllers
+		$this->homeController = new HomeController($authService, $recordModel, $homeService, $notificationModel);
+		$this->dashboardController = new DashboardController($authService, $dashboardService);
+		$this->recordController = new EventRecordController($recordModel);
+		$this->departmentController = new DepartmentController($departmentModel);
+		$this->notificationController = new NotificationController($notificationModel);
+		$this->pageController = new PageController($this->recordController);
 		$this->userController = new UserController();
-		$this->erController = new EventRecordController();
 		$this->run();
 	}
 
@@ -60,21 +93,24 @@ class Router
 				$this->homeController->index();
 				break;
 
-			// EMPLOYEE
 			case "authenticate":
-				$this->homeController->processLogin();
+				$this->homeController->processLoginFromCode();
+				break;
+
+			case "login":
+				$this->homeController->processLoginFromPassword();
 				break;
 
 			case "logout":
 				$this->homeController->logout();
 				break;
 
-			case "timein":
-				$this->pageController->timeIn();
+			case "time-in":
+				$this->homeController->timeIn();
 				break;
 
-			case "timeout":
-				$this->pageController->timeOut();
+			case "time-out":
+				$this->homeController->timeOut();
 				break;
 
 			// ADMIN
@@ -87,6 +123,36 @@ class Router
 				$this->pageController->register();
 				break;
 
+			// CRUD
+
+			case "create-department":
+				if (!$this->departmentController->create()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
+			case "edit-department":
+				if (!$this->departmentController->edit()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
+			case "delete-department":
+				if (!$this->departmentController->delete()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
+			case "create-user":
+				if (!$this->userController->create()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
 			case "edit-user":
 				if (!$this->userController->edit()) {
 					http_response_code(405);
@@ -95,33 +161,45 @@ class Router
 				break;
 
 			case "delete-user":
-				if ($this->postEntityIdIsSet())
-					$this->pageController->deleteUser($_POST["id"]);
-				else
+				if (!$this->userController->delete()) {
 					http_response_code(405);
-				echo "<p>Invalid request.</p>";
+					echo "<p>Invalid request.</p>";
+				}
 				break;
 
 			case "edit-record":
-				if (!$this->erController->edit()) {
+				if (!$this->recordController->edit()) {
 					http_response_code(405);
 					echo "<p>Invalid request.</p>";
 				}
 				break;
 
 			case "delete-record":
-				if (!$this->erController->delete()) {
+				if (!$this->recordController->delete()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
+			case "create-notification":
+				if (!$this->notificationController->create()) {
+					http_response_code(405);
+					echo "<p>Invalid request.</p>";
+				}
+				break;
+
+			case "edit-notification":
+				if (!$this->notificationController->edit()) {
 					http_response_code(405);
 					echo "<p>Invalid request.</p>";
 				}
 				break;
 
 			case "delete-notification":
-				if ($this->postEntityIdIsSet())
-					$this->pageController->deleteNotification($_POST["id"]);
-				else
+				if (!$this->notificationController->delete()) {
 					http_response_code(405);
-				echo "<p>Invalid request.</p>";
+					echo "<p>Invalid request.</p>";
+				}
 				break;
 
 			// PDF HANDLING
