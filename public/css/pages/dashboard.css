@@ -141,6 +141,11 @@ header.header {
 	color: var(--tertiary);
 }
 
+.sidebar a.nav.selected {
+	background-color: color-mix(in srgb, var(--sidebar), white 7%);
+	color: var(--tertiary);
+}
+
 .sidebar i {
 	color: inherit;
 }

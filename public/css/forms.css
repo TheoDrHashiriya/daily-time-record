@@ -28,7 +28,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
 	width: 100%;
 	padding: 12px;
 	background-color: var(--border);
@@ -37,6 +38,11 @@ select {
 	border: none;
 	outline: none;
 	font-size: 16px;
+}
+
+textarea {
+	resize: vertical;
+	min-height: 2.7em;
 }
 
 input#code {

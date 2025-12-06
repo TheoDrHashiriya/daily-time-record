@@ -6,6 +6,7 @@
 @import url("modals.css");
 @import url("partials.css");
 @import url("tables.css");
+@import url("text.css");
 @import url("themes.css");
 
 /* THE EVERYTHING RULE */
@@ -24,30 +25,6 @@ select:hover {
 	cursor: pointer;
 }
 
-/* TEXT */
-
-h1,
-h2,
-h3,
-h4 {
-	font-weight: 600;
-}
-
-p {
-	font-size: 14.5px;
-	text-align: center;
-	margin-bottom: 10px;
-}
-
-a {
-	text-decoration: none;
-	color: var(--secondary);
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
 a i {
 	color: inherit;
 	margin-right: 5px;
@@ -55,15 +32,4 @@ a i {
 
 i:hover {
 	cursor: pointer;
-}
-
-p.error,
-p.error-general {
-	margin-bottom: 20px;
-	text-align: left;
-	color: var(--error);
-}
-
-p.error-general {
-	text-align: center;
 }
