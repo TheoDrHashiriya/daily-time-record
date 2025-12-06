@@ -1,19 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const lastSection = localStorage.getItem("lastSection") || "home-section";
-	document.getElementById(lastSection).style.display = "flex";
 
-	document.querySelectorAll(".sidebar a.nav").forEach((link) => {
-		link.addEventListener("click", function (e) {
+	const links = document.querySelectorAll(".sidebar a.nav");
+	const sections = document.querySelectorAll(".section");
+
+	function showSection(targetId) {
+		sections.forEach((section) => (section.style.display = "none"));
+		document.getElementById(targetId).style.display = "flex";
+		links.forEach((link) =>
+			link.classList.toggle("selected", link.dataset.target === targetId));
+		localStorage.setItem("lastSection", targetId);
+	}
+
+	showSection(lastSection);
+
+	links.forEach((link) => {
+		link.addEventListener("click", (e) => {
 			e.preventDefault();
-
-			document
-				.querySelectorAll(".section")
-				.forEach((section) => (section.style.display = "none"));
-
-			const targetId = link.dataset.target;
-			document.getElementById(targetId).style.display = "flex";
-			localStorage.setItem("lastSection", targetId);
-		});
+			showSection(link.dataset.target);
+		})
 	});
 
 	document.querySelector(".sidebar a#logout").addEventListener("click", () => {
