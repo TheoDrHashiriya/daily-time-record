@@ -44,7 +44,7 @@ class Router
 		// Controllers
 		$this->homeController = new HomeController($authService, $recordModel, $homeService, $notificationModel);
 		$this->dashboardController = new DashboardController($authService, $dashboardService);
-		$this->recordController = new EventRecordController($recordModel);
+		$this->recordController = new EventRecordController($recordModel, $dashboardService);
 		$this->departmentController = new DepartmentController($departmentModel);
 		$this->notificationController = new NotificationController($notificationModel);
 		$this->pageController = new PageController($this->recordController);
@@ -176,7 +176,7 @@ class Router
 
 			// PDF HANDLING
 			case "all-events":
-				$this->pageController->previewAllEventsPdf();
+				$this->recordController->streamToPdf();
 				break;
 
 			case "all-users":
