@@ -3,3 +3,6 @@
 # Composer
 /vendor
 composer.phar
+
+# DOMPDF
+public/fonts/*.json
