@@ -117,10 +117,6 @@ class Router
 				$this->dashboardController->index();
 				break;
 
-			case "register":
-				$this->pageController->register();
-				break;
-
 			// CRUD
 
 			case "create-department":
@@ -193,15 +189,6 @@ class Router
 
 			case "all-departments":
 				$this->pageController->previewAllDepartmentsPdf();
-				break;
-
-			// AJAX & PARTIALS
-			case "ajax/auth-form":
-				include __DIR__ . "/views/partials/home/auth-form.php";
-				break;
-
-			case "ajax/auth-button":
-				include __DIR__ . "/views/partials/home/auth-button.php";
 				break;
 
 			default:
