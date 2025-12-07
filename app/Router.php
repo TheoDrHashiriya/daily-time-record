@@ -4,21 +4,9 @@ namespace Router;
 require_once __DIR__ . "/bootstrap.php";
 
 // Controllers
-use App\Controllers\HomeController;
-use App\Controllers\DashboardController;
-use App\Controllers\DepartmentController;
-use App\Controllers\EventRecordController;
-use App\Controllers\NotificationController;
-use App\Controllers\UserController;
-use App\Controllers\PageController;
-use App\Models\Department;
-use App\Models\EventRecord;
-use App\Models\Notification;
-use App\Models\User;
-use App\Models\UserRole;
-use App\Services\AuthService;
-use App\Services\DashboardService;
-use App\Services\HomeService;
+use App\Controllers\{HomeController, DashboardController, DepartmentController, EventRecordController, NotificationController, UserController, PageController};
+use App\Models\{Department, EventRecord, Notification, User, UserRole};
+use App\Services\{AuthService, DashboardService, HomeService};
 
 class Router
 {
