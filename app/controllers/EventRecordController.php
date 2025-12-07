@@ -1,39 +1,54 @@
 <?php
 namespace App\Controllers;
 use App\Models\EventRecord;
+use App\Services\DashboardService;
+use PrintService;
 
 class EventRecordController extends Controller
 {
-	private EventRecord $erModel;
+	private EventRecord $recordModel;
+	private DashboardService $dashboardService;
 
-	public function __construct(EventRecord $erModel)
+	public function __construct(EventRecord $recordModel, DashboardService $dashboardService)
 	{
-		$this->erModel = $erModel;
+		$this->recordModel = $recordModel;
+		$this->dashboardService=$dashboardService;
 	}
 
 	// FOR KPIS
 
 	public function getTotal()
 	{
-		$records = $this->erModel->getAll();
+		$records = $this->recordModel->getAll();
 		return count($records);
 	}
 
 	public function getTotalUnclosed()
 	{
-		return $this->erModel->getTotalUnclosed();
+		return $this->recordModel->getTotalUnclosed();
 	}
 
 	// MAIN
 
 	public function getAll()
 	{
-		return $this->erModel->getAll();
+		return $this->recordModel->getAll();
 	}
 
 	public function getByUserId($user_id)
 	{
-		return $this->erModel->getByUserId($user_id);
+		return $this->recordModel->getByUserId($user_id);
+	}
+
+	public function streamToPdf()
+	{
+		$records = $this->dashboardService->getEventRecords();
+		PrintService::streamPdf(
+			"all-events.pdf",
+			["components/pdf/pdf-styles", "components/tables/records"],
+			["records" => $records]
+		);
+		exit();
 	}
 
 	public function edit()
@@ -48,7 +63,7 @@ class EventRecordController extends Controller
 		if ($event_time === "")
 			$errors["event_time"] = "Please enter the time of the event.";
 
-		$this->erModel->update($id, $event_time, $event_type, $user_id);
+		$this->recordModel->update($id, $event_time, $event_type, $user_id);
 
 		header("Location: dashboard");
 		exit();
@@ -57,13 +72,13 @@ class EventRecordController extends Controller
 	public function delete()
 	{
 		$id = trim($_POST["entity_id"]);
-		$this->erModel->delete($id);
+		$this->recordModel->delete($id);
 		header("Location: dashboard");
 		exit();
 	}
 
 	public function deleteAllFromUser($user_id)
 	{
-		return $this->erModel->deleteAllFromUser($user_id);
+		return $this->recordModel->deleteAllFromUser($user_id);
 	}
 }
