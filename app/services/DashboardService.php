@@ -60,8 +60,8 @@ class DashboardService
 		$departments = $this->departmentModel->getAll();
 
 		foreach ($departments as &$department) {
-			$department["created_at_formatted"] = FormattingService::formatTime($department["created_at"]);
-			$department["created_on_formatted"] = FormattingService::formatDate($department["created_at"]);
+			$department["created_at_formatted"] = FormatService::formatTime($department["created_at"]);
+			$department["created_on_formatted"] = FormatService::formatDate($department["created_at"]);
 		}
 		unset($department);
 
@@ -74,17 +74,17 @@ class DashboardService
 		$notifications_unread = $this->notificationModel->getAllUnread();
 
 		foreach ($notifications as &$notification) {
-			$notification["created_by_full_name_formatted"] = FormattingService::formatFullName(
+			$notification["created_by_full_name_formatted"] = FormatService::formatFullName(
 				$notification["first_name"],
 				$notification["middle_name"],
 				$notification["last_name"]
 			);
-			$notification["created_at_formatted"] = FormattingService::formatTime($notification["created_at"]);
-			$notification["created_on_formatted"] = FormattingService::formatDate($notification["created_at"]);
+			$notification["created_at_formatted"] = FormatService::formatTime($notification["created_at"]);
+			$notification["created_on_formatted"] = FormatService::formatDate($notification["created_at"]);
 		}
 		unset($notification);
 
-		$notifications = FormattingService::sortArrayByColumn($notifications, "created_at");
+		$notifications = FormatService::sortArrayByColumn($notifications, "created_at");
 
 		return [
 			"notifications" => $notifications,
@@ -97,10 +97,10 @@ class DashboardService
 		$records = $this->recordModel->getAll();
 
 		foreach ($records as &$record) {
-			$record["event_date_formatted"] = FormattingService::formatDate($record["event_time"]);
-			$record["event_time_formatted"] = FormattingService::formatTime($record["event_time"]);
-			$record["type_name_formatted"] = FormattingService::formatEventType($record["type_name"]);
-			$record["user_id_code"] = FormattingService::formatIdToCode($record["user_id"]);
+			$record["event_date_formatted"] = FormatService::formatDate($record["event_time"]);
+			$record["event_time_formatted"] = FormatService::formatTime($record["event_time"]);
+			$record["type_name_formatted"] = FormatService::formatEventType($record["type_name"]);
+			$record["user_id_code"] = FormatService::formatIdToCode($record["user_id"]);
 		}
 		unset($record);
 
@@ -112,7 +112,7 @@ class DashboardService
 		$record_types = $this->recordModel->getAllTypes();
 
 		foreach ($record_types as &$type) {
-			$type["type_name_formatted"] = FormattingService::formatEventType($type["type_name"]);
+			$type["type_name_formatted"] = FormatService::formatEventType($type["type_name"]);
 		}
 		unset($type);
 
@@ -124,7 +124,7 @@ class DashboardService
 		$users = $this->userModel->getAll();
 
 		foreach ($users as &$user) {
-			$user["full_name_formatted"] = FormattingService::formatFullName(
+			$user["full_name_formatted"] = FormatService::formatFullName(
 				$user["first_name"],
 				$user["middle_name"],
 				$user["last_name"],
@@ -140,7 +140,7 @@ class DashboardService
 		$user_roles = $this->userRoleModel->getAll();
 
 		foreach ($user_roles as &$role) {
-			$role["role_name_formatted"] = FormattingService::formatText($role["role_name"]);
+			$role["role_name_formatted"] = FormatService::formatText($role["role_name"]);
 		}
 		unset($role);
 

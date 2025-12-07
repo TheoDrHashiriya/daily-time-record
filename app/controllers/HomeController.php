@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Models\EventRecord;
 use App\Models\Notification;
 use App\Services\AuthService;
-use App\Services\FormattingService;
+use App\Services\FormatService;
 use App\Services\HomeService;
 
 class HomeController extends Controller
@@ -141,14 +141,14 @@ class HomeController extends Controller
 	{
 		$this->authService->requireLogin();
 
-		$now = FormattingService::getCurrentDate();
+		$now = FormatService::getCurrentDate();
 		if (!$this->recordModel->recordTimeIn($_SESSION["user_id"]))
 			$_SESSION["error"] = "Failed to record time-in.";
 		else {
 			$_SESSION["success"] = "Time-in recorded successfully.";
 			$this->notificationModel->create(
 				"Time In",
-				$_SESSION["username"] . " has timed in on " . FormattingService::formatDate($now) . ", at " . FormattingService::formatTime($now) . ".",
+				$_SESSION["username"] . " has timed in on " . FormatService::formatDate($now) . ", at " . FormatService::formatTime($now) . ".",
 				$_SESSION["user_id"]
 			);
 		}
@@ -158,14 +158,14 @@ class HomeController extends Controller
 	{
 		$this->authService->requireLogin();
 
-		$now = FormattingService::getCurrentDate();
+		$now = FormatService::getCurrentDate();
 		if (!$this->recordModel->recordTimeOut($_SESSION["user_id"]))
 			$_SESSION["error"] = "Failed to record time-out.";
 		else {
 			$_SESSION["success"] = "Time-out recorded successfully.";
 			$this->notificationModel->create(
 				"Time Out",
-				$_SESSION["username"] . " has timed out on " . FormattingService::formatDate($now) . ", at " . FormattingService::formatTime($now) . ".",
+				$_SESSION["username"] . " has timed out on " . FormatService::formatDate($now) . ", at " . FormatService::formatTime($now) . ".",
 				$_SESSION["user_id"]
 			);
 		}
