@@ -1,5 +1,17 @@
 <style>
-	@import url("https://fonts.googleapis.com/css?family=Inter");
+	@font-face {
+		font-family: "Inter";
+		src: url("<?= realpath(FONTS_PATH . '/Inter/static/Inter_18pt-Regular.ttf') ?>") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Inter";
+		src: url("<?= realpath(FONTS_PATH . '/Inter/static/Inter_18pt-Bold.ttf') ?>");
+		font-weight: bold;
+		font-style: normal;
+	}
 
 	* {
 		box-sizing: border-box;
@@ -60,7 +72,7 @@
 	}
 
 	th {
-		font-weight: 600;
+		font-weight: bold;
 		background-color: var(--table-header);
 		color: var(--header-text);
 	}
@@ -73,6 +85,6 @@
 	h2,
 	h3,
 	h4 {
-		font-weight: 600;
+		font-weight: bold;
 	}
 </style>
