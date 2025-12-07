@@ -7,7 +7,9 @@
 					<i class="fa-solid fa-user-plus"></i>Add Record
 				</button>
 
-				<a href="all-events" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+				<a href="all-events" target="_blank" class="action">
+					<i class="fa-solid fa-print"></i>Print to PDF
+				</a>
 			</div>
 		<?php endif ?>
 	</div>
