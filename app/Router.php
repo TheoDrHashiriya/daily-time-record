@@ -64,9 +64,19 @@ class Router
 		$this->run();
 	}
 
-	public function postEntityIdIsSet()
+	public function respondWithStatus($code)
 	{
-		return $_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["id"]);
+		http_response_code($code);
+
+		switch ($code) {
+			case 404:
+				echo "<p>Page not found.</p>";
+				break;
+
+			case 405:
+			default:
+				echo "<p>Invalid request.</p>";
+		}
 	}
 
 	public function run()
@@ -126,80 +136,58 @@ class Router
 			// CRUD
 
 			case "create-department":
-				if (!$this->departmentController->create()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->departmentController->create())
+					$this->respondWithStatus(405);
 				break;
 
 			case "edit-department":
-				if (!$this->departmentController->edit()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->departmentController->edit())
+					$this->respondWithStatus(405);
 				break;
 
 			case "delete-department":
-				if (!$this->departmentController->delete()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->departmentController->delete())
+					$this->respondWithStatus(405);
 				break;
 
 			case "create-user":
-				if (!$this->userController->create()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->userController->create())
+					$this->respondWithStatus(405);
 				break;
 
 			case "edit-user":
-				if (!$this->userController->edit()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->userController->edit())
+					$this->respondWithStatus(405);
 				break;
 
 			case "delete-user":
-				if (!$this->userController->delete()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->userController->delete())
+					$this->respondWithStatus(405);
 				break;
 
 			case "edit-record":
-				if (!$this->recordController->edit()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->recordController->edit())
+					$this->respondWithStatus(405);
 				break;
 
 			case "delete-record":
-				if (!$this->recordController->delete()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->recordController->delete())
+					$this->respondWithStatus(405);
 				break;
 
 			case "create-notification":
-				if (!$this->notificationController->create()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->notificationController->create())
+					$this->respondWithStatus(405);
 				break;
 
 			case "edit-notification":
-				if (!$this->notificationController->edit()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->notificationController->edit())
+					$this->respondWithStatus(405);
 				break;
 
 			case "delete-notification":
-				if (!$this->notificationController->delete()) {
-					http_response_code(405);
-					echo "<p>Invalid request.</p>";
-				}
+				if (!$this->notificationController->delete())
+					$this->respondWithStatus(405);
 				break;
 
 			// PDF HANDLING
@@ -229,8 +217,7 @@ class Router
 				break;
 
 			default:
-				http_response_code(404);
-				echo "<p>Page not found.</p>";
+				$this->respondWithStatus(404);
 		}
 	}
 }
