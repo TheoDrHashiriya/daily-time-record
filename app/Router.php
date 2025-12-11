@@ -4,8 +4,8 @@ namespace Router;
 require_once __DIR__ . "/bootstrap.php";
 
 // Controllers
-use App\Controllers\{HomeController, DashboardController, DepartmentController, EventRecordController, NotificationController, UserController, PageController};
-use App\Models\{Department, EventRecord, Notification, User, UserRole};
+use App\Controllers\{HomeController, DashboardController, DepartmentController, EventRecordController, SystemLogController, UserController, PageController};
+use App\Models\{Department, EventRecord, SystemLog, User, UserRole};
 use App\Services\{AuthService, DashboardService, HomeService};
 
 class Router
@@ -14,7 +14,7 @@ class Router
 	private DashboardController $dashboardController;
 	private DepartmentController $departmentController;
 	private EventRecordController $recordController;
-	private NotificationController $notificationController;
+	private SystemLogController $systemLogController;
 	private PageController $pageController;
 	private UserController $userController;
 
@@ -24,7 +24,7 @@ class Router
 
 		// Models
 		$departmentModel = new Department();
-		$notificationModel = new Notification();
+		$systemLogModel = new SystemLog();
 		$recordModel = new EventRecord();
 		$userModel = new User();
 		$userRoleModel = new UserRole();
@@ -35,20 +35,20 @@ class Router
 		$dashboardService = new DashboardService(
 			$authService,
 			$departmentModel,
-			$notificationModel,
+			$systemLogModel,
 			$recordModel,
 			$userModel,
 			$userRoleModel
 		);
 
 		// Controllers
-		$this->homeController = new HomeController($authService, $recordModel, $homeService, $notificationModel);
+		$this->homeController = new HomeController($authService, $recordModel, $homeService, $systemLogModel);
 		$this->dashboardController = new DashboardController($authService, $dashboardService);
 		$this->recordController = new EventRecordController($recordModel, $dashboardService);
 		$this->departmentController = new DepartmentController($departmentModel);
-		$this->notificationController = new NotificationController($notificationModel);
+		$this->systemLogController = new SystemLogController($dashboardService, $systemLogModel);
 		$this->pageController = new PageController($this->recordController);
-		$this->userController = new UserController();
+		$this->userController = new UserController($userModel, $dashboardService);
 		$this->run();
 	}
 
@@ -69,20 +69,23 @@ class Router
 
 	public function run()
 	{
+		$requestUri = $_SERVER["REQUEST_URI"];
+		$parsedUrl = parse_url($requestUri);
+
 		// Gets request URI without forward-slashes and base URL
-		$request = trim(
+		$requestPath = trim(
 			str_replace(
 				BASE_URL,
 				"",
-				$_SERVER["REQUEST_URI"]
+				$parsedUrl["path"]
 			),
 			"/"
 		);
 
 		// Removes .php in the request
-		$request = preg_replace("/\.php$/", "", $request);
+		$requestPath = preg_replace("/\.php$/", "", $requestPath);
 
-		switch ($request) {
+		switch ($requestPath) {
 			case "":
 			case ".";
 			case "/":
@@ -92,28 +95,23 @@ class Router
 				break;
 
 			case "authenticate":
-				$this->homeController->processLoginFromCode();
+				$this->homeController->processUserNumber();
 				break;
 
 			case "login":
 				$this->homeController->processLoginFromPassword();
 				break;
 
+			case "login-qr":
+				$this->homeController->processQrCode();
+				break;
+
 			case "logout":
 				$this->homeController->logout();
 				break;
 
-			case "time-in":
-				$this->homeController->timeIn();
-				break;
-
-			case "time-out":
-				$this->homeController->timeOut();
-				break;
-
 			// ADMIN
 			case "dashboard":
-				// $this->pageController->dashboard();
 				$this->dashboardController->index();
 				break;
 
@@ -149,6 +147,11 @@ class Router
 					$this->respondWithStatus(405);
 				break;
 
+			case "create-record":
+				if (!$this->recordController->create())
+					$this->respondWithStatus(405);
+				break;
+
 			case "edit-record":
 				if (!$this->recordController->edit())
 					$this->respondWithStatus(405);
@@ -159,18 +162,18 @@ class Router
 					$this->respondWithStatus(405);
 				break;
 
-			case "create-notification":
-				if (!$this->notificationController->create())
+			case "create-system-log":
+				if (!$this->systemLogController->create())
 					$this->respondWithStatus(405);
 				break;
 
-			case "edit-notification":
-				if (!$this->notificationController->edit())
+			case "edit-system-log":
+				if (!$this->systemLogController->edit())
 					$this->respondWithStatus(405);
 				break;
 
-			case "delete-notification":
-				if (!$this->notificationController->delete())
+			case "delete-system-log":
+				if (!$this->systemLogController->delete())
 					$this->respondWithStatus(405);
 				break;
 
@@ -180,11 +183,11 @@ class Router
 				break;
 
 			case "all-users":
-				$this->pageController->previewAllUsersPdf();
+				$this->userController->streamToPdf();
 				break;
 
-			case "all-notifications":
-				$this->pageController->previewAllNotificationsPdf();
+			case "all-system-logs":
+				$this->systemLogController->streamToPdf();
 				break;
 
 			case "all-departments":
