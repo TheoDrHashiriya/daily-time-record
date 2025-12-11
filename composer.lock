@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4b50e59b18a2f4a8d00275dad4a2d24",
+    "content-hash": "bd0e661ec50be69e09104380bae4f2d2",
     "packages": [
         {
             "name": "dompdf/dompdf",
@@ -205,54 +205,6 @@
                 "source": "https://github.com/FortAwesome/Font-Awesome"
             },
             "time": "2025-10-01T19:14:40+00:00"
-        },
-        {
-            "name": "koolreport/core",
-            "version": "6.6.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/koolreport/core.git",
-                "reference": "48c94289ff456a2ca9dfff770f7b3738b2e6f844"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/koolreport/core/zipball/48c94289ff456a2ca9dfff770f7b3738b2e6f844",
-                "reference": "48c94289ff456a2ca9dfff770f7b3738b2e6f844",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "KoolPHP Inc",
-                    "homepage": "https://www.koolphp.net"
-                }
-            ],
-            "description": "An Open Source PHP Reporting Framework for easier and faster report delivery.",
-            "homepage": "https://www.koolreport.com",
-            "keywords": [
-                "PHP Reporting Framework",
-                "PHP Reporting Tools",
-                "charts and graphs",
-                "data processing",
-                "data visualization"
-            ],
-            "support": {
-                "issues": "https://github.com/koolreport/core/issues",
-                "source": "https://github.com/koolreport/core/tree/v6.6.6"
-            },
-            "time": "2025-09-08T07:23:55+00:00"
         },
         {
             "name": "masterminds/html5",
