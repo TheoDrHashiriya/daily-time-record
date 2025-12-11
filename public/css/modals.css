@@ -15,6 +15,7 @@
 }
 
 .modal-container#success,
+.modal-container#info,
 .modal-container#error {
 	align-items: flex-start;
 	background: none;
@@ -28,13 +29,17 @@
 
 .modal {
 	background: var(--card);
-	padding: 24px;
+	padding: 20px;
 	border-radius: 12px;
 	box-shadow: 0 3px 10px black;
 	width: fit-content;
 	max-width: 700px;
 	max-height: 90vh;
 	overflow-y: auto;
+}
+
+.modal .header i{
+	margin-left: 15px;
 }
 
 .modal-actions {
@@ -70,4 +75,25 @@
 .modal-container .header i.symbol:hover {
 	color: inherit;
 	cursor: default;
+}
+
+/* QR CODE */
+
+.modal-container.show#login-qr-code {
+	pointer-events: auto;
+}
+
+.modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.1);
+	color: var(--text);
+	font-weight: bold;
+	cursor: pointer;
 }

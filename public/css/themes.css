@@ -16,7 +16,8 @@
 	--text: #202020;
 	--header-text: #000000;
 	--label-text: #515151;
-
+	--placeholder-text: #6c6c6c;
+	
 	/* SEMANTIC */
 	--secondary: #0000aa;
 	--button: #0000aa;
@@ -48,7 +49,8 @@
 	--text: #dddddd;
 	--header-text: #ffffff;
 	--label-text: #999999;
-
+	--placeholder-text: #8b8b8b;
+	
 	/* SEMANTIC */
 	--secondary: #00aaff;
 	--button: #3f3fd9;
@@ -90,6 +92,7 @@ a {
 	color: var(--secondary);
 }
 
-a:hover {
+a:hover,
+#theme-toggle:hover {
 	color: var(--tertiary);
 }

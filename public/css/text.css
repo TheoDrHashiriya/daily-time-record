@@ -2,7 +2,7 @@ h1,
 h2,
 h3,
 h4 {
-	font-weight: 600;
+	font-weight: 500;
 }
 
 p {
@@ -21,13 +21,15 @@ a:hover {
 }
 
 p.success,
+p.info,
 p.error,
 p.error-general {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	text-align: left;
 }
 
 .modal-container#success p,
+.modal-container#info p,
 .modal-container#error p {
 	margin-bottom: 0;
 }

@@ -3,12 +3,14 @@
 @import url("buttons.css");
 @import url("cards.css");
 @import url("fonts.css");
+@import url("inputs.css");
 @import url("links.css");
 @import url("modals.css");
-@import url("partials.css");
 @import url("tables.css");
 @import url("text.css");
 @import url("themes.css");
+
+@import url("_responsive.css");
 
 /* THE EVERYTHING RULE */
 
@@ -17,20 +19,4 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* INPUTS */
-
-input:hover,
-select:hover {
-	cursor: pointer;
-}
-
-a i {
-	color: inherit;
-	margin-right: 5px;
-}
-
-i:hover {
-	cursor: pointer;
 }

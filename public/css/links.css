@@ -1,4 +1,10 @@
 a.action {
 	font-size: 0.9rem;
 	font-weight: 500;
+	display: flex;
+	align-items: center;
+}
+
+header a#logout {
+	margin-right: 10px;
 }

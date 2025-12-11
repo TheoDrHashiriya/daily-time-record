@@ -1,0 +1,63 @@
+label {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+input,
+select,
+textarea {
+	width: 100%;
+	padding: 12px;
+	background-color: var(--border);
+	color: var(--text);
+	border-radius: 6px;
+	border: none;
+	outline: none;
+	font-size: 16px;
+}
+
+textarea {
+	resize: vertical;
+	min-height: 2.7em;
+}
+
+input#user_number {
+	text-align: center;
+	font-size: xx-large;
+}
+
+input:hover,
+select:hover {
+	cursor: pointer;
+}
+
+a i {
+	color: inherit;
+	margin-right: 5px;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+.search-container {
+	position: relative;
+}
+
+.search-container input {
+	padding-right: 30px;
+	height: 25px;
+	width: 150px;
+	font-size: 0.9rem;
+}
+
+.search-container button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	padding: 0px 8px;
+	background: none;
+	color: var(--placeholder-text);
+}

@@ -8,7 +8,6 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: stretch;
-	width: 100%;
 	background-color: var(--card);
 	border-radius: 10px;
 	padding: 20px;
@@ -22,12 +21,43 @@
 
 .card .top .right {
 	display: flex;
-	align-items: flex-start;
-	gap: 20px;
+	flex-direction: column;
+	align-items: end;
+	gap: 10px;
+	padding-bottom: 10px;
 }
 
 .card .header {
 	text-align: left;
 	margin-top: 0;
-	margin-bottom: 1rem;
+	margin-bottom: 0.7rem;
+}
+
+.card-title {
+	color: var(--text);
+	font-size: 16px;
+	text-align: center;
+}
+
+.card-value {
+	color: var(--header-text);
+	font-size: 28px;
+	text-align: center;
+	font-weight: 700;
+}
+
+.card .row {
+	display: flex;
+	gap: 15px
+}
+
+/* TIME CARD */
+
+#time {
+	text-align: center;
+}
+
+#time-text {
+	margin-bottom: 0;
+	font-size: 45px;
 }

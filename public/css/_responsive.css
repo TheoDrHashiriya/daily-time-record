@@ -1,0 +1,6 @@
+@media (max-width: 800px) {
+	form .row {
+		display: flex;
+		flex-direction: column;
+	}
+}

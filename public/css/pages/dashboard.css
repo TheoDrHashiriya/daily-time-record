@@ -43,7 +43,7 @@ header.header {
 	gap: 12px;
 }
 
-.notification-wrapper {
+.notification-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -51,7 +51,7 @@ header.header {
 	position: relative;
 }
 
-.notif-popup {
+.notification-dropdown {
 	visibility: hidden;
 	width: 160px;
 	background-color: var(--bg-gradient);
@@ -64,7 +64,7 @@ header.header {
 	margin-left: -80px;
 }
 
-.notif-popup .show {
+.notification-dropdown .show {
 	visibility: visible;
 	-webkit-animation: fadeIn 1s;
 	animation: fadeIn 1s;
@@ -153,7 +153,6 @@ header.header {
 /* MAIN SECTION */
 
 .main {
-	background-color: var(--bg-gradient);
 	padding: 10px;
 	gap: 15px;
 	display: flex;
@@ -170,9 +169,10 @@ header.header {
 	display: flex;
 }
 
-.section .row {
-	display: flex;
+main>.row {
+	display: grid;
 	gap: 15px;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .card#welcome {

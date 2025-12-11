@@ -2,16 +2,6 @@
 	margin: 0 15px;
 }
 
-div.column {
-	width: 100%;
-}
-
-@media (max-width: 800px) {
-	form div.row {
-		flex-direction: column;
-	}
-}
-
 div.row.header {
 	display: flex;
 	align-items: flex-start;
@@ -21,33 +11,13 @@ div.row.header {
 	border-bottom: 1px solid var(--cross-border);
 }
 
-label {
-	display: inline-block;
+form div.row {
+	display: flex;
+	gap: 15px;
+}
+
+div.column {
 	width: 100%;
-	margin-bottom: 5px;
-}
-
-input,
-select,
-textarea {
-	width: 100%;
-	padding: 12px;
-	background-color: var(--border);
-	color: var(--text);
-	border-radius: 6px;
-	border: none;
-	outline: none;
-	font-size: 16px;
-}
-
-textarea {
-	resize: vertical;
-	min-height: 2.7em;
-}
-
-input#code {
-	text-align: center;
-	font-size: xx-large;
 }
 
 button.main {

@@ -59,8 +59,12 @@ div.left {
 	flex: 1;
 }
 
-#table-pane {
-	/* height: 100%; */
+#table-pane .card {
+	height: 90vh;
+}
+
+#table-pane .card .table-container {
+	max-height: 90vh;
 }
 
 main div.right {
@@ -70,10 +74,6 @@ main div.right {
 	display: flex;
 	flex-direction: column;
 }
-
-#time-pane {}
-
-#info-pane {}
 
 #authentication-pane {
 	display: flex;
