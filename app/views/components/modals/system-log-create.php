@@ -1,28 +1,23 @@
-<div class="modal-container" id="notification-edit">
+<div class="modal-container" id="system-log-create">
 	<div class="modal">
 		<div class="row header">
-			<h2 class="header"><i class="symbol fa-solid fa-pen-to-square"></i>Edit Notification</h2>
+			<h2 class="header"><i class="symbol fa-solid fa-pen-to-square"></i>Create New System Log</h2>
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="edit-form" method="post" action="edit-notification">
-			<input type="hidden" name="entity_id" value="">
+		<form method="post" action="create-system-log">
 
 			<div class="row">
 				<div class="column">
 					<label for="created_by">Created By</label>
 					<select id="created_by" name="created_by" required>
-						<?php foreach ($users as $user)
-							echo "<option value=\"{$user["id"]}\">{$user["full_name_formatted"]}</option>";
-						?>"
+						<?php foreach ($users["data"] as $user): ?>
+							<option value="<?= $user["id"] ?>">
+								<?= $user["full_name_formatted"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["created_by"] ?? "" ?></p>
-				</div>
-
-				<div class="column">
-					<label for="created_at">Created On</label>
-					<input id="created_at" type="datetime-local" step="1" name="created_at">
-					<p class="error"><?= $errors["created_at"] ?? "" ?></p>
 				</div>
 			</div>
 
