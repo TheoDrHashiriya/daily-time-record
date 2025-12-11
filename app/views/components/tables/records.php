@@ -3,18 +3,20 @@
 		<h2 class="header">Daily Time Records</h2>
 		<?php if (isset($isAdmin) && $isAdmin): ?>
 			<div class="right actions">
-				<button type="button" class="open-button" data-target="#record-create" data-modal-type="record-create">
-					<i class="fa-solid fa-user-plus"></i>Add Record
-				</button>
+				<div class="row">
+					<button type="button" class="open-button" data-target="#record-create" data-modal-type="record-create">
+						<i class="fa-solid fa-user-plus"></i>Add Record
+					</button>
 
-				<a href="all-events" target="_blank" class="action">
-					<i class="fa-solid fa-print"></i>Print to PDF
-				</a>
+					<a href="all-events" target="_blank" class="action">
+						<i class="fa-solid fa-print"></i>Print to PDF
+					</a>
+				</div>
 			</div>
 		<?php endif ?>
 	</div>
 
-	<?php if (empty($records)): ?>
+	<?php if (empty($records["data"])): ?>
 		<p>No records found.</p>
 	<?php else: ?>
 		<div class="table-container">
@@ -24,8 +26,9 @@
 						<?php if (isset($isAdmin) && $isAdmin): ?>
 							<th>Actions</th>
 							<th>Event ID</th>
+							<th>User ID</th>
 						<?php endif ?>
-						<th>User ID</th>
+						<th>User No.</th>
 						<th>User</th>
 						<th>Type</th>
 						<th>Date</th>
@@ -34,7 +37,7 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($records as $row): ?>
+					<?php foreach ($records["data"] as $row): ?>
 						<tr>
 							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
@@ -56,8 +59,9 @@
 									</button>
 								</td>
 								<td><?= htmlspecialchars($row["id"]) ?></td>
+								<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<?php endif ?>
-							<td><?= htmlspecialchars($row["user_id_code"]) ?></td>
+							<td><?= htmlspecialchars($row["user_number"]) ?></td>
 							<td><?= htmlspecialchars($row["user"]) ?></td>
 							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["event_date_formatted"]) ?></td>

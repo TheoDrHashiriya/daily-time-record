@@ -7,11 +7,13 @@
 					<i class="fa-solid fa-building"></i>Add Department
 				</button>
 
-				<a href="all-departments" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+				<a href="all-departments" target="_blank" class="action">
+					<i class="fa-solid fa-print"></i>Print to PDF
+				</a>
 			</div>
 		<?php endif ?>
 	</div>
-	<?php if (empty($departments)): ?>
+	<?php if (empty($departments["data"])): ?>
 		<p>No departments found.</p>
 	<?php else: ?>
 		<div class="table-container">
@@ -24,12 +26,14 @@
 						<th>ID</th>
 						<th>Name</th>
 						<th>Abbreviation</th>
+						<th>Standard Time In</th>
+						<th>Standard Time Out</th>
 						<th>Created On</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<?php foreach ($departments as $row): ?>
+					<?php foreach ($departments["data"] as $row): ?>
 						<tr>
 							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
@@ -39,6 +43,8 @@
 										  		json_encode([
 										  			"department_name" => $row["department_name"],
 										  			"abbreviation" => $row["abbreviation"],
+										  			"standard_time_in" => $row["standard_time_in"],
+										  			"standard_time_out" => $row["standard_time_out"],
 										  			"created_at" => $row["created_at"],
 										  		])
 										  	) ?>">
@@ -54,6 +60,8 @@
 							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["department_name"]) ?></td>
 							<td><?= htmlspecialchars($row["abbreviation"]) ?></td>
+							<td><?= htmlspecialchars($row["standard_time_in_formatted"]) ?></td>
+							<td><?= htmlspecialchars($row["standard_time_out_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["created_on_formatted"] . ", " . $row["created_at_formatted"]) ?></td>
 						</tr>
 					<?php endforeach; ?>

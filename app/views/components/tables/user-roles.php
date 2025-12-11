@@ -5,12 +5,11 @@
 			<button type="button" class="open-button" data-target="#create-user-role" data-modal-type="create-user-role">
 				<i class="fa-solid fa-user-tag"></i>Add User Role
 			</button>
-			<a href="all-users" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
 		</div>
 	</div>
 
-	<?php if (empty($users)): ?>
-		<p>No users found.</p>
+	<?php if (empty($user_roles["data"])): ?>
+		<p>No user roles found.</p>
 	<?php else: ?>
 		<div class="table-container">
 			<table>
@@ -23,7 +22,7 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($user_roles as $row): ?>
+					<?php foreach ($user_roles["data"] as $row): ?>
 						<tr>
 							<td class="actions">
 								<button type="button" class="open-button" data-target="#user-role-edit"
