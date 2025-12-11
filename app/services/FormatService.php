@@ -15,13 +15,6 @@ class FormatService
 		return ucfirst($first) . ' ' . ucfirst($middle) . ' ' . ucfirst($last);
 	}
 
-	// NUMBERS
-
-	public static function formatIdToCode($id)
-	{
-		return str_pad($id, 4, '0', STR_PAD_LEFT);
-	}
-
 	// DATE & TIME
 
 	public static function getCurrentDate()
@@ -41,7 +34,7 @@ class FormatService
 
 	public static function formatEventType($type_name)
 	{
-		return strtoupper(str_replace("time_", '', $type_name));
+		return strtoupper(str_replace(["AM_", "PM_"], '', $type_name));
 	}
 
 	// SORTING
