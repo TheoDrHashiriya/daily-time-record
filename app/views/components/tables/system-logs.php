@@ -1,20 +1,17 @@
 <div class="card">
 	<div class="top">
-		<h2 class="header">Notifications</h2>
+		<h2 class="header">System Logs</h2>
 		<?php if (isset($isAdmin) && $isAdmin): ?>
 			<div class="right actions">
-				<button type="button" class="open-button" data-target="#notification-create"
-					data-modal-type="notification-create">
-					<i class="fa-solid fa-user-plus"></i>Add Notification
-				</button>
-
-				<a href="all-notifications" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+				<a href="all-system-logs" target="_blank" class="action">
+					<i class="fa-solid fa-print"></i>Print to PDF
+				</a>
 			</div>
 		<?php endif ?>
 	</div>
 
-	<?php if (empty($notifications)): ?>
-		<p>No notifications found.</p>
+	<?php if (empty($system_logs["data"])): ?>
+		<p>No system logs found.</p>
 	<?php else: ?>
 		<div class="table-container">
 			<table>
@@ -32,7 +29,7 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($notifications as $row): ?>
+					<?php foreach ($system_logs["data"] as $row): ?>
 						<tr>
 							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
