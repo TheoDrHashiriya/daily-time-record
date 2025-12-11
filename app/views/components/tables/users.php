@@ -1,28 +1,42 @@
 <div class="card">
 	<div class="top">
 		<h2 class="header">Users</h2>
-		<?php if ($isAdmin): ?>
+		<?php if (isset($isAdmin) && $isAdmin): ?>
 			<div class="right actions">
-				<button type="button" class="open-button" data-target="#user-create" data-modal-type="user-create">
-					<i class="fa-solid fa-user-plus"></i>Add User
-				</button>
+				<div class="row">
+					<div class="search-container">
+						<form action="" method="GET">
+							<input type="search" name="users" id="users" placeholder="Search"
+								value="<?= isset($users["search"]) ? htmlspecialchars($users["search"]) : "" ?>">
+							<button type="submit"><i class="fa-solid fa-search"></i></button>
+						</form>
+					</div>
+				</div>
 
-				<a href="all-users" target="_blank"><i class="fa-solid fa-print"></i>Print to PDF</a>
+				<div class="row">
+					<button type="button" class="open-button" data-target="#user-create" data-modal-type="user-create">
+						<i class="fa-solid fa-user-plus"></i>Add User
+					</button>
+
+					<a href="all-users" target="_blank" class="action">
+						<i class="fa-solid fa-print"></i>Print to PDF
+					</a>
+				</div>
 			</div>
 		<?php endif ?>
 	</div>
 
-	<?php if (empty($users)): ?>
+	<?php if (empty($users["data"])): ?>
 		<p>No users found.</p>
 	<?php else: ?>
 		<div class="table-container">
 			<table>
 				<thead>
 					<tr>
-						<?php if ($isAdmin): ?>
+						<?php if (isset($isAdmin) && $isAdmin): ?>
 							<th>Actions</th>
 						<?php endif ?>
-						<th>ID</th>
+						<th>User Number</th>
 						<th>First Name</th>
 						<th>Middle Name</th>
 						<th>Last Name</th>
@@ -35,9 +49,9 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($users as $row): ?>
+					<?php foreach ($users["data"] as $row): ?>
 						<tr>
-							<?php if ($isAdmin): ?>
+							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
 									<button type="button" class="open-button" data-target="#user-edit" data-modal-type="user-edit"
 										data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
@@ -62,23 +76,17 @@
 									</button>
 								</td>
 							<?php endif ?>
-							<td><?= htmlspecialchars($row["id"]) ?></td>
+							<td><?= htmlspecialchars($row["user_number"]) ?></td>
 							<td><?= htmlspecialchars($row["first_name"]) ?></td>
-							<td>
-								<?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?>
-							</td>
+							<td><?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?></td>
 							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
-							<td><?= htmlspecialchars(App\Services\FormattingService::formatText($row["role_name"])) ?></td>
-							<td><?= htmlspecialchars(App\Services\FormattingService::formatText($row["department_name"])) ?></td>
+							<td><?= htmlspecialchars($row["role_name_formatted"]) ?></td>
+							<td><?= htmlspecialchars($row["department_name_formatted"]) ?></td>
 							<td>
-								<?= $row["creator_first_name"] ? htmlspecialchars(App\Services\FormattingService::formatFullName(
-									$row["creator_first_name"],
-									$row["creator_middle_name"],
-									$row["creator_last_name"]
-								)) : "<em>No creator.</em>" ?>
+								<?= isset($row["created_by_formatted"]) ? htmlspecialchars($row["created_by_formatted"]) : "<em>No creator.</em>" ?>
 							</td>
-							<td><?= htmlspecialchars(App\Services\FormattingService::formatDate($row["created_at"])) ?></td>
+							<td><?= htmlspecialchars($row["created_at_formatted"]) ?></td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>
