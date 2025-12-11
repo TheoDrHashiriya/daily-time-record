@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
-	<script src="<?= JS_URL ?>/clock.js" defer></script>
+	<script src="<?= JS_URL ?>/time.js" defer></script>
 	<script src="<?= JS_URL ?>/modal.js" defer></script>
 	<script src="<?= JS_URL ?>/modal-prefill.js" defer></script>
 	<script src="<?= JS_URL ?>/notification-toggle.js" defer></script>
@@ -19,20 +19,15 @@
 
 <!-- GENERAL MODALS -->
 <?php include VIEWS_PATH . "/components/modals/success.php"; ?>
+<?php include VIEWS_PATH . "/components/modals/info.php"; ?>
 <?php include VIEWS_PATH . "/components/modals/error.php"; ?>
 
 <?php if (isset($_SESSION["message"]["success"])): ?>
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			showSuccessModal()
-		});
-	</script>
+	<script>document.addEventListener("DOMContentLoaded", () => showSuccessModal())</script>
+<?php elseif (isset($_SESSION["message"]["info"])): ?>
+	<script>document.addEventListener("DOMContentLoaded", () => showInfoModal())</script>
 <?php elseif (isset($_SESSION["message"]["error"])): ?>
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			showErrorModal()
-		});
-	</script>
+	<script>document.addEventListener("DOMContentLoaded", () => showErrorModal())</script>
 <?php endif;
 unset($_SESSION["message"]) ?>
 
@@ -42,44 +37,39 @@ unset($_SESSION["message"]) ?>
 		<?php include VIEWS_PATH . "/layouts/sidebar.php"; ?>
 
 		<main class="main section" id="home-section">
-			<?php include VIEWS_PATH . "/components/cards/welcome-logout.php"; ?>
-			<?php include VIEWS_PATH . "/components/cards/time.php"; ?>
-
 			<div class="row">
-				<div class="card">
-					<h2>Total Events</h2>
-					<h3><?= $kpiData["events_total"] ?></h3>
-				</div>
-
-				<div class="card">
-					<h2>Unclosed Records</h2>
-					<h3><?= $kpiData["events_unclosed"] ?></h3>
-				</div>
-
-				<div class="card">
-					<h2>Total Users</h2>
-					<h3><?= $kpiData["users_total"] ?></h3>
-				</div>
+				<?php include VIEWS_PATH . "/components/cards/time.php"; ?>
 			</div>
 
+			<!-- KPI CONTAINER -->
 			<div class="row">
 				<div class="card">
-					<h2>Total Notifications</h2>
-					<h3><?= $kpiData["notifications_total"] ?></h3>
+					<div class="card-value"><?= $records["total"] ?></div>
+					<div class="card-title">Total Records</div>
 				</div>
 
 				<div class="card">
-					<h2>Total Departments</h2>
-					<h3><?= $kpiData["departments_total"] ?></h3>
+					<div class="card-value"><?= $records["unclosed"] ?></div>
+					<div class="card-title">Unclosed Records</div>
+				</div>
+
+				<div class="card">
+					<div class="card-value"><?= $users["total"] ?></div>
+					<div class="card-title">Total Users</div>
+				</div>
+
+				<div class="card">
+					<div class="card-value"><?= $departments["total"] ?></div>
+					<div class="card-title">Total Departments</div>
 				</div>
 			</div>
 		</main>
 
-		<main class="main section" id="notifications-section">
-			<?php include VIEWS_PATH . "/components/modals/notification-create.php"; ?>
-			<?php include VIEWS_PATH . "/components/modals/notification-edit.php"; ?>
-			<?php include VIEWS_PATH . "/components/modals/notification-delete.php"; ?>
-			<?php include VIEWS_PATH . "/components/tables/notifications.php"; ?>
+		<main class="main section" id="system-logs-section">
+			<?php include VIEWS_PATH . "/components/modals/system-log-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/system-log-edit.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/system-log-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/system-logs.php"; ?>
 		</main>
 
 		<main class="main section" id="records-section">
