@@ -1,6 +1,0 @@
-<?php if (isset($_SESSION["is_logged_in"]) && $_SESSION["is_logged_in"]): ?>
-	<div class="card" id="welcome">
-		<h4>Welcome, <?= htmlspecialchars($_SESSION["first_name"]) ?>!</h4>
-		<a href="logout" id="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
-	</div>
-<?php endif; ?>
