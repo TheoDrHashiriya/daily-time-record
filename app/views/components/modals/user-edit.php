@@ -38,9 +38,11 @@
 				<div class="column">
 					<label for="user_role">Role</label>
 					<select id="user_role" name="user_role" required>
-						<?php foreach ($user_roles as $role)
-							echo "<option value=\"{$role["id"]}\">{$role["role_name_formatted"]}</option>";
-						?>"
+						<?php foreach ($user_roles["data"] as $role): ?>
+							<option value="<?= $role["id"] ?>">
+								<?= $role["role_name_formatted"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["user_role"] ?? "" ?></p>
 				</div>
@@ -48,9 +50,11 @@
 				<div class="column">
 					<label for="department">Department</label>
 					<select id="department" name="department" required>
-						<?php foreach ($departments as $dep)
-							echo "<option value=\"{$dep["id"]}\">{$dep["department_name"]}</option>";
-						?>"
+						<?php foreach ($departments["data"] as $dep): ?>
+							<option value="<?= $dep["id"] ?>">
+								<?= $dep["department_name"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["department"] ?? "" ?></p>
 				</div>
@@ -61,9 +65,11 @@
 					<label for="created_by">Created By</label>
 					<select id="created_by" name="created_by">
 						<option value="">None</option>
-						<?php foreach ($users as $user)
-							echo "<option value=\"{$user["id"]}\">{$user["full_name_formatted"]}</option>";
-						?>"
+						<?php foreach ($users["data"] as $user): ?>
+							<option value="<?= $user["id"] ?>">
+								<?= $user["full_name_formatted"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["created_by"] ?? "" ?></p>
 				</div>

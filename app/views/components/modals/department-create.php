@@ -5,8 +5,7 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="create-form" method="post" action="create-department">
-			<input type="hidden" name="entity_id" value="">
+		<form method="post" action="create-department">
 
 			<div class="row">
 				<div class="column">
@@ -19,6 +18,20 @@
 					<label for="department_name">Abbreviation</label>
 					<input type="text" name="abbreviation" id="abbreviation">
 					<p class="error"><?= $errors["abbreviation"] ?? "" ?></p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="column">
+					<label for="standard_time_in">Standard Time In</label>
+					<input id="standard_time_in" type="time" name="standard_time_in">
+					<p class="error"><?= $errors["standard_time_in"] ?? "" ?></p>
+				</div>
+
+				<div class="column">
+					<label for="standard_time_out">Standard Time Out</label>
+					<input id="standard_time_out" type="time" name="standard_time_out">
+					<p class="error"><?= $errors["standard_time_out"] ?? "" ?></p>
 				</div>
 			</div>
 

@@ -5,14 +5,15 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="create-form" method="post" action="create-record">
-			<input type="hidden" name="entity_id" value="">
+		<form method="post" action="create-record">
 
 			<label for="user_id">Created By</label>
 			<select id="user_id" name="user_id" required>
-				<?php foreach ($users as $user)
-					echo "<option value=\"{$user["id"]}\">{$user["full_name_formatted"]}</option>";
-				?>"
+				<?php foreach ($users["data"] as $user): ?>
+					<option value="<?= $user["id"] ?>">
+						<?= $user["full_name_formatted"] ?>
+					</option>
+				<?php endforeach ?>
 			</select>
 			<p class="error"><?= $errors["user_id"] ?? "" ?></p>
 
@@ -26,9 +27,11 @@
 				<div class="column">
 					<label for="event_type">Record Type</label>
 					<select id="event_type" name="event_type" required>
-						<?php foreach ($record_types as $type)
-							echo "<option value=\"{$type["id"]}\">{$type["type_name_formatted"]}</option>";
-						?>
+						<?php foreach ($record_types as $type): ?>
+							<option value="<?= $type["id"] ?>">
+								<?= $type["type_name_formatted"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["event_type"] ?? "" ?></p>
 				</div>

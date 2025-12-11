@@ -5,8 +5,8 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="create-form" method="post" action="create-user">
-			<input type="hidden" name="entity_id" value="">
+		<form method="post" action="create-user">
+			<input type="hidden" name="created_by" id="created_by" value="<?= $_SESSION["user_id"] ?? "" ?>">
 
 			<div class="row">
 				<div class="column">
@@ -46,9 +46,11 @@
 				<div class="column">
 					<label for="user_role">Role</label>
 					<select id="user_role" name="user_role">
-						<?php foreach ($user_roles as $role)
-							echo "<option value=\"{$role["id"]}\">{$role["role_name_formatted"]}</option>";
-						?>"
+						<?php foreach ($user_roles["data"] as $role): ?>
+							<option value="<?= $role["id"] ?>">
+								<?= $role["role_name_formatted"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["user_role"] ?? "" ?></p>
 				</div>
@@ -56,32 +58,15 @@
 				<div class="column">
 					<label for="department">Department</label>
 					<select id="department" name="department">
-						<?php foreach ($departments as $dep)
-							echo "<option value=\"{$dep["id"]}\">{$dep["department_name"]}</option>";
-						?>"
+						<?php foreach ($departments["data"] as $dep): ?>
+							<option value="<?= $dep["id"] ?>">
+								<?= $dep["department_name"] ?>
+							</option>
+						<?php endforeach ?>
 					</select>
 					<p class="error"><?= $errors["department"] ?? "" ?></p>
 				</div>
 			</div>
-
-			<!-- <div class="row">
-				<div class="column">
-					<label for="created_by">Created By</label>
-					<select id="created_by" name="created_by">
-						<option value="">None</option>
-						<?php foreach ($users as $user)
-							echo "<option value=\"{$user["id"]}\">{$user["full_name_formatted"]}</option>";
-						?>"
-					</select>
-					<p class="error"><?= $errors["created_by"] ?? "" ?></p>
-				</div>
-
-				<div class="column">
-					<label for="created_at">Created At</label>
-					<input id="created_at" type="datetime-local" step="1" name="created_at" required>
-					<p class="error"><?= $errors["created_at"] ?? "" ?></p>
-				</div>
-			</div> -->
 
 			<div class="modal-actions">
 				<button class="close-button" type="button" id="cancel">Cancel</button>
