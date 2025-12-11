@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\EventRecord;
-use App\Models\Notification;
+use App\Models\SystemLog;
 use App\Services\AuthService;
 use App\Services\FormatService;
 use App\Services\HomeService;
@@ -11,38 +11,49 @@ class HomeController extends Controller
 	private AuthService $authService;
 	private EventRecord $recordModel;
 	private HomeService $homeService;
-	private Notification $notificationModel;
+	private SystemLog $systemLogModel;
 
-	public function __construct(AuthService $authService, EventRecord $recordModel, HomeService $homeService, Notification $notificationModel)
+	public function __construct(AuthService $authService, EventRecord $recordModel, HomeService $homeService, SystemLog $systemLogModel)
 	{
 		$this->authService = $authService;
 		$this->homeService = $homeService;
 		$this->recordModel = $recordModel;
-		$this->notificationModel = $notificationModel;
+		$this->systemLogModel = $systemLogModel;
 	}
-	
+
 	public function index()
 	{
+		if ($this->authService->isAdmin())
+			header("Location: dashboard");
+
 		$data = $this->homeService->getAllData();
 		$this->renderView("home/home", $data);
 	}
 
 	public function logout()
 	{
-		header("Location: .");
+		$message = $_SESSION["message"] ?? null;
+
 		$this->authService->logout();
+
+		session_start();
+
+		if ($message)
+			$_SESSION["message"] = $message;
+
+		header("Location: home");
 		exit();
 	}
 
-	public function processLoginFromCode()
+	public function processUserNumber()
 	{
-		$code = trim($_POST["code"] ?? "");
+		$userNumber = trim($_POST["user_number"] ?? "");
 		$errors = [];
 
-		if (\strlen($code) < 4)
-			$errors["code"] = "Please enter a 4-digit code.";
-		if (empty($code))
-			$errors["code"] = "Please enter your user code.";
+		if (\strlen($userNumber) < 4)
+			$errors["user_number"] = "Please enter a 4-digit number.";
+		if (empty($userNumber))
+			$errors["user_number"] = "Please enter your user number.";
 
 		if ($errors) {
 			ob_clean();
@@ -52,17 +63,17 @@ class HomeController extends Controller
 		}
 
 		// Authentication
-		$codeIsAdmin = $this->authService->codeIsAdmin($code);
+		$userNumberIsFromAdmin = $this->authService->userNumberIsFromAdmin($userNumber);
+		$_SESSION["user_number_is_admin"] = $userNumberIsFromAdmin;
 
 		// Show login modal instead of recording time in/out
-		if ($codeIsAdmin) {
-			$_SESSION["code_is_admin"] = true;
+		if ($userNumberIsFromAdmin) {
 			header("Location: home");
 			exit();
 		}
-		
-		$result = $this->authService->authenticateCode($code);
-		
+
+		$result = $this->authService->authenticateUserNumber($userNumber);
+
 		$authErrors = $result["errors"] ?? null;
 		if ($authErrors) {
 			ob_clean();
@@ -71,24 +82,117 @@ class HomeController extends Controller
 			exit();
 		}
 
-		// Log In
 		$user = $result["user"];
-		$this->authService->login($user);
+		$_SESSION["user_id"] = $user["id"];
+		header("Location: home");
+		exit();
+	}
+
+	public function processQrCode()
+	{
+		$id = $_SESSION["user_id"];
+		$qr_code = trim($_POST["qr_code"] ?? "");
+		$errors = [];
+
+		if (!$id)
+			$errors["qr_code"] = "Invalid user ID.";
+		if (empty($qr_code))
+			$errors["qr_code"] = "Please show your QR code.";
+
+		if ($errors) {
+			ob_clean();
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$result = $this->authService->authenticateQrCode($qr_code);
+		if (isset($result["errors"])) {
+			ob_clean();
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $result["errors"]]);
+			exit();
+		}
 
 		// Event Attendance
-		$hasTimedInToday = $this->recordModel->hasTimedInToday($user["id"]) ?? false;
-		$hasTimedOutToday = $this->recordModel->hasTimedOutToday($user["id"]) ?? false;
+		$currentHour = (int) date('H');
+		$hasAmIn = $this->recordModel->hasRecorded($_SESSION["user_id"], AM_IN) ?? false;
+		$hasAmOut = $this->recordModel->hasRecorded($_SESSION["user_id"], AM_OUT) ?? false;
+		$hasPMIn = $this->recordModel->hasRecorded($_SESSION["user_id"], PM_IN) ?? false;
+		$hasPMOut = $this->recordModel->hasRecorded($_SESSION["user_id"], PM_OUT) ?? false;
 
-		if ($hasTimedInToday && $hasTimedOutToday)
-			$_SESSION["error"] = "You have already clocked out for today.";
-		elseif (!$hasTimedInToday && !$hasTimedOutToday)
-			$this->timeIn();
-		elseif ($hasTimedInToday && !$hasTimedOutToday)
-			$this->timeOut();
+		$eventTypeToRecord = match (true) {
+			$currentHour < 12 => $hasAmIn
+			? ($hasAmOut ? null : AM_OUT)
+			: AM_IN,
+			$currentHour >= 12 => $hasPMIn
+			? ($hasPMOut ? null : PM_OUT)
+			: PM_IN,
+		};
 
-		// Logout after record
-		$this->logout();
+		if ($eventTypeToRecord)
+			$this->recordTime($eventTypeToRecord);
+		else {
+			$timeMessage = match (true) {
+				$currentHour < 12 => "Morning",
+				$currentHour >= 12 => "Afternoon"
+			};
+
+			$_SESSION["message"]["info-title"] = "$timeMessage Already Clocked Out";
+			$_SESSION["message"]["info"] = "You have already clocked out for this " . strtolower($timeMessage) . ".";
+		}
+
+		ob_clean();
+		header("Content-Type: application/json");
+		echo json_encode(["success" => true, "user" => $result["user"], "logoutAfter" => true]);
 		exit();
+	}
+
+	private function recordTime($eventType)
+	{
+		$this->authService->requireLogin();
+
+		$eventMessage = match ($eventType) {
+			AM_IN => "Morning Time-In",
+			AM_OUT => "Morning Time-Out",
+			PM_IN => "Afternoon Time-In",
+			PM_OUT => "Afternoon Time-Out",
+			default => ""
+		};
+
+		if (!$this->recordModel->record($_SESSION["user_id"], $eventType)) {
+			$_SESSION["message"]["error-title"] = $eventMessage . " Error";
+			$_SESSION["message"]["error"] = "Failed to record " . strtolower($eventMessage) . ".";
+			return false;
+		}
+
+		$greeting = match ($eventType) {
+			AM_IN => "Good morning",
+			AM_OUT => "Goodbye",
+			PM_IN => "Good afternoon",
+			PM_OUT => "Goodbye",
+			default => ""
+		};
+
+		$_SESSION["message"]["success-title"] = $eventMessage . " Successful";
+		$_SESSION["message"]["success"] = "$greeting, " . $_SESSION["first_name"] . ".";
+
+		$notificationMessage = match ($eventType) {
+			AM_IN => "in",
+			AM_OUT => "out",
+			PM_IN => "in",
+			PM_OUT => "out",
+			default => ""
+		};
+
+		$now = FormatService::getCurrentDate();
+		$this->systemLogModel->create(
+			$eventMessage,
+			$_SESSION["username"] . " has timed $notificationMessage on " . FormatService::formatDate($now) . ", at " . FormatService::formatTime($now) . ".",
+			$_SESSION["user_id"]
+		);
+
+		return true;
 	}
 
 	public function processLoginFromPassword()
@@ -104,70 +208,29 @@ class HomeController extends Controller
 			$errors["password"] = "Please enter your password.";
 
 		if ($errors) {
-			$data = array_merge(
-				$this->homeService->getAllData(),
-				["errors" => $errors, "username" => $username]
-			);
-			$this->renderView("home/home", $data);
-			return;
+			ob_clean();
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
 		}
 
 		// Authenticate
 		$result = $this->authService->authenticateUsernamePassword($username, $password);
 
 		if (isset($result["errors"])) {
-			$errors = $result["errors"];
-			$data = array_merge(
-				$this->homeService->getAllData(),
-				["errors" => $errors, "username" => $username]
-			);
-			$this->renderView("home/home", $data);
-			return;
+			ob_clean();
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $result["errors"]]);
+			exit();
 		}
 
 		// Login / Session start
 		$user = $result["user"];
 		$this->authService->login($user);
 
-		// Redirect based on role
-		if ($this->authService->isAdmin()) {
+		if ($this->authService->isAdmin())
 			header("Location: dashboard");
-			exit();
-		}
+
 		exit();
-	}
-
-	public function timeIn()
-	{
-		$this->authService->requireLogin();
-
-		$now = FormatService::getCurrentDate();
-		if (!$this->recordModel->recordTimeIn($_SESSION["user_id"]))
-			$_SESSION["error"] = "Failed to record time-in.";
-		else {
-			$_SESSION["success"] = "Time-in recorded successfully.";
-			$this->notificationModel->create(
-				"Time In",
-				$_SESSION["username"] . " has timed in on " . FormatService::formatDate($now) . ", at " . FormatService::formatTime($now) . ".",
-				$_SESSION["user_id"]
-			);
-		}
-	}
-
-	public function timeOut()
-	{
-		$this->authService->requireLogin();
-
-		$now = FormatService::getCurrentDate();
-		if (!$this->recordModel->recordTimeOut($_SESSION["user_id"]))
-			$_SESSION["error"] = "Failed to record time-out.";
-		else {
-			$_SESSION["success"] = "Time-out recorded successfully.";
-			$this->notificationModel->create(
-				"Time Out",
-				$_SESSION["username"] . " has timed out on " . FormatService::formatDate($now) . ", at " . FormatService::formatTime($now) . ".",
-				$_SESSION["user_id"]
-			);
-		}
 	}
 }
