@@ -25,7 +25,7 @@ class AuthService
 
 	public static function isAdmin()
 	{
-		return self::isLoggedIn() && $_SESSION["user_role"] === 1;
+		return self::isLoggedIn() && isset($_SESSION["user_role"]) && $_SESSION["user_role"] === ROLE_ADMIN;
 	}
 
 	public function requireAdmin()
@@ -36,10 +36,11 @@ class AuthService
 		}
 	}
 
-	public function codeIsAdmin($code)
+	public function userNumberIsFromAdmin($user_number)
 	{
-		$user_id = (int) $code;
-		$user = $this->userModel->getById($user_id);
+		$user = $this->userModel->getByUserNumber($user_number);
+		if (!$user)
+			return false;
 		return $user["user_role"] === 1;
 	}
 
@@ -48,6 +49,13 @@ class AuthService
 		return $this->isLoggedIn()
 			? $this->userModel->getById($_SESSION["user_id"])
 			: null;
+	}
+
+	public function authenticateUserNumber($user_number)
+	{
+		if (!($user = $this->userModel->getByUserNumber($user_number)))
+			return ["errors" => ["user_number" => "Incorrect user number."]];
+		return ["success" => true, "user" => $user];
 	}
 
 	public function authenticateUsernamePassword(string $username, string $password)
@@ -59,17 +67,22 @@ class AuthService
 			// bruteforce usernames until it stops saying "User not found".
 			return ["errors" => ["general" => "Incorrect credentials."]];
 
-
 		return ["success" => true, "user" => $user];
 	}
 
-	public function authenticateCode($code)
+	public function authenticateQrCode($qr_code)
 	{
-		$user_id = (int) $code;
-		$user = $this->userModel->getById($user_id);
+		$id = $_SESSION["user_id"];
 
-		if (!$user || empty($user))
-			return ["errors" => ["code" => "Incorrect code."]];
+		if (!$id)
+			return ["errors" => ["qr_code" => "Invalid user ID."]];
+
+		$user = $this->userModel->getById($id);
+
+		if (!$user)
+			return ["errors" => ["qr_code" => "User not found."]];
+		if ($user["qr_code"] !== $qr_code)
+			return ["errors" => ["qr_code" => "Incorrect QR code."]];
 
 		return ["success" => true, "user" => $user];
 	}
@@ -87,6 +100,5 @@ class AuthService
 	{
 		session_unset();
 		session_destroy();
-		exit();
 	}
 }
