@@ -12,30 +12,17 @@ class EventRecord
 		$this->db = new Database();
 	}
 
-	public function hasTimedInToday($user_id)
+	public function hasRecorded($user_id, $event_type)
 	{
 		$sql = "SELECT *
 				  FROM event_record
 				  WHERE user_id = :user_id
 				  AND DATE(event_time) = CURDATE()
-				  AND event_type = 1
+				  AND event_type = :event_type
 				  LIMIT 1";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
-		$query->execute();
-		return $query->fetch() !== false;
-	}
-
-	public function hasTimedOutToday($user_id)
-	{
-		$sql = "SELECT *
-				  FROM event_record
-				  WHERE user_id = :user_id
-				  AND DATE(event_time) = CURDATE()
-				  AND event_type = 2
-				  LIMIT 1";
-		$query = $this->db->connect()->prepare($sql);
-		$query->bindParam(":user_id", $user_id);
+		$query->bindParam(":event_type", $event_type);
 		$query->execute();
 		return $query->fetch() !== false;
 	}
@@ -62,11 +49,12 @@ class EventRecord
 	{
 		$sql = "
 			SELECT er.id,
+				er.user_id,
 				er.event_time,
 				er.event_type,
-				er.user_id,
 				ert.type_name,
 				u.id AS user_id,
+				u.user_number,
 				CONCAT (u.first_name, ' ', u.last_name) AS user
 			FROM event_record er
 				JOIN user u ON er.user_id = u.id
@@ -83,20 +71,6 @@ class EventRecord
 		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	public function getLast($id)
-	{
-		$sql = "
-			SELECT *
-			FROM event_record er
-				JOIN user u ON er.user_id = u.id
-			WHERE er.user_id = :id
-			ORDER BY er.event_date DESC 1";
-		$query = $this->db->connect()->prepare($sql);
-		$query->bindParam(":id", $id);
-		$query->execute();
-		return $query->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function getByUserId($user_id)
@@ -140,21 +114,13 @@ class EventRecord
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function recordTimeIn($user_id)
+	public function record($user_id, $event_type)
 	{
 		$sql = "INSERT INTO event_record (user_id, event_time, event_type)
-				  VALUES (:user_id, NOW(), 1)";
+				  VALUES (:user_id, NOW(), :event_type)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":user_id", $user_id);
-		return $query->execute();
-	}
-
-	public function recordTimeOut($user_id)
-	{
-		$sql = "INSERT INTO event_record (user_id, event_time, event_type)
-				  VALUES (:user_id, NOW(), 2)";
-		$query = $this->db->connect()->prepare($sql);
-		$query->bindParam(":user_id", $user_id);
+		$query->bindParam(":event_type", $event_type);
 		return $query->execute();
 	}
 

@@ -21,6 +21,15 @@ class Department
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function getByUserNumber($user_number)
+	{
+		$sql = "SELECT * FROM department WHERE user_number = :user_number LIMIT 1";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":user_number", $user_number);
+		$query->execute();
+		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
+	}
+
 	public function getAll()
 	{
 		$sql = "SELECT * FROM department ORDER BY id";
@@ -57,39 +66,50 @@ class Department
 		return !empty($this->getByAbbreviation($abbreviation));
 	}
 
-	public function create($department_name)
+	public function abbreviationExistsExceptCurrent($id, $abbreviation)
 	{
-		$sql = "INSERT INTO department (department_name)
-				  VALUES (:department_name)";
+		$sql = "SELECT COUNT(*) FROM department WHERE abbreviation = :abbreviation AND id != :id";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":id", $id);
+		$query->bindParam(":abbreviation", $abbreviation);
+		$query->execute();
+		return $query->fetchColumn() > 0;
+	}
+
+	public function nameExistsExceptCurrent($id, $department_name)
+	{
+		$sql = "SELECT COUNT(*) FROM department WHERE department_name = :department_name AND id != :id";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":id", $id);
+		$query->bindParam(":department_name", $department_name);
+		$query->execute();
+		return $query->fetchColumn() > 0;
+	}
+
+	public function create($department_name, $abbreviation, $standard_time_in, $standard_time_out)
+	{
+		$sql = "INSERT INTO department (department_name, abbreviation, standard_time_in, standard_time_out)
+				  VALUES (:department_name, :abbreviation, :standard_time_in, :standard_time_out)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":department_name", $department_name);
+		$query->bindParam(":abbreviation", $abbreviation);
+		$query->bindParam(":standard_time_in", $standard_time_in);
+		$query->bindParam(":standard_time_out", $standard_time_out);
 		return $query->execute();
 	}
 
-	public function update($id, $department_name)
+	public function update($id, $department_name, $abbreviation, $standard_time_in, $standard_time_out)
 	{
 		$sql = "UPDATE department
-				  SET department_name = :department_name
+				  SET department_name = :department_name, abbreviation = :abbreviation, standard_time_in = :standard_time_in, standard_time_out = :standard_time_out
 				  WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->bindParam(":department_name", $department_name);
+		$query->bindParam(":abbreviation", $abbreviation);
+		$query->bindParam(":standard_time_in", $standard_time_in);
+		$query->bindParam(":standard_time_out", $standard_time_out);
 		return $query->execute();
-	}
-
-	public function isInUse($id)
-	{
-		$sql = "
-		SELECT EXISTS (
-			SELECT 1
-			FROM user
-			WHERE user.department = :id
-		) AS in_use
-		";
-		$query = $this->db->connect()->prepare($sql);
-		$query->bindParam(":id", $id);
-		$query->execute();
-		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
 	public function delete($id)
