@@ -2,7 +2,7 @@
 namespace App\Controllers;
 use App\Models\EventRecord;
 use App\Services\DashboardService;
-use App\Services\FormatService;
+use App\Services\ValidationService;
 use PrintService;
 
 class EventRecordController extends Controller
@@ -59,7 +59,7 @@ class EventRecordController extends Controller
 		$event_type = trim($_POST["event_type"] ?? "");
 
 		// Validate user input
-		if (FormatService::isIncompleteDateTime($event_time))
+		if (ValidationService::isIncompleteDateTime($event_time))
 			$errors["event_time"] = "Please enter the complete time of the event.";
 		if (empty($event_time))
 			$errors["event_time"] = "Please enter the time of the event.";
