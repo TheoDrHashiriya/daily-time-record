@@ -1,20 +1,24 @@
 <?php
 namespace App\Controllers;
-use App\Models\Notification;
+use App\Models\SystemLog;
+use App\Services\DashboardService;
+use PrintService;
 
-class NotificationController extends Controller
+class SystemLogController extends Controller
 {
-	private Notification $notificationModel;
+	private DashboardService $dashboardService;
+	private SystemLog $systemLogModel;
 
-	public function __construct(Notification $notificationModel)
+	public function __construct(DashboardService $dashboardService, SystemLog $systemLogModel)
 	{
-		$this->notificationModel = $notificationModel;
+		$this->dashboardService = $dashboardService;
+		$this->systemLogModel = $systemLogModel;
 	}
 
 	// FOR KPIS
 	public function getTotal()
 	{
-		$notifications = $this->notificationModel->getAll();
+		$notifications = $this->systemLogModel->getAll();
 		return count($notifications);
 	}
 
@@ -22,12 +26,23 @@ class NotificationController extends Controller
 
 	public function getAll()
 	{
-		return $this->notificationModel->getAll();
+		return $this->systemLogModel->getAll();
 	}
 
 	public function getById($id)
 	{
-		return $this->notificationModel->getById($id);
+		return $this->systemLogModel->getById($id);
+	}
+
+	public function streamToPdf()
+	{
+		$system_logs = $this->dashboardService->getSystemLogs();
+		PrintService::streamPdf(
+			"all-system-logs.pdf",
+			["components/pdf/pdf-styles", "components/tables/system-logs"],
+			["system_logs" => $system_logs]
+		);
+		exit();
 	}
 
 	public function create()
@@ -47,8 +62,8 @@ class NotificationController extends Controller
 			exit();
 		}
 
-		$created = $this->notificationModel->create($title, $content, $created_by);
-		$created ? $message["success"] = "Notification created successfully." : $message["error"] = "Failed to create notification.";
+		$created = $this->systemLogModel->create($title, $content, $created_by);
+		$created ? $message["success"] = "SystemLog created successfully." : $message["error"] = "Failed to create notification.";
 		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
@@ -72,8 +87,8 @@ class NotificationController extends Controller
 			exit();
 		}
 
-		$updated = $this->notificationModel->update($id, $title, $content, $created_by);
-		$updated ? $message["success"] = "Notification updated successfully." : $message["error"] = "Failed to update notification.";
+		$updated = $this->systemLogModel->update($id, $title, $content, $created_by);
+		$updated ? $message["success"] = "System log updated successfully." : $message["error"] = "Failed to update notification.";
 
 		$_SESSION["message"] = $message;
 
@@ -84,8 +99,8 @@ class NotificationController extends Controller
 	public function delete()
 	{
 		$id = trim($_POST["entity_id"]);
-		$deleted = $this->notificationModel->delete($id);
-		$deleted ? $message["success"] = "Notification deleted successfully." : $message["error"] = "Failed to delete notification.";
+		$deleted = $this->systemLogModel->delete($id);
+		$deleted ? $message["success"] = "System log deleted successfully." : $message["error"] = "Failed to delete notification.";
 		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();

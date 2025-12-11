@@ -3,7 +3,7 @@ namespace App\Models;
 use App\Models\Database;
 use PDO;
 
-class Notification
+class SystemLog
 {
 	private $db;
 
@@ -14,7 +14,7 @@ class Notification
 
 	public function getById($id)
 	{
-		$sql = "SELECT * FROM notification WHERE id = :id LIMIT 1";
+		$sql = "SELECT * FROM " . SYSTEM_LOG_TABLE . " WHERE id = :id LIMIT 1";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
@@ -25,7 +25,7 @@ class Notification
 	{
 		$sql = "SELECT n.id, n.title, n.content, n.has_been_read, n.created_at, n.created_by,
 			u.first_name, u.middle_name, u.last_name
-			FROM notification n 
+			FROM " . SYSTEM_LOG_TABLE . " n 
 			JOIN user u ON n.created_by = u.id
 			ORDER BY created_at";
 		$query = $this->db->connect()->prepare($sql);
@@ -35,7 +35,7 @@ class Notification
 
 	public function getAllUnread()
 	{
-		$sql = "SELECT * FROM notification WHERE has_been_read IS FALSE ORDER BY created_at";
+		$sql = "SELECT * FROM " . SYSTEM_LOG_TABLE . " WHERE has_been_read IS FALSE ORDER BY created_at";
 		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -43,7 +43,7 @@ class Notification
 
 	public function create($title, $content, $created_by)
 	{
-		$sql = "INSERT INTO notification (title, content, created_by)
+		$sql = "INSERT INTO " . SYSTEM_LOG_TABLE . " (title, content, created_by)
 				  VALUES (:title, :content, :created_by)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":title", $title);
@@ -54,7 +54,7 @@ class Notification
 
 	public function update($id, $title, $content, $created_by)
 	{
-		$sql = "UPDATE notification
+		$sql = "UPDATE " . SYSTEM_LOG_TABLE . "
 				  SET title = :title, content = :content, created_by = :created_by
 				  WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
@@ -67,7 +67,7 @@ class Notification
 
 	public function delete($id)
 	{
-		$sql = "DELETE FROM notification WHERE id = :id";
+		$sql = "DELETE FROM " . SYSTEM_LOG_TABLE . " WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		return $query->execute();
