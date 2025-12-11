@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\EventRecord;
 use App\Services\DashboardService;
+use App\Services\FormatService;
 use PrintService;
 
 class EventRecordController extends Controller
@@ -12,7 +13,7 @@ class EventRecordController extends Controller
 	public function __construct(EventRecord $recordModel, DashboardService $dashboardService)
 	{
 		$this->recordModel = $recordModel;
-		$this->dashboardService=$dashboardService;
+		$this->dashboardService = $dashboardService;
 	}
 
 	// FOR KPIS
@@ -51,6 +52,32 @@ class EventRecordController extends Controller
 		exit();
 	}
 
+	public function create()
+	{
+		$user_id = trim($_POST["user_id"] ?? "");
+		$event_time = trim($_POST["event_time"] ?? "");
+		$event_type = trim($_POST["event_type"] ?? "");
+
+		// Validate user input
+		if (FormatService::isIncompleteDateTime($event_time))
+			$errors["event_time"] = "Please enter the complete time of the event.";
+		if (empty($event_time))
+			$errors["event_time"] = "Please enter the time of the event.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$created = $this->recordModel->create($user_id, $event_time, $event_type);
+		$created ? $message["success"] = "Record created successfully." : $message["error"] = "Failed to create record.";
+
+		$_SESSION["message"] = $message;
+		header("Location: dashboard");
+		exit();
+	}
+
 	public function edit()
 	{
 		$id = trim($_POST["entity_id"]);
@@ -58,13 +85,20 @@ class EventRecordController extends Controller
 		$event_time = trim($_POST["event_time"] ?? "");
 		$event_type = trim($_POST["event_type"] ?? "");
 
-		$errors = [];
 		// Validate user input
 		if ($event_time === "")
 			$errors["event_time"] = "Please enter the time of the event.";
 
-		$this->recordModel->update($id, $event_time, $event_type, $user_id);
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
 
+		$updated = $this->recordModel->update($id, $event_time, $event_type, $user_id);
+		$updated ? $message["success"] = "Record updated successfully." : $message["error"] = "Failed to updated record.";
+
+		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
 	}
@@ -72,7 +106,9 @@ class EventRecordController extends Controller
 	public function delete()
 	{
 		$id = trim($_POST["entity_id"]);
-		$this->recordModel->delete($id);
+		$deleted = $this->recordModel->delete($id);
+		$deleted ? $message["success"] = "Record deleted successfully." : $message["error"] = "Failed to delete record.";
+		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
 	}

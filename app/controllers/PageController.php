@@ -11,8 +11,6 @@ class PageController
 
 	public function __construct(EventRecordController $recordController)
 	{
-		$this->recordController = $recordController;
-		$this->userController = new UserController();
 	}
 
 	public function previewAllEventsPdf()

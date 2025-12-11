@@ -1,15 +1,19 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\Services\DashboardService;
 use PDOException;
+use PrintService;
 
 class UserController extends Controller
 {
-	private $userModel;
+	private DashboardService $dashboardService;
+	private User $userModel;
 
-	public function __construct()
+	public function __construct(User $userModel, DashboardService $dashboardService)
 	{
-		$this->userModel = new User();
+		$this->dashboardService = $dashboardService;
+		$this->userModel = $userModel;
 	}
 
 	// FOR KPIS
@@ -32,6 +36,17 @@ class UserController extends Controller
 		return $this->userModel->getById($id);
 	}
 
+	public function streamToPdf()
+	{
+		$users = $this->dashboardService->getUsers();
+		PrintService::streamPdf(
+			"all-events.pdf",
+			["components/pdf/pdf-styles", "components/tables/users"],
+			["users" => $users]
+		);
+		exit();
+	}
+
 	public function create()
 	{
 		$first_name = trim($_POST["first_name"]);
@@ -42,8 +57,6 @@ class UserController extends Controller
 		$user_role = trim($_POST["user_role"]);
 		$department = trim($_POST["department"]);
 		$created_by = trim($_SESSION["user_id"] ?? "");
-
-		$errors = [];
 
 		if ($this->userModel->exists($username))
 			$errors["username"] = "Username already taken.";
@@ -62,6 +75,7 @@ class UserController extends Controller
 			exit();
 		}
 
+		$qr_code = bin2hex(random_bytes(32));
 		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 		$created = $this->userModel->create(
 			$first_name,
@@ -69,14 +83,15 @@ class UserController extends Controller
 			$last_name,
 			$username,
 			$hashed_password,
+			$qr_code,
 			$user_role,
 			$department,
 			$created_by
 		);
+		$created ? $message["success"] = "User created successfully." : $message["error"] = "Failed to create user.";
 
+		$_SESSION["message"] = $message;
 		header("Location: dashboard");
-		header("Content-Type: application/json");
-		echo json_encode(["success" => $created, "message" => $created ? "User created successfully." : "Failed to create user."]);
 		exit();
 	}
 
@@ -91,6 +106,8 @@ class UserController extends Controller
 		$department = trim($_POST["department"]);
 		$created_at = trim($_POST["created_at"] ?? "");
 		$created_by = trim($_POST["created_by"] ?? "");
+		$current_password = trim($_POST["current_password"] ?? "");
+		$new_password = trim($_POST["new_password"] ?? "");
 
 		if ($this->userModel->exists($username))
 			$errors["username"] = "Username already taken.";
@@ -110,10 +127,9 @@ class UserController extends Controller
 		}
 
 		$updated = $this->userModel->update($id, $first_name, $middle_name, $last_name, $username, $user_role, $department, $created_at, $created_by);
-		$updated ? $message["success"] = "User updated successfully." : $message["error"] = "User to update notification.";
+		$updated ? $message["success"] = "User updated successfully." : $message["error"] = "Failed to update user.";
 
 		$_SESSION["message"] = $message;
-
 		header("Location: dashboard");
 		exit();
 	}
@@ -129,11 +145,15 @@ class UserController extends Controller
 		} catch (PDOException $e) {
 			switch ($e->getCode()) {
 				case 23000:
+					$message["error-title"] = "User In Use";
 					$message["error"] = "Cannot delete user because it is referenced elsewhere.";
+					$_SESSION["message"] = $message;
+					header("Location: dashboard");
 					break;
 
 				default:
-					$message["error"] = "Database error: " . $e->getMessage();
+					$message["error-title"] = "Database Error";
+					$message["error"] = $e->getMessage();
 					break;
 			}
 		}
