@@ -1,8 +1,15 @@
-.vscode
+.vscode/
 
 # Composer
 /vendor
 composer.phar
 
-# DOMPDF
+# NPM / Node
+/node_modules
+
+# Vite Build Output
+/dist
+
+# DOMPDF font metrics
+public/fonts/*.php
 public/fonts/*.json
