@@ -1,14 +1,25 @@
 const openButtons = document.querySelectorAll(".open-button");
 const closeButtons = document.querySelectorAll(".close-button");
+
 const modalContainers = document.querySelectorAll(".modal-container");
 
+function showLoginUsernamePasswordModal() {
+	const modalUsernamePassword = document.getElementById("login-username-password");
+	modalUsernamePassword.classList.add("show");
+}
+
 function showSuccessModal() {
-	const successModal = document.querySelector("#success");
+	const successModal = document.getElementById("success");
 	successModal.classList.add("show");
 }
 
+function showInfoModal() {
+	const infoModal = document.getElementById("info");
+	infoModal.classList.add("show");
+}
+
 function showErrorModal() {
-	const errorModal = document.querySelector("#error");
+	const errorModal = document.getElementById("error");
 	errorModal.classList.add("show");
 }
 
@@ -37,6 +48,14 @@ closeButtons.forEach(button => {
 modalContainers.forEach(modalContainer => {
 	modalContainer.addEventListener("click", (e) => {
 		if (e.target !== modalContainer) return;
+
+		try {
+			stream.getTracks().forEach(track => track.stop());
+			stream = null;
+		} catch (e) {
+			console.log("No stream detected.");
+		}
+
 		modalContainer.classList.remove("show");
 	});
 });

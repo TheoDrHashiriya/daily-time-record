@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	document.querySelectorAll("form").forEach(form => {
-		// if (form.dataset.normal === "1") return;
+		if (form.dataset.normal === "1") return;
 
 		form.addEventListener("submit", async (e) => {
 			e.preventDefault();
@@ -11,12 +11,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			const formData = new FormData(form);
 			const action = form.getAttribute("action");
-			
-			const response = await fetch(action, {
-				method: form.method || "POST",
-				body: formData
-			});
-			
+
+			let url = action;
+			let options = {
+				method: form.method?.toUpperCase() || "POST",
+				credentials: "include"
+			};
+
+			if (options.method === "GET") {
+				const params = new URLSearchParams(new FormData(form));
+				url += "?" + params.toString();
+			} else
+				options.body = new FormData(form);
+
+			const response = await fetch(url, options);
+
 			const contentType = response.headers.get("Content-Type");
 
 			let result;
@@ -24,19 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (!contentType.includes("application/json")) {
 				const text = await response.text();
 				console.log("Non-JSON response:", text);
-				// form.dataset.normal = "1";
+				form.dataset.normal = "1";
 				form.submit();
 				return;
 			}
-			
+
 			result = await response.json();
 			console.log("Parsed JSON:", result);
 
 			if (result.success) {
 				form.reset();
 				form.closest(".modal-container").classList.remove("show");
-				alert(result.message || "Action successful!");
-				window.location.href = "dashboard";
+
+				if (result.logoutAfter)
+					window.location.href = "logout";
+				else
+					window.location.href = "dashboard";
 			} else if (result.errors) {
 				for (const field in result.errors) {
 					if (field === "general") {

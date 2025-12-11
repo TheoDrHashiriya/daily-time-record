@@ -8,7 +8,7 @@ function updateDate() {
 }
 
 function updateTime() {
-const time = document.getElementById("time-text");
+	const time = document.getElementById("time-text");
 	const now = new Date();
 	const timeString = now.toLocaleTimeString("en-US", {
 		hour: "numeric",

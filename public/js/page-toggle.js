@@ -1,14 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const lastSection = localStorage.getItem("lastSection") || "home-section";
 
-	const links = document.querySelectorAll(".sidebar a.nav");
+	const links = document.querySelectorAll("a.nav");
 	const sections = document.querySelectorAll(".section");
 
 	function showSection(targetId) {
 		sections.forEach((section) => (section.style.display = "none"));
-		document.getElementById(targetId).style.display = "flex";
+
+		const targetSection = document.getElementById(targetId);
+		if (!targetSection) {
+			console.warn(`No section found with id "${targetId}"`);
+			return;
+		}
+		targetSection.style.display = "flex";
+
 		links.forEach((link) =>
 			link.classList.toggle("selected", link.dataset.target === targetId));
+
 		localStorage.setItem("lastSection", targetId);
 	}
 

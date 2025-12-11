@@ -1,15 +1,9 @@
-const authPane = document.querySelector(".authentication-pane");
-const authButton = document.getElementById("auth-button");
-const backButton = document.getElementById("back-button");
+const form = document.getElementById("authenticate");
+const input = document.getElementById("user_number");
 
-authButton.addEventListener("click", () => {
-	fetch("ajax/auth-form")
-		.then(res => res.text())
-		.then(html => authPane.innerHTML = html);
-});
+input.addEventListener("input", () => {
+	input.value = input.value.replace(/\D/g, '');
 
-backButton.addEventListener("click", () => {
-	fetch("ajax/auth-button")
-		.then(res => res.text())
-		.then(html => authPane.innerHTML = html);
+	if (input.value.length === 4)
+		form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
 });

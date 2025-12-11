@@ -1,4 +1,4 @@
 function toggleNotification() {
-	const notifPopup = document.querySelector("notif-popup");
-	notifPopup.classList.toggle("show");
+	const dropdown = document.querySelector("notification-dropdown");
+	dropdown.classList.toggle("show");
 }
