@@ -2,7 +2,7 @@
 namespace App\Services;
 use App\Models\Department;
 use App\Models\EventRecord;
-use App\Models\Notification;
+use App\Models\SystemLog;
 use App\Models\User;
 use App\Models\UserRole;
 
@@ -10,7 +10,7 @@ class DashboardService
 {
 	private AuthService $authService;
 	private Department $departmentModel;
-	private Notification $notificationModel;
+	private SystemLog $systemLogModel;
 	private EventRecord $recordModel;
 	private User $userModel;
 	private UserRole $userRoleModel;
@@ -18,14 +18,14 @@ class DashboardService
 	public function __construct(
 		AuthService $authService,
 		Department $departmentModel,
-		Notification $notificationModel,
+		SystemLog $systemLogModel,
 		EventRecord $recordModel,
 		User $userModel,
 		UserRole $userRoleModel
 	) {
 		$this->authService = $authService;
 		$this->departmentModel = $departmentModel;
-		$this->notificationModel = $notificationModel;
+		$this->systemLogModel = $systemLogModel;
 		$this->recordModel = $recordModel;
 		$this->userModel = $userModel;
 		$this->userRoleModel = $userRoleModel;
@@ -36,8 +36,8 @@ class DashboardService
 		$isAdmin = $this->authService->isAdmin();
 
 		$departments = $this->getDepartments();
-		$notifications = $this->getNotifications()["notifications"];
-		$notifications_unread = $this->getNotifications()["notifications_unread"];
+		$system_logs = $this->getSystemLogs()["system_logs"];
+		$notifications_unread = $this->getSystemLogs()["notifications_unread"];
 		$records = $this->getEventRecords();
 		$record_types = $this->getEventRecordTypes();
 		$users = $this->getUsers();
@@ -46,7 +46,7 @@ class DashboardService
 		return [
 			"isAdmin" => $isAdmin,
 			"departments" => $departments,
-			"notifications" => $notifications,
+			"system_logs" => $system_logs,
 			"notifications_unread" => $notifications_unread,
 			"records" => $records,
 			"record_types" => $record_types,
@@ -57,93 +57,123 @@ class DashboardService
 
 	public function getDepartments()
 	{
-		$departments = $this->departmentModel->getAll();
+		$rows = $this->departmentModel->getAll();
+		$total = \count($rows);
 
-		foreach ($departments as &$department) {
+		foreach ($rows as &$department) {
+			$department["standard_time_in_formatted"] = FormatService::formatTime($department["standard_time_in"]);
+			$department["standard_time_out_formatted"] = FormatService::formatTime($department["standard_time_out"]);
 			$department["created_at_formatted"] = FormatService::formatTime($department["created_at"]);
 			$department["created_on_formatted"] = FormatService::formatDate($department["created_at"]);
 		}
 		unset($department);
 
-		return $departments;
+		return [
+			"data" => $rows,
+			"total" => $total
+		];
 	}
 
-	public function getNotifications()
+	public function getSystemLogs()
 	{
-		$notifications = $this->notificationModel->getAll();
-		$notifications_unread = $this->notificationModel->getAllUnread();
+		$system_logs = $this->systemLogModel->getAll();
+		$notifications_unread = $this->systemLogModel->getAllUnread();
 
-		foreach ($notifications as &$notification) {
-			$notification["created_by_full_name_formatted"] = FormatService::formatFullName(
-				$notification["first_name"],
-				$notification["middle_name"],
-				$notification["last_name"]
+		foreach ($system_logs as &$log) {
+			$log["created_by_full_name_formatted"] = FormatService::formatFullName(
+				$log["first_name"],
+				$log["middle_name"],
+				$log["last_name"]
 			);
-			$notification["created_at_formatted"] = FormatService::formatTime($notification["created_at"]);
-			$notification["created_on_formatted"] = FormatService::formatDate($notification["created_at"]);
+			$log["created_at_formatted"] = FormatService::formatTime($log["created_at"]);
+			$log["created_on_formatted"] = FormatService::formatDate($log["created_at"]);
 		}
-		unset($notification);
+		unset($log);
 
-		$notifications = FormatService::sortArrayByColumn($notifications, "created_at");
+		$system_logs = FormatService::sortArrayByColumn($system_logs, "created_at");
 
 		return [
-			"notifications" => $notifications,
+			"system_logs" => $system_logs,
 			"notifications_unread" => $notifications_unread
 		];
 	}
 
 	public function getEventRecords()
 	{
-		$records = $this->recordModel->getAll();
+		$rows = $this->recordModel->getAll();
+		$total = \count($rows);
+		$unclosed = $this->recordModel->getTotalUnclosed();
 
-		foreach ($records as &$record) {
+		foreach ($rows as &$record) {
 			$record["event_date_formatted"] = FormatService::formatDate($record["event_time"]);
 			$record["event_time_formatted"] = FormatService::formatTime($record["event_time"]);
 			$record["type_name_formatted"] = FormatService::formatEventType($record["type_name"]);
-			$record["user_id_code"] = FormatService::formatIdToCode($record["user_id"]);
 		}
 		unset($record);
 
-		return $records;
+		return [
+			"data" => $rows,
+			"total" => $total,
+			"unclosed" => $unclosed
+		];
 	}
 
 	public function getEventRecordTypes()
 	{
-		$record_types = $this->recordModel->getAllTypes();
+		$rows = $this->recordModel->getAllTypes();
 
-		foreach ($record_types as &$type) {
+		foreach ($rows as &$type) {
 			$type["type_name_formatted"] = FormatService::formatEventType($type["type_name"]);
 		}
 		unset($type);
 
-		return $record_types;
+		return ["data" => $rows];
 	}
 
 	public function getUsers()
 	{
-		$users = $this->userModel->getAll();
+		//  SEARCH PARAMETERS
+		$search = $_GET["users"] ?? "";
+		$fullname = $_GET["fullname"] ?? "";
+		$user_number = $_GET["user_number"] ?? "";
+		$role = $_GET["role"] ?? "";
+		$department_name = $_GET["department_name"] ?? "";
+		$rows = $this->userModel->getAll($search, $fullname, $user_number, $role, $department_name);
+		$total = \count($rows);
 
-		foreach ($users as &$user) {
+		foreach ($rows as &$user) {
 			$user["full_name_formatted"] = FormatService::formatFullName(
 				$user["first_name"],
 				$user["middle_name"],
 				$user["last_name"],
 			);
+			$user["role_name_formatted"] = FormatService::formatText(text: $user["role_name"]);
+			$user["department_name_formatted"] = FormatService::formatText($user["department_name"]);
+			$user["creator_first_name"] ? $user["created_by_formatted"] = FormatService::formatFullName(
+				$user["creator_first_name"],
+				$user["creator_middle_name"],
+				$user["creator_last_name"],
+			) : null;
+			$user["created_at_formatted"] = FormatService::formatDate($user["created_at"]);
 		}
 		unset($user);
 
-		return $users;
+		return [
+			"search" => $search,
+			"data" => $rows,
+			"total" => $total
+		];
 	}
 
 	public function getUserRoles()
 	{
-		$user_roles = $this->userRoleModel->getAll();
+		$rows = $this->userRoleModel->getAll();
 
-		foreach ($user_roles as &$role) {
+		foreach ($rows as &$role) {
 			$role["role_name_formatted"] = FormatService::formatText($role["role_name"]);
 		}
 		unset($role);
 
-		return $user_roles;
+		return ["data" => $rows];
 	}
 }
