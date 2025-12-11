@@ -16,16 +16,15 @@ class HomeService
 
 	public function getAllData()
 	{
-		$records = $this->erModel->getAll();
+		$rows = $this->erModel->getAll();
 
-		foreach ($records as &$record) {
+		foreach ($rows as &$record) {
 			$record["event_date_formatted"] = FormatService::formatDate($record["event_time"]);
 			$record["event_time_formatted"] = FormatService::formatTime($record["event_time"]);
 			$record["type_name_formatted"] = FormatService::formatEventType($record["type_name"]);
-			$record["user_id_code"] = FormatService::formatIdToCode($record["user_id"]);
 		}
 		unset($record);
 
-		return ["records" => $records];
+		return ["records" => ["data" => $rows]];
 	}
 }
