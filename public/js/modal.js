@@ -8,19 +8,33 @@ function showLoginUsernamePasswordModal() {
 	modalUsernamePassword.classList.add("show");
 }
 
+const timeout = 5000;
+
 function showSuccessModal() {
 	const successModal = document.getElementById("success");
 	successModal.classList.add("show");
+
+	setTimeout(() => {
+		successModal.classList.remove("show");
+	}, timeout);
 }
 
 function showInfoModal() {
 	const infoModal = document.getElementById("info");
 	infoModal.classList.add("show");
+
+	setTimeout(() => {
+		infoModal.classList.remove("show");
+	}, timeout);
 }
 
 function showErrorModal() {
 	const errorModal = document.getElementById("error");
 	errorModal.classList.add("show");
+
+	setTimeout(() => {
+		errorModal.classList.remove("show");
+	}, timeout);
 }
 
 openButtons.forEach(button => {
