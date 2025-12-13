@@ -38,6 +38,10 @@ button#theme-toggle {
 	height: fit-content;
 }
 
+i.button:hover {
+	color: var(--tertiary);
+}
+
 /* ACTIONS */
 
 .open-button {

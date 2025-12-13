@@ -1,6 +1,12 @@
 @media (max-width: 800px) {
-	form .row {
+
+	form .row,
+	.modal .row {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.modal .row.header {
+		flex-direction: unset;
 	}
 }

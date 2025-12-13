@@ -38,7 +38,7 @@
 	overflow-y: auto;
 }
 
-.modal .header i{
+.modal .header i {
 	margin-left: 15px;
 }
 
@@ -96,4 +96,17 @@
 	color: var(--text);
 	font-weight: bold;
 	cursor: pointer;
+}
+
+/* USER DETAILS */
+.modal .user-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.user-info #user_number {
+	font-size: 3.5rem;
 }

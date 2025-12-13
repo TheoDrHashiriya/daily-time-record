@@ -1,5 +1,6 @@
 @import url("../_global.css");
 @import url("../forms.css");
+@import url("../notification.css");
 
 .dashboard-container {
 	height: 100vh;
@@ -41,33 +42,6 @@ header.header {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-}
-
-.notification-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: fit-content;
-	position: relative;
-}
-
-.notification-dropdown {
-	visibility: hidden;
-	width: 160px;
-	background-color: var(--bg-gradient);
-	color: var(--text);
-	border-radius: 6px;
-	padding: 8px 0;
-	position: absolute;
-	z-index: 1;
-	top: 125%;
-	margin-left: -80px;
-}
-
-.notification-dropdown .show {
-	visibility: visible;
-	-webkit-animation: fadeIn 1s;
-	animation: fadeIn 1s;
 }
 
 @-webkit-keyframes fadeIn {

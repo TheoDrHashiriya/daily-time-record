@@ -11,7 +11,8 @@ div.row.header {
 	border-bottom: 1px solid var(--cross-border);
 }
 
-form div.row {
+form div.row,
+.modal div.row {
 	display: flex;
 	gap: 15px;
 }
