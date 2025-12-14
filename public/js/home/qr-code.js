@@ -34,13 +34,17 @@ function showLoginQrCodeModal() {
 
 function closeModal() {
 	try {
-		stream.getTracks().forEach(track => track.stop());
-		stream = null;
-	} catch (e) {
-		console.log("No stream detected.");
+		if (stream) {
+			stream.getTracks().forEach(track => track.stop());
+			stream = null;
+		}
+	} catch (err) {
+		console.log("No stream detected.", err);
 	}
 
 	qrCodeModal.classList.remove("show");
+	lastScannedCode = null;
+	fetch("logout", { method: "POST" });
 }
 
 let lastScannedCode = null;

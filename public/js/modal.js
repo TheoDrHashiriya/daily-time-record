@@ -63,11 +63,17 @@ modalContainers.forEach(modalContainer => {
 	modalContainer.addEventListener("click", (e) => {
 		if (e.target !== modalContainer) return;
 
-		try {
-			stream.getTracks().forEach(track => track.stop());
-			stream = null;
-		} catch (e) {
-			console.log("No stream detected.");
+		if (modalContainer.id === "login-qr-code") {
+			try {
+				if (stream) {
+					stream.getTracks().forEach(track => track.stop());
+					stream = null;
+				}
+			} catch (err) {
+				console.log("No stream detected.", err);
+			}
+
+			fetch("logout", { method: "POST" });
 		}
 
 		modalContainer.classList.remove("show");
