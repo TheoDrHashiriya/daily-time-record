@@ -7,6 +7,11 @@ use chillerlan\QRCode\QROptions;
 
 class QRCodeService
 {
+	public static function render($data)
+	{
+		return self::_init()->render($data);
+	}
+
 	public static function _init()
 	{
 		$options = new QROptions();
@@ -21,8 +26,4 @@ class QRCodeService
 		return new QRCode($options);
 	}
 
-	public static function render($data)
-	{
-		return self::_init()->render($data);
-	}
 }
