@@ -6,18 +6,17 @@
 		</div>
 
 		<form class="login-form" method="post" action="login">
-			<div class="row">
-				<div class="column">
-					<label for="username">Username</label>
-					<input value="<?= $username ?? "" ?>" type="text" name="username" id="username">
-					<p class="error"><?= $errors["username"] ?? "" ?></p>
-				</div>
 
-				<div class="column">
-					<label for="password">Password</label>
-					<input type="password" name="password" id="password">
-					<p class="error"><?= $errors["password"] ?? "" ?></p>
-				</div>
+			<div class="column">
+				<label for="username">Username</label>
+				<input value="<?= $username ?? "" ?>" type="text" name="username" id="username">
+				<p class="error"><?= $errors["username"] ?? "" ?></p>
+			</div>
+
+			<div class="column">
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password">
+				<p class="error"><?= $errors["password"] ?? "" ?></p>
 			</div>
 
 			<p class="error-general"><?= $errors["general"] ?? "" ?></p>

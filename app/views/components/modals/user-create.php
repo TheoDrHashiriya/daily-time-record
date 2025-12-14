@@ -36,6 +36,12 @@
 				</div>
 
 				<div class="column">
+					<label for="email">Email <em>(Optional)</em></label>
+					<input type="email" name="email" id="email">
+					<p class="error"><?= $errors["email"] ?? "" ?></p>
+				</div>
+
+				<div class="column">
 					<label for="password">Password</label>
 					<input type="text" name="password" id="password">
 					<p class="error"><?= $errors["password"] ?? "" ?></p>

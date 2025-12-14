@@ -23,15 +23,27 @@
 
 			<div class="row">
 				<div class="column">
-					<label for="standard_time_in">Standard Time In</label>
-					<input id="standard_time_in" type="time" name="standard_time_in">
-					<p class="error"><?= $errors["standard_time_in"] ?? "" ?></p>
+					<label for="standard_am_time_in">Standard AM In</label>
+					<input id="standard_am_time_in" type="time" name="standard_am_time_in" min="00:00" max="11:59">
+					<p class="error"><?= $errors["standard_am_time_in"] ?? "" ?></p>
 				</div>
 
 				<div class="column">
-					<label for="standard_time_out">Standard Time Out</label>
-					<input id="standard_time_out" type="time" name="standard_time_out">
-					<p class="error"><?= $errors["standard_time_out"] ?? "" ?></p>
+					<label for="standard_am_time_out">Standard AM Out</label>
+					<input id="standard_am_time_out" type="time" name="standard_am_time_out" min="00:00" max="11:59">
+					<p class="error"><?= $errors["standard_am_time_out"] ?? "" ?></p>
+				</div>
+
+				<div class="column">
+					<label for="standard_pm_time_in">Standard PM In</label>
+					<input id="standard_pm_time_in" type="time" name="standard_pm_time_in" min="12:00" max="23:59">
+					<p class="error"><?= $errors["standard_pm_time_in"] ?? "" ?></p>
+				</div>
+
+				<div class="column">
+					<label for="standard_pm_time_out">Standard PM Out</label>
+					<input id="standard_pm_time_out" type="time" name="standard_pm_time_out" min="12:00" max="23:59">
+					<p class="error"><?= $errors["standard_pm_time_out"] ?? "" ?></p>
 				</div>
 			</div>
 

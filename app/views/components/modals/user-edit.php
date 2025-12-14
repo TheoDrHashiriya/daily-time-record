@@ -5,13 +5,13 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="edit-form" method="post" action="edit-user">
+		<form method="post" action="edit-user">
 			<input type="hidden" name="entity_id" value="">
 
 			<div class="row">
 				<div class="column">
 					<label for="first_name">First Name</label>
-					<input type="text" name="first_name" id="first_name" required>
+					<input type="text" name="first_name" id="first_name">
 					<p class="error"><?= $errors["first_name"] ?? "" ?></p>
 				</div>
 
@@ -23,7 +23,7 @@
 
 				<div class="column">
 					<label for="last_name">Last Name</label>
-					<input type="text" name="last_name" id="last_name" required>
+					<input type="text" name="last_name" id="last_name">
 					<p class="error"><?= $errors["last_name"] ?? "" ?></p>
 				</div>
 			</div>
@@ -31,13 +31,27 @@
 			<div class="row">
 				<div class="column">
 					<label for="username">Username</label>
-					<input type="text" name="username" id="username" required>
+					<input type="text" name="username" id="username">
 					<p class="error"><?= $errors["username"] ?? "" ?></p>
 				</div>
 
 				<div class="column">
+					<label for="email">Email <em>(Optional)</em></label>
+					<input type="email" name="email" id="email">
+					<p class="error"><?= $errors["email"] ?? "" ?></p>
+				</div>
+
+				<div class="column">
+					<label for="password">New Password <em>(Optional)</em></label>
+					<input type="password" name="password" id="password">
+					<p class="error"><?= $errors["password"] ?? "" ?></p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="column">
 					<label for="user_role">Role</label>
-					<select id="user_role" name="user_role" required>
+					<select id="user_role" name="user_role">
 						<?php foreach ($user_roles["data"] as $role): ?>
 							<option value="<?= $role["id"] ?>">
 								<?= $role["role_name_formatted"] ?>
@@ -65,9 +79,9 @@
 					<label for="created_by">Created By</label>
 					<select id="created_by" name="created_by">
 						<option value="">None</option>
-						<?php foreach ($users["data"] as $user): ?>
+						<?php foreach ($users["admins"] as $user): ?>
 							<option value="<?= $user["id"] ?>">
-								<?= $user["full_name_formatted"] ?>
+								<?= $user["admins"]["full_name_formatted"] ?>
 							</option>
 						<?php endforeach ?>
 					</select>
