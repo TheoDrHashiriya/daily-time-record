@@ -3,6 +3,11 @@ Options -Indexes
 # Set index page
 DirectoryIndex app/Router.php
 
+# Block access to dotenvs
+<Files ".env">
+	Require all denied
+</Files>
+
 # Rules
 RewriteEngine On
 # RewriteBase /theonary/
