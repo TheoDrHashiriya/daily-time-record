@@ -53,20 +53,35 @@
 						<tr>
 							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
-									<button type="button" class="open-button" data-target="#user-edit" data-modal-type="user-edit"
-										data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
-										  	htmlspecialchars(
-										  		json_encode([
-										  			"first_name" => $row["first_name"],
-										  			"middle_name" => $row["middle_name"],
-										  			"last_name" => $row["last_name"],
-										  			"username" => $row["username"],
-										  			"user_role" => $row["user_role"],
-										  			"department" => $row["department"],
-										  			"created_at" => $row["created_at"],
-										  			"created_by" => $row["created_by"],
-										  		])
-										  	) ?>">
+									<?php if ($row["user_role"] !== ROLE_ADMIN): ?>
+										<button type="button" class="open-button user-qr" data-target="#user-qr"
+											data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
+											  	htmlspecialchars(
+											  		json_encode([
+											  			"base_url" => BASE_URL,
+														"public_url"=> PUBLIC_URL,
+											  			"full_name_formatted" => $row["full_name_formatted"],
+											  			"user_number" => $row["user_number"],
+							  						])
+											  	) ?>">
+											<i class="fa-solid fa-qrcode"></i>QR
+										</button>
+									<?php endif ?>
+
+									<button type="button" class="open-button" data-target="#user-edit" data-entity-id="<?= $row["id"] ?>"
+										data-entity-data="<?=
+											htmlspecialchars(
+												json_encode([
+													"first_name" => $row["first_name"],
+													"middle_name" => $row["middle_name"],
+													"last_name" => $row["last_name"],
+													"username" => $row["username"],
+													"user_role" => $row["user_role"],
+													"department" => $row["department"],
+													"created_at" => $row["created_at"],
+													"created_by" => $row["created_by"] ?? "",
+												])
+											) ?>">
 										<i class="fa-regular fa-pen-to-square"></i>Edit
 									</button>
 
