@@ -45,23 +45,39 @@ class EventRecord
 		return $query->fetchColumn();
 	}
 
-	public function getAll()
+	public function getAll($search = '', $date = '')
 	{
-		$sql = "
-			SELECT er.id,
-				er.user_id,
-				er.event_time,
-				er.event_type,
-				ert.type_name,
-				u.id AS user_id,
-				u.user_number,
-				CONCAT (u.first_name, ' ', u.last_name) AS user
-			FROM event_record er
-				JOIN user u ON er.user_id = u.id
-				JOIN event_record_type ert ON er.event_type = ert.id
-			ORDER BY er.event_time DESC";
+		$sql = "SELECT er.id,
+				  	er.user_id,
+				  	er.event_time,
+				  	er.event_type,
+				  	ert.type_name,
+				  	u.user_number,
+				  	u.first_name,
+				  	u.middle_name,
+				  	u.last_name
+				  FROM event_record er
+				  	JOIN user u ON er.user_id = u.id
+				  	JOIN event_record_type ert ON er.event_type = ert.id
+				  WHERE 1 = 1";
+
+		$params = [];
+
+		if ($search !== '') {
+			$sql .= " AND CONCAT (u.first_name, ' ', u.last_name) LIKE :search
+							OR ert.type_name LIKE :search
+							OR u.user_number LIKE :search";
+			$params[':search'] = "%$search%";
+		}
+		if ($date !== '') {
+			$sql .= " AND DATE(er.event_time) = :date";
+			$params[':date'] = $date;
+		}
+
+		$sql .= " ORDER BY er.event_time DESC";
+
 		$query = $this->db->connect()->prepare($sql);
-		$query->execute();
+		$query->execute($params);
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 
@@ -83,6 +99,21 @@ class EventRecord
 			ORDER BY er.event_date DESC";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $user_id);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getByUserIdAndMonth($user_id, $month_number)
+	{
+		$sql = "
+			SELECT er.*, CONCAT (u.first_name, ' ', u.last_name) AS user
+			FROM event_record er
+				JOIN user u ON er.user_id = u.id
+			WHERE er.user_id = :id AND MONTH(event_time) = :month_number
+			ORDER BY er.event_date DESC";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":id", $user_id);
+		$query->bindParam(":month_number", $month_number);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
