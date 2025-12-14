@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\SystemLog;
+use App\Services\FormatService;
 use App\Services\DashboardService;
 use PrintService;
 
@@ -15,30 +16,19 @@ class SystemLogController extends Controller
 		$this->systemLogModel = $systemLogModel;
 	}
 
-	// FOR KPIS
-	public function getTotal()
-	{
-		$notifications = $this->systemLogModel->getAll();
-		return count($notifications);
-	}
-
 	// MAIN
 
-	public function getAll()
+	public function markAllNotificationsAsRead()
 	{
-		return $this->systemLogModel->getAll();
-	}
-
-	public function getById($id)
-	{
-		return $this->systemLogModel->getById($id);
+		$user_id = $_SESSION["user_id"];
+		$this->systemLogModel->markAllAsRead($user_id);
 	}
 
 	public function streamToPdf()
 	{
 		$system_logs = $this->dashboardService->getSystemLogs();
 		PrintService::streamPdf(
-			"all-system-logs.pdf",
+			"all-system-logs-" . FormatService::formatPdfName(FormatService::getCurrentDate()),
 			["components/pdf/pdf-styles", "components/tables/system-logs"],
 			["system_logs" => $system_logs]
 		);
@@ -50,6 +40,7 @@ class SystemLogController extends Controller
 		$title = trim($_POST["title"]);
 		$content = trim($_POST["content"]);
 		$created_by = trim($_POST["created_by"]);
+		$system_log_type = trim($_POST["system_log_type"]);
 
 		if (empty($title))
 			$errors["title"] = "Title is required.";
@@ -62,8 +53,13 @@ class SystemLogController extends Controller
 			exit();
 		}
 
-		$created = $this->systemLogModel->create($title, $content, $created_by);
-		$created ? $message["success"] = "SystemLog created successfully." : $message["error"] = "Failed to create notification.";
+		$created = $this->systemLogModel->create(
+			$title,
+			$content,
+			$created_by,
+			$system_log_type
+		);
+		$created ? $message["success"] = "System log created successfully." : $message["error"] = "Failed to create notification.";
 		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
