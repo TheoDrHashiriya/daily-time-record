@@ -19,7 +19,7 @@ date_default_timezone_set(TIMEZONE);
 // error_reporting(E_ALL);
 
 use Dotenv\Dotenv;
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(__DIR__ . "/config");
 $dotenv->load();
 
 define("DB_HOST", $_ENV["DB_HOST"]);
