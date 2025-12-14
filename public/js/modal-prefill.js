@@ -51,8 +51,9 @@ openFormButtons.forEach(button => {
 
 		form.querySelectorAll("input, textarea, select").forEach(input => {
 			const key = input.id || input.name;
-
 			let value = entityData[key];
+
+			if (input.type !== "hidden" && (value === undefined || value === null)) value = "";
 
 			if (input.type === "datetime-local" && value === undefined) {
 				const now = new Date();
