@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\EventRecord;
 use App\Services\DashboardService;
+use App\Services\FormatService;
 use App\Services\ValidationService;
 use PrintService;
 
@@ -45,7 +46,7 @@ class EventRecordController extends Controller
 	{
 		$records = $this->dashboardService->getEventRecords();
 		PrintService::streamPdf(
-			"all-events.pdf",
+			"all-records-" . FormatService::formatPdfName(FormatService::getCurrentDate()),
 			["components/pdf/pdf-styles", "components/tables/records"],
 			["records" => $records]
 		);
