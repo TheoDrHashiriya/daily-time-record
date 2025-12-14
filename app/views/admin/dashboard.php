@@ -7,31 +7,33 @@
 	<title>Welcome to Theonary</title>
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
+	<script src="<?= JS_URL ?>/chart.js/dist/chart.umd.js"></script>
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
 	<script src="<?= JS_URL ?>/time.js" defer></script>
 	<script src="<?= JS_URL ?>/modal.js" defer></script>
 	<script src="<?= JS_URL ?>/modal-prefill.js" defer></script>
-	<script src="<?= JS_URL ?>/notification-toggle.js" defer></script>
-	<script src="<?= JS_URL ?>/page-toggle.js" defer></script>
-	<script src="<?= JS_URL ?>/sidebar-toggle.js" defer></script>
+	<script src="<?= JS_URL ?>/notification.js" defer></script>
+	<script src="<?= JS_URL ?>/sections.js" defer></script>
+	<script src="<?= JS_URL ?>/sidebar.js" defer></script>
 	<script src="<?= JS_URL ?>/theme.js"></script>
+	<script src="<?= JS_URL ?>/modal-user-qr.js" defer></script>
 </head>
 
-<!-- GENERAL MODALS -->
-<?php include VIEWS_PATH . "/components/modals/success.php"; ?>
-<?php include VIEWS_PATH . "/components/modals/info.php"; ?>
-<?php include VIEWS_PATH . "/components/modals/error.php"; ?>
-
-<?php if (isset($_SESSION["message"]["success"])): ?>
-	<script>document.addEventListener("DOMContentLoaded", () => showSuccessModal())</script>
-<?php elseif (isset($_SESSION["message"]["info"])): ?>
-	<script>document.addEventListener("DOMContentLoaded", () => showInfoModal())</script>
-<?php elseif (isset($_SESSION["message"]["error"])): ?>
-	<script>document.addEventListener("DOMContentLoaded", () => showErrorModal())</script>
-<?php endif;
-unset($_SESSION["message"]) ?>
-
 <body>
+	<!-- GENERAL MODALS -->
+	<?php include VIEWS_PATH . "/components/modals/success.php"; ?>
+	<?php include VIEWS_PATH . "/components/modals/info.php"; ?>
+	<?php include VIEWS_PATH . "/components/modals/error.php"; ?>
+
+	<?php if (isset($_SESSION["message"]["success"])): ?>
+		<script>document.addEventListener("DOMContentLoaded", () => showSuccessModal())</script>
+	<?php elseif (isset($_SESSION["message"]["info"])): ?>
+		<script>document.addEventListener("DOMContentLoaded", () => showInfoModal())</script>
+	<?php elseif (isset($_SESSION["message"]["error"])): ?>
+		<script>document.addEventListener("DOMContentLoaded", () => showErrorModal())</script>
+	<?php endif;
+	unset($_SESSION["message"]) ?>
+
 	<div class="dashboard-container">
 		<?php include VIEWS_PATH . "/layouts/header.php"; ?>
 		<?php include VIEWS_PATH . "/layouts/sidebar.php"; ?>
@@ -44,23 +46,52 @@ unset($_SESSION["message"]) ?>
 			<!-- KPI CONTAINER -->
 			<div class="row">
 				<div class="card">
-					<div class="card-value"><?= $records["total"] ?></div>
 					<div class="card-title">Total Records</div>
+					<div class="card-value"><?= $records["total"] ?></div>
 				</div>
 
 				<div class="card">
-					<div class="card-value"><?= $records["unclosed"] ?></div>
 					<div class="card-title">Unclosed Records</div>
+					<div class="card-value"><?= $records["unclosed"] ?></div>
 				</div>
 
 				<div class="card">
-					<div class="card-value"><?= $users["total"] ?></div>
 					<div class="card-title">Total Users</div>
+					<div class="card-value"><?= $users["total"] ?></div>
 				</div>
 
 				<div class="card">
-					<div class="card-value"><?= $departments["total"] ?></div>
 					<div class="card-title">Total Departments</div>
+					<div class="card-value"><?= $departments["total"] ?></div>
+				</div>
+			</div>
+
+			<!-- CHARTS CONTAINER -->
+			<div class="row">
+				<div class="card">
+					<div class="card-title">Attendance this Week</div>
+					<canvas id="attendanceChart"></canvas>
+					<script>
+						new Chart(document.getElementById("attendanceChart"), {
+							type: "bar",
+							data: {
+								labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+								datasets: [
+									{ label: "Present", data: [20, 22, 21, 23, 24] },
+									{ label: "Late", data: [20, 22, 21, 23, 24] },
+									{ label: "Absent", data: [20, 22, 21, 23, 24] },
+									{ label: "Leave", data: [20, 22, 21, 23, 24] },
+								]
+							},
+							options: {
+								responsive: true,
+								scales: {
+									x: { stacked: true },
+									y: { stacked: true, beginAtZero: true }
+								}
+							}
+						});
+					</script>
 				</div>
 			</div>
 		</main>
@@ -70,6 +101,7 @@ unset($_SESSION["message"]) ?>
 			<?php include VIEWS_PATH . "/components/modals/system-log-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/system-log-delete.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/system-logs.php"; ?>
+			<?php include VIEWS_PATH . "/components/tables/system-log-types.php"; ?>
 		</main>
 
 		<main class="main section" id="records-section">
@@ -82,6 +114,7 @@ unset($_SESSION["message"]) ?>
 
 		<main class="main section" id="users-section">
 			<?php include VIEWS_PATH . "/components/modals/user-create.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/user-qr.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-delete.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/users.php"; ?>
