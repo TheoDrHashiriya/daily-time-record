@@ -20,7 +20,7 @@ class PrintService
 		}
 
 		$dompdf = self::generatePdfString($html);
-		$dompdf->stream($filename, ["Attachment" => $download]);
+		$dompdf->stream($filename . ".pdf", ["Attachment" => $download]);
 		exit();
 	}
 
