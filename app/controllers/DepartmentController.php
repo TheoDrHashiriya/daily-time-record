@@ -36,8 +36,10 @@ class DepartmentController extends Controller
 	{
 		$department_name = trim($_POST["department_name"]);
 		$abbreviation = trim($_POST["abbreviation"]);
-		$standard_time_in = trim($_POST["standard_time_in"]);
-		$standard_time_out = trim($_POST["standard_time_out"]);
+		$standard_am_time_in = trim($_POST["standard_am_time_in"]);
+		$standard_am_time_out = trim($_POST["standard_am_time_out"]);
+		$standard_pm_time_in = trim($_POST["standard_pm_time_in"]);
+		$standard_pm_time_out = trim($_POST["standard_pm_time_out"]);
 
 		if ($this->departmentModel->nameExists($department_name))
 			$errors["department_name"] = "Department name already taken.";
