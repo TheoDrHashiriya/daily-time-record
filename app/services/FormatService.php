@@ -12,7 +12,35 @@ class FormatService
 
 	public static function formatFullName(string $first, string $middle = "", string $last = "")
 	{
-		return ucfirst($first) . ' ' . ucfirst($middle) . ' ' . ucfirst($last);
+		$fullName = ucfirst($first);
+
+		if (!empty($middle))
+			$fullName .= ' ' . strtoupper($middle[0]) . ".";
+
+		if (!empty($last))
+			$fullName .= ' ' . ucfirst($last);
+		
+		return $fullName;
+	}
+
+	public static function formatEventType($type_name)
+	{
+		return strtoupper(str_replace(["AM_", "PM_"], '', $type_name));
+	}
+
+	public static function formatNoUnderScore($text)
+	{
+		return strtoupper(str_replace('_', ' ', $text));
+	}
+
+	public static function formatPdfName($text)
+	{
+		return strtolower(str_replace([' ', '_', ':'], '-', $text));
+	}
+
+	public static function formatBoolean($bool)
+	{
+		return $bool === 1 ? "True" : "False";
 	}
 
 	// DATE & TIME
@@ -29,12 +57,7 @@ class FormatService
 
 	public static function formatTime($time)
 	{
-		return date("h:i:s A", strtotime($time));
-	}
-
-	public static function formatEventType($type_name)
-	{
-		return strtoupper(str_replace(["AM_", "PM_"], '', $type_name));
+		return date("h:i:s A", \is_string($time) ? strtotime($time) : $time);
 	}
 
 	// SORTING
