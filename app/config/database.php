@@ -1,6 +1,6 @@
 <?php
 use Dotenv\Dotenv;
-$dotenv = Dotenv::createImmutable(BASE_PATH);
+$dotenv = Dotenv::createImmutable("../../");
 $dotenv->load();
 
 define("DB_HOST", $_ENV["DB_HOST"]);
