@@ -1,7 +1,9 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\Services\FormatService;
 use App\Services\DashboardService;
+use App\Services\QRCodeService;
 use PDOException;
 use PrintService;
 
@@ -16,26 +18,6 @@ class UserController extends Controller
 		$this->userModel = $userModel;
 	}
 
-	// FOR KPIS
-
-	public function getTotal()
-	{
-		$users = $this->userModel->getAll();
-		return count($users);
-	}
-
-	// MAIN
-
-	public function getAll()
-	{
-		return $this->userModel->getAll();
-	}
-
-	public function getById($id)
-	{
-		return $this->userModel->getById($id);
-	}
-
 	public function streamToPdf()
 	{
 		$users = $this->dashboardService->getUsers();
@@ -43,6 +25,31 @@ class UserController extends Controller
 			"all-events.pdf",
 			["components/pdf/pdf-styles", "components/tables/users"],
 			["users" => $users]
+		);
+		exit();
+	}
+
+	public function streamToPdfQrCode()
+	{
+		$id = $_POST["entity_id"] ?? "";
+
+		if ($id)
+			$_SESSION["entity_id"] = $id;
+		else
+			$id = $_SESSION["entity_id"];
+
+		$user = $this->userModel->getById($id);
+		$user["full_name_formatted"] = FormatService::formatFullName(
+			$user["first_name"],
+			$user["middle_name"],
+			$user["last_name"],
+		);
+		$user["qr_code_base64"] = QRCodeService::render($user["qr_string"]);
+
+		PrintService::streamPdf(
+			"qr-code-" . FormatService::formatPdfName(strtolower($user["full_name_formatted"])) . ".pdf",
+			["components/pdf/modals", "components/modals/user-qr"],
+			["user" => $user]
 		);
 		exit();
 	}
@@ -58,7 +65,7 @@ class UserController extends Controller
 		$department = trim($_POST["department"]);
 		$created_by = trim($_SESSION["user_id"] ?? "");
 
-		if ($this->userModel->exists($username))
+		if ($this->userModel->usernameExists($username))
 			$errors["username"] = "Username already taken.";
 		if (empty($first_name))
 			$errors["first_name"] = "First name is required.";
@@ -75,24 +82,41 @@ class UserController extends Controller
 			exit();
 		}
 
-		$qr_code = bin2hex(random_bytes(32));
 		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-		$created = $this->userModel->create(
+		$user_id = $this->userModel->create(
 			$first_name,
-			$middle_name,
 			$last_name,
+			$middle_name,
 			$username,
 			$hashed_password,
-			$qr_code,
 			$user_role,
 			$department,
 			$created_by
 		);
-		$created ? $message["success"] = "User created successfully." : $message["error"] = "Failed to create user.";
+		$user_id ? $message["success"] = "User created successfully." : $message["error"] = "Failed to create user.";
+
+		do
+			$qr_string = bin2hex(random_bytes(32));
+		while ($this->userModel->qrStringExists($qr_string));
+		$this->userModel->generateQrString($user_id, $qr_string);
 
 		$_SESSION["message"] = $message;
 		header("Location: dashboard");
 		exit();
+	}
+
+	public function showQr()
+	{
+		$id = $_GET["id"] ?? null;
+		if (!$id)
+			return;
+
+		$user = $this->userModel->getById($id);
+		if (!$user)
+			return;
+
+		echo QRCodeService::render($user["qr_string"]);
+		exit;
 	}
 
 	public function edit()
@@ -106,10 +130,9 @@ class UserController extends Controller
 		$department = trim($_POST["department"]);
 		$created_at = trim($_POST["created_at"] ?? "");
 		$created_by = trim($_POST["created_by"] ?? "");
-		$current_password = trim($_POST["current_password"] ?? "");
-		$new_password = trim($_POST["new_password"] ?? "");
+		$new_password = trim($_POST["password"] ?? "");
 
-		if ($this->userModel->exists($username))
+		if ($this->userModel->usernameExistsExceptCurrent($id, $username))
 			$errors["username"] = "Username already taken.";
 		if (empty($first_name))
 			$errors["first_name"] = "First name is required.";
@@ -117,8 +140,6 @@ class UserController extends Controller
 			$errors["last_name"] = "Last name is required.";
 		if (empty($username))
 			$errors["username"] = "Username is required.";
-		if (empty($password))
-			$errors["password"] = "Password is required.";
 
 		if (!empty($errors)) {
 			header("Content-Type: application/json");
@@ -126,7 +147,21 @@ class UserController extends Controller
 			exit();
 		}
 
-		$updated = $this->userModel->update($id, $first_name, $middle_name, $last_name, $username, $user_role, $department, $created_at, $created_by);
+		if (!empty($new_password))
+			$hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+		$updated = $this->userModel->update(
+			$id,
+			$first_name,
+			$middle_name,
+			$last_name,
+			$username,
+			$user_role,
+			$department,
+			$created_at,
+			$created_by,
+			$hashed_password ?? ''
+		);
 		$updated ? $message["success"] = "User updated successfully." : $message["error"] = "Failed to update user.";
 
 		$_SESSION["message"] = $message;
