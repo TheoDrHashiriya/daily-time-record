@@ -29,7 +29,7 @@
 				<tbody>
 					<?php foreach ($record_types["data"] as $row): ?>
 						<tr>
-							<?php if ($isAdmin): ?>
+							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
 									<button type="button" class="open-button" data-target="#record-type-edit"
 										data-modal-type="record-type-edit" data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
@@ -43,7 +43,7 @@
 								</td>
 							<?php endif ?>
 							<td><?= htmlspecialchars($row["id"]) ?></td>
-							<td class="type"><?= htmlspecialchars($row["type_name"]) ?></td>
+							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>

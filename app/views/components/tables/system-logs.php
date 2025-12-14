@@ -10,7 +10,7 @@
 		<?php endif ?>
 	</div>
 
-	<?php if (empty($system_logs["data"])): ?>
+	<?php if (empty($system_logs["all"])): ?>
 		<p>No system logs found.</p>
 	<?php else: ?>
 		<div class="table-container">
@@ -29,12 +29,12 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($system_logs["data"] as $row): ?>
+					<?php foreach ($system_logs["all"] as $row): ?>
 						<tr>
 							<?php if (isset($isAdmin) && $isAdmin): ?>
 								<td class="actions">
-									<button type="button" class="open-button" data-target="#notification-edit"
-										data-modal-type="notification-edit" data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
+									<button type="button" class="open-button" data-target="#system-log-edit"
+										data-modal-type="system-log-edit" data-entity-id="<?= $row["id"] ?>" data-entity-data="<?=
 										  	htmlspecialchars(
 										  		json_encode([
 										  			"title" => $row["title"],
@@ -46,8 +46,8 @@
 										<i class="fa-regular fa-pen-to-square"></i>Edit
 									</button>
 
-									<button type="button" class="open-button danger" data-target="#notification-delete"
-										data-modal-type="notification-delete" data-entity-id="<?= $row["id"] ?>">
+									<button type="button" class="open-button danger" data-target="#system-log-delete"
+										data-modal-type="system-log-delete" data-entity-id="<?= $row["id"] ?>">
 										<i class="fa-regular fa-trash-can"></i>Delete
 									</button>
 								</td>

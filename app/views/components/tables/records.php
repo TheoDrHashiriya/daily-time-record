@@ -4,6 +4,21 @@
 		<?php if (isset($isAdmin) && $isAdmin): ?>
 			<div class="right actions">
 				<div class="row">
+					<div class="search-container">
+						<form action="" method="GET">
+							<input type="search" name="records" id="records" placeholder="Search"
+								value="<?= isset($records["search"]) ? htmlspecialchars($records["search"]) : "" ?>">
+							<button type="submit"><i class="fa-solid fa-search"></i></button>
+						</form>
+					</div>
+
+					<div class="search-container">
+						<input id="event_date" type="date" name="event_date"
+							value="<?= isset($records["event_date"]) ? htmlspecialchars($records["event_date"]) : "" ?>">
+					</div>
+				</div>
+
+				<div class="row">
 					<button type="button" class="open-button" data-target="#record-create" data-modal-type="record-create">
 						<i class="fa-solid fa-user-plus"></i>Add Record
 					</button>
@@ -26,7 +41,6 @@
 						<?php if (isset($isAdmin) && $isAdmin): ?>
 							<th>Actions</th>
 							<th>Event ID</th>
-							<th>User ID</th>
 						<?php endif ?>
 						<th>User No.</th>
 						<th>User</th>
@@ -59,10 +73,9 @@
 									</button>
 								</td>
 								<td><?= htmlspecialchars($row["id"]) ?></td>
-								<td><?= htmlspecialchars($row["user_id"]) ?></td>
 							<?php endif ?>
 							<td><?= htmlspecialchars($row["user_number"]) ?></td>
-							<td><?= htmlspecialchars($row["user"]) ?></td>
+							<td><?= htmlspecialchars($row["full_name_formatted"] ?? "") ?></td>
 							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["event_date_formatted"]) ?></td>
 							<td>
