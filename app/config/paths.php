@@ -11,7 +11,7 @@ const PUBLIC_PATH = BASE_PATH . "/public";
 const FONTS_PATH = PUBLIC_PATH . "/fonts";
 
 // PUBLIC URLS
-const BASE_URL = "/theonary";
+const BASE_URL = "";
 
 const PUBLIC_URL = BASE_URL . "/public";
 const CSS_URL = PUBLIC_URL . "/css";
