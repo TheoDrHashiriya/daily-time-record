@@ -36,8 +36,8 @@ class DashboardService
 		$isAdmin = $this->authService->isAdmin();
 
 		$departments = $this->getDepartments();
-		$system_logs = $this->getSystemLogs()["system_logs"];
-		$notifications_unread = $this->getSystemLogs()["notifications_unread"];
+		$system_logs = $this->getSystemLogs();
+		$system_log_types = $this->getSystemLogTypes();
 		$records = $this->getEventRecords();
 		$record_types = $this->getEventRecordTypes();
 		$users = $this->getUsers();
@@ -47,7 +47,7 @@ class DashboardService
 			"isAdmin" => $isAdmin,
 			"departments" => $departments,
 			"system_logs" => $system_logs,
-			"notifications_unread" => $notifications_unread,
+			"system_log_types" => $system_log_types,
 			"records" => $records,
 			"record_types" => $record_types,
 			"users" => $users,
@@ -61,8 +61,10 @@ class DashboardService
 		$total = \count($rows);
 
 		foreach ($rows as &$department) {
-			$department["standard_time_in_formatted"] = FormatService::formatTime($department["standard_time_in"]);
-			$department["standard_time_out_formatted"] = FormatService::formatTime($department["standard_time_out"]);
+			$department["standard_am_time_in_formatted"] = FormatService::formatTime($department["standard_am_time_in"]) ?? "";
+			$department["standard_am_time_out_formatted"] = FormatService::formatTime($department["standard_am_time_out"]) ?? "";
+			$department["standard_pm_time_in_formatted"] = FormatService::formatTime($department["standard_pm_time_in"]) ?? "";
+			$department["standard_pm_time_out_formatted"] = FormatService::formatTime($department["standard_pm_time_out"]) ?? "";
 			$department["created_at_formatted"] = FormatService::formatTime($department["created_at"]);
 			$department["created_on_formatted"] = FormatService::formatDate($department["created_at"]);
 		}
@@ -77,7 +79,7 @@ class DashboardService
 	public function getSystemLogs()
 	{
 		$system_logs = $this->systemLogModel->getAll();
-		$notifications_unread = $this->systemLogModel->getAllUnread();
+		$notifications_unread = $this->systemLogModel->getAllUnread($_SESSION["user_id"] ?? "");
 
 		foreach ($system_logs as &$log) {
 			$log["created_by_full_name_formatted"] = FormatService::formatFullName(
@@ -93,25 +95,52 @@ class DashboardService
 		$system_logs = FormatService::sortArrayByColumn($system_logs, "created_at");
 
 		return [
-			"system_logs" => $system_logs,
-			"notifications_unread" => $notifications_unread
+			"all" => $system_logs,
+			"notifications" => ["unread" => $notifications_unread]
 		];
+	}
+
+	public function getSystemLogTypes()
+	{
+		$rows = $this->systemLogModel->getAllTypes();
+
+		foreach ($rows as &$type) {
+			$type["type_name_formatted"] = FormatService::formatNoUnderScore($type["type_name"]);
+			$type["is_notification_formatted"] = FormatService::formatBoolean($type["is_notification"]);
+		}
+		unset($type);
+
+		return ["data" => $rows];
 	}
 
 	public function getEventRecords()
 	{
-		$rows = $this->recordModel->getAll();
+		//  SEARCH PARAMETERS
+		$search = $_GET["records"] ?? "";
+		$date = $_GET["event_date"] ?? "";
+
+		$rows = $this->recordModel->getAll($search, $date);
 		$total = \count($rows);
 		$unclosed = $this->recordModel->getTotalUnclosed();
 
 		foreach ($rows as &$record) {
 			$record["event_date_formatted"] = FormatService::formatDate($record["event_time"]);
 			$record["event_time_formatted"] = FormatService::formatTime($record["event_time"]);
-			$record["type_name_formatted"] = FormatService::formatEventType($record["type_name"]);
+			$record["full_name_formatted"] = FormatService::formatFullName(
+				$record["first_name"],
+				$record["middle_name"],
+				$record["last_name"],
+			);
+
+			if ($this->authService->isAdmin())
+				$record["type_name_formatted"] = FormatService::formatNoUnderScore($record["type_name"]);
+			else
+				$record["type_name_formatted"] = FormatService::formatEventType($record["type_name"]);
 		}
 		unset($record);
 
 		return [
+			"search" => $search,
 			"data" => $rows,
 			"total" => $total,
 			"unclosed" => $unclosed
@@ -123,7 +152,7 @@ class DashboardService
 		$rows = $this->recordModel->getAllTypes();
 
 		foreach ($rows as &$type) {
-			$type["type_name_formatted"] = FormatService::formatEventType($type["type_name"]);
+			$type["type_name_formatted"] = FormatService::formatNoUnderScore($type["type_name"]);
 		}
 		unset($type);
 
@@ -138,7 +167,9 @@ class DashboardService
 		$user_number = $_GET["user_number"] ?? "";
 		$role = $_GET["role"] ?? "";
 		$department_name = $_GET["department_name"] ?? "";
+
 		$rows = $this->userModel->getAll($search, $fullname, $user_number, $role, $department_name);
+		$admins = $this->userModel->getAllByRole(ROLE_ADMIN);
 		$total = \count($rows);
 
 		foreach ($rows as &$user) {
@@ -155,13 +186,24 @@ class DashboardService
 				$user["creator_last_name"],
 			) : null;
 			$user["created_at_formatted"] = FormatService::formatDate($user["created_at"]);
+			// $user["qr_code_base64"] = QRCodeService::render($user["qr_string"]) ?? "User has no QR Code.";
 		}
 		unset($user);
+
+		foreach ($admins as &$admin) {
+			$admin["admins"]["full_name_formatted"] = FormatService::formatFullName(
+				$admin["first_name"],
+				$admin["middle_name"],
+				$admin["last_name"],
+			);
+		}
+		unset($admin);
 
 		return [
 			"search" => $search,
 			"data" => $rows,
-			"total" => $total
+			"admins" => $admins,
+			"total" => $total,
 		];
 	}
 
