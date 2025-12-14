@@ -69,23 +69,18 @@ class Router
 
 	public function run()
 	{
-		$requestUri = $_SERVER["REQUEST_URI"];
-		$parsedUrl = parse_url($requestUri);
+		$path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-		// Gets request URI without forward-slashes and base URL
-		$requestPath = trim(
-			str_replace(
-				BASE_URL,
-				"",
-				$parsedUrl["path"]
-			),
-			"/"
-		);
+		// Gets request URI without forward-slashes
+		$path = trim($path, "/");
 
 		// Removes .php in the request
-		$requestPath = preg_replace("/\.php$/", "", $requestPath);
+		$path = preg_replace("/\.php$/", "", $path);
 
-		switch ($requestPath) {
+		// Default route
+		$path = $path === '' ? 'home' : $path;
+
+		switch ($path) {
 			case "":
 			case ".";
 			case "/":
