@@ -42,7 +42,7 @@ class Router
 		);
 
 		// Controllers
-		$this->homeController = new HomeController($authService, $recordModel, $homeService, $systemLogModel);
+		$this->homeController = new HomeController($authService, $departmentModel, $recordModel, $homeService, $systemLogModel);
 		$this->dashboardController = new DashboardController($authService, $dashboardService);
 		$this->recordController = new EventRecordController($recordModel, $dashboardService);
 		$this->departmentController = new DepartmentController($departmentModel);
@@ -132,6 +132,11 @@ class Router
 					$this->respondWithStatus(405);
 				break;
 
+			case "user-qr":
+				if (!$this->userController->showQr())
+					$this->respondWithStatus(405);
+				break;
+
 			case "create-user":
 				if (!$this->userController->create())
 					$this->respondWithStatus(405);
@@ -186,6 +191,10 @@ class Router
 				$this->userController->streamToPdf();
 				break;
 
+			case "qr-code":
+				$this->userController->streamToPdfQrCode();
+				break;
+
 			case "all-system-logs":
 				$this->systemLogController->streamToPdf();
 				break;
@@ -193,6 +202,11 @@ class Router
 			case "all-departments":
 				$this->pageController->previewAllDepartmentsPdf();
 				break;
+
+			// OTHERS
+
+			case "mark-read":
+				$this->systemLogController->markAllNotificationsAsRead();
 
 			default:
 				$this->respondWithStatus(404);
