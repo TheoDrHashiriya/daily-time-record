@@ -1,6 +1,10 @@
 const form = document.getElementById("authenticate");
 const input = document.getElementById("user_number");
 
+// Remove input autofocus for mobile devices
+if (/Mobi|Android/i.test(navigator.userAgent))
+	input.removeAttribute("autofocus");
+
 input.addEventListener("input", () => {
 	input.value = input.value.replace(/\D/g, '');
 
