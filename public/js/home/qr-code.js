@@ -1,23 +1,34 @@
 const qrCodeModal = document.getElementById("login-qr-code");
-let stream;
 
 const qrCodeCloseButtons = qrCodeModal.querySelectorAll(".close-button");
 qrCodeCloseButtons.forEach(button => {
 	button.addEventListener("click", closeModal);
 });
 
+let stream;
+let video = qrCodeModal.querySelector("video");
+
+async function initCamera() {
+	if (stream) return;
+
+	try {
+		stream = await navigator.mediaDevices.getUserMedia({
+			video: {
+				facingMode: "environment",
+				width: 640,
+				height: 640,
+			}
+		});
+		video.srcObject = stream;
+		await video.play();
+		startScanning(video);
+	} catch (err) {
+		alert("Camera init failed:", err);
+	}
+}
+
 function showLoginQrCodeModal() {
-	navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-		.then(s => {
-			stream = s;
-			const video = qrCodeModal.querySelector("video");
-			video.srcObject = stream;
-			video.play();
-
-			video.addEventListener("loadedmetadata", () => setTimeout(() => startScanning(video), 500));
-		})
-		.catch(err => alert("Camera access denied: " + err));
-
+	initCamera();
 	qrCodeModal.classList.add("show");
 }
 
@@ -31,6 +42,9 @@ function closeModal() {
 
 	qrCodeModal.classList.remove("show");
 }
+
+let lastScannedCode = null;
+let scanCooldown = false;
 
 function startScanning(video) {
 	const canvas = document.createElement("canvas");
@@ -47,18 +61,22 @@ function startScanning(video) {
 			canvas.height
 		);
 
-		if (code) {
-			// console.log("QR Code string:", code.data);
+		if (code && !scanCooldown && code.data !== lastScannedCode) {
+			lastScannedCode = code.data;
+			scanCooldown = true;
+
 			const qrInput = document.getElementById("qr_code");
 			qrInput.value = code.data;
 
 			const form = qrInput.closest("form");
 			form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+			setTimeout(() => {
+				scanCooldown = false;
+			}, 1500);
 		}
 
-		setTimeout(() => {
-			requestAnimationFrame(scan);
-		}, 500);
+		requestAnimationFrame(scan);
 	}
 
 	scan();
