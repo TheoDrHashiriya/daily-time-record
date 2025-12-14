@@ -21,6 +21,18 @@ class Department
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function getByUserId($user_id)
+	{
+		$sql = "SELECT d.*
+				  FROM department d
+				  JOIN user u ON d.id = u.department
+				  WHERE u.id = :user_id LIMIT 1";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":user_id", $user_id);
+		$query->execute();
+		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
+	}
+
 	public function getByUserNumber($user_number)
 	{
 		$sql = "SELECT * FROM department WHERE user_number = :user_number LIMIT 1";
@@ -86,29 +98,35 @@ class Department
 		return $query->fetchColumn() > 0;
 	}
 
-	public function create($department_name, $abbreviation, $standard_time_in, $standard_time_out)
+	public function create($department_name, $abbreviation, $standard_am_time_in, $standard_am_time_out, $standard_pm_time_in, $standard_pm_time_out)
 	{
-		$sql = "INSERT INTO department (department_name, abbreviation, standard_time_in, standard_time_out)
-				  VALUES (:department_name, :abbreviation, :standard_time_in, :standard_time_out)";
+		$sql = "INSERT INTO department (department_name, abbreviation, standard_am_time_in, standard_am_time_out, standard_pm_time_in, standard_pm_time_out)
+				  VALUES (:department_name, :abbreviation, :standard_am_time_in, :standard_am_time_out, :standard_pm_time_in, :standard_pm_time_out)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":department_name", $department_name);
 		$query->bindParam(":abbreviation", $abbreviation);
-		$query->bindParam(":standard_time_in", $standard_time_in);
-		$query->bindParam(":standard_time_out", $standard_time_out);
+		$query->bindParam(":standard_am_time_in", $standard_am_time_in);
+		$query->bindParam(":standard_am_time_out", $standard_am_time_out);
+		$query->bindParam(":standard_pm_time_in", $standard_pm_time_in);
+		$query->bindParam(":standard_pm_time_out", $standard_pm_time_out);
 		return $query->execute();
 	}
 
-	public function update($id, $department_name, $abbreviation, $standard_time_in, $standard_time_out)
+	public function update($id, $department_name, $abbreviation, $standard_am_time_in, $standard_am_time_out, $standard_pm_time_in, $standard_pm_time_out)
 	{
 		$sql = "UPDATE department
-				  SET department_name = :department_name, abbreviation = :abbreviation, standard_time_in = :standard_time_in, standard_time_out = :standard_time_out
+				  SET department_name = :department_name, abbreviation = :abbreviation,
+				  standard_am_time_in = :standard_am_time_in, standard_am_time_out = :standard_am_time_out,
+				  standard_pm_time_in = :standard_pm_time_in, standard_pm_time_out = :standard_pm_time_out
 				  WHERE id = :id";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->bindParam(":department_name", $department_name);
 		$query->bindParam(":abbreviation", $abbreviation);
-		$query->bindParam(":standard_time_in", $standard_time_in);
-		$query->bindParam(":standard_time_out", $standard_time_out);
+		$query->bindParam(":standard_am_time_in", $standard_am_time_in);
+		$query->bindParam(":standard_am_time_out", $standard_am_time_out);
+		$query->bindParam(":standard_pm_time_in", $standard_pm_time_in);
+		$query->bindParam(":standard_pm_time_out", $standard_pm_time_out);
 		return $query->execute();
 	}
 
