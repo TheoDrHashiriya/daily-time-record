@@ -81,7 +81,7 @@ class AuthService
 
 		if (!$user)
 			return ["errors" => ["qr_code" => "User not found."]];
-		if ($user["qr_code"] !== $qr_code)
+		if ($user["qr_string"] !== $qr_code)
 			return ["errors" => ["qr_code" => "Incorrect QR code."]];
 
 		return ["success" => true, "user" => $user];
