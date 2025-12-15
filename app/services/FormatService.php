@@ -19,7 +19,7 @@ class FormatService
 
 		if (!empty($last))
 			$fullName .= ' ' . ucfirst($last);
-		
+
 		return $fullName;
 	}
 
@@ -62,10 +62,10 @@ class FormatService
 
 	// SORTING
 
-	public static function sortArrayByColumn($array, $column_name)
+	public static function sortArrayByColumn($array, $column_name, $sort_order)
 	{
 		$column = array_column($array, $column_name);
-		array_multisort($column, SORT_DESC, $array);
+		array_multisort($column, $sort_order, $array);
 		return $array;
 	}
 }
