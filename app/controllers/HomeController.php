@@ -162,11 +162,12 @@ class HomeController extends Controller
 		$user_id = $_SESSION["user_id"];
 		$this->authService->requireLogin();
 
+		$currentHour = (int) date('H');
 		$eventMessage = match ($eventType) {
 			AM_IN => "Morning Time-In",
 			AM_OUT => "Morning Time-Out",
-			PM_IN => "Afternoon Time-In",
-			PM_OUT => "Afternoon Time-Out",
+			PM_IN => $currentHour < 17 ? "Afternoon Time-In" : "Evening Time-In",
+			PM_OUT => $currentHour < 17 ? "Afternoon Time-Out" : "Evening Time-Out",
 			default => ""
 		};
 
@@ -181,7 +182,7 @@ class HomeController extends Controller
 		$greeting = match ($eventType) {
 			AM_IN => "Good morning",
 			AM_OUT => "Goodbye",
-			PM_IN => "Good afternoon",
+			PM_IN => $currentHour < 17 ? "Good afternoon" : "Good evening",
 			PM_OUT => "Goodbye",
 			default => ""
 		};
