@@ -5,9 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Welcome to Theonary</title>
+	<link rel="stylesheet" href="<?= ASSETS_URL ?>/tom-select/dist/css/tom-select.css">
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
-	<script src="<?= JS_URL ?>/chart.js/dist/chart.umd.js"></script>
+	<script src="<?= ASSETS_URL ?>/chart.js/dist/chart.umd.js"></script>
+	<script src="<?= ASSETS_URL ?>/tom-select/dist/js/tom-select.complete.min.js"></script>
+	<!-- <script src="<?= JS_URL ?>/form-input.js" defer></script> -->
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
 	<script src="<?= JS_URL ?>/time.js" defer></script>
 	<script src="<?= JS_URL ?>/modal.js" defer></script>
