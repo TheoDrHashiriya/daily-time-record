@@ -75,6 +75,10 @@ class UserController extends Controller
 			$errors["username"] = "Username is required.";
 		if (empty($password))
 			$errors["password"] = "Password is required.";
+		if (empty($user_role))
+			$errors["user_role"] = "Role is required.";
+		if (empty($department))
+			$errors["department"] = "Department is required.";
 
 		if (!empty($errors)) {
 			header("Content-Type: application/json");
