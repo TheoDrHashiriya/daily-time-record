@@ -60,10 +60,14 @@ class EventRecordController extends Controller
 		$event_type = trim($_POST["event_type"] ?? "");
 
 		// Validate user input
+		if (empty($user_id))
+			$errors["user_id"] = "Please enter the record creator.";
 		if (ValidationService::isIncompleteDateTime($event_time))
 			$errors["event_time"] = "Please enter the complete time of the event.";
 		if (empty($event_time))
 			$errors["event_time"] = "Please enter the time of the event.";
+		if (empty($event_type))
+			$errors["event_type"] = "Please enter the record type.";
 
 		if (!empty($errors)) {
 			header("Content-Type: application/json");
