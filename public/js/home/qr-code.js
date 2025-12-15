@@ -6,24 +6,39 @@ qrCodeCloseButtons.forEach(button => {
 });
 
 let stream;
+let cameraPromise;
+let cameraActive = false;
 let video = qrCodeModal.querySelector("video");
 
 async function initCamera() {
-	if (stream) return;
+	if (stream || cameraActive) return;
+	cameraActive = true;
 
 	try {
-		stream = await navigator.mediaDevices.getUserMedia({
-			video: {
-				facingMode: "environment",
-				width: 640,
-				height: 640,
-			}
+		cameraPromise = navigator.mediaDevices.getUserMedia({
+			video: { facingMode: "environment", width: 640, height: 640 }
 		});
+		stream = await cameraPromise;
+
+		if (!cameraActive) {
+			stream.getTracks().forEach(track => track.stop());
+			stream = null;
+			return;
+		}
+
 		video.srcObject = stream;
 		await video.play();
-		startScanning(video);
+
+		while (video.videoWidth === 0 && cameraActive)
+			await new Promise(r => requestAnimationFrame(r));
+
+		if (cameraActive)
+			startScanning(video);
+
 	} catch (err) {
-		alert("Camera init failed:", err);
+		console.error("Camera init failed:", err);
+	} finally {
+		cameraPromise = null;
 	}
 }
 
@@ -32,11 +47,19 @@ function showLoginQrCodeModal() {
 	qrCodeModal.classList.add("show");
 }
 
-function closeModal() {
+async function closeModal() {
+	cameraActive = false
+	
 	try {
 		if (stream) {
 			stream.getTracks().forEach(track => track.stop());
 			stream = null;
+		} else if (cameraPromise) {
+			const s = await cameraPromise;
+			s.getTracks()
+				.forEach(track => track.stop());
+			stream = null;
+			cameraPromise = null;
 		}
 	} catch (err) {
 		console.log("No stream detected.", err);
