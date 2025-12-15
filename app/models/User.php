@@ -166,16 +166,17 @@ class User
 		return $query->fetchColumn() > 0;
 	}
 
-	public function create($first_name, $last_name, $middle_name, $username, $hashed_password, $user_role, $department, $created_by)
+	public function create($first_name, $last_name, $middle_name, $username, $hashed_password, $user_number, $user_role, $department, $created_by)
 	{
-		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, hashed_password, user_role, department, created_by)
-				  VALUES (:first_name, :last_name, :middle_name, :username, :hashed_password, :user_role, :department, :created_by)";
+		$sql = "INSERT INTO user (first_name, last_name, middle_name, username, hashed_password, user_number, user_role, department, created_by)
+				  VALUES (:first_name, :last_name, :middle_name, :username, :hashed_password, :user_number, :user_role, :department, :created_by)";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":first_name", $first_name);
 		$query->bindParam(":last_name", $last_name);
 		$query->bindParam(":middle_name", $middle_name);
 		$query->bindParam(":username", $username);
 		$query->bindParam(":hashed_password", $hashed_password);
+		$query->bindParam(":user_number", $user_number);
 		$query->bindParam(":user_role", $user_role);
 		$query->bindParam(":department", $department);
 		$query->bindParam(":created_by", $created_by);
