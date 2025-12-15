@@ -92,7 +92,7 @@ class DashboardService
 		}
 		unset($log);
 
-		$system_logs = FormatService::sortArrayByColumn($system_logs, "created_at");
+		$system_logs = FormatService::sortArrayByColumn($system_logs, "created_at", SORT_DESC);
 
 		return [
 			"all" => $system_logs,
@@ -198,6 +198,8 @@ class DashboardService
 			);
 		}
 		unset($admin);
+
+		$rows = FormatService::sortArrayByColumn($rows, "first_name", SORT_ASC);
 
 		return [
 			"search" => $search,
