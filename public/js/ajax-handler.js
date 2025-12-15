@@ -51,12 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (result.success) {
 					form.reset();
 					form.closest(".modal-container").classList.remove("show");
-
-					if (result.redirect) window.location.href = result.redirect;
-					else if (result.logoutAfter)
+					
+					if (result.logoutAfter)
 						window.location.href = "logout";
 					else
 						window.location.href = "dashboard";
+					
 				} else if (result.errors) {
 					for (const field in result.errors) {
 						if (field === "general") {
@@ -67,13 +67,19 @@ document.addEventListener("DOMContentLoaded", () => {
 						const fieldLine = form.querySelector(`[name="${field}"]`);
 
 						if (!fieldLine) continue;
-
+						
 						const errorLine = fieldLine.nextElementSibling;
-
+						
 						if (errorLine && errorLine.classList.contains("error") || errorLine.classList.contains("error-general"))
 							errorLine.textContent = result.errors[field];
 					}
 				}
+
+				if (result.redirect) {
+					form.closest(".modal-container").classList.remove("show");
+					window.location.href = result.redirect;
+				}
+				
 			} catch (err) {
 				console.error("Form submit error:", err);
 			} finally {
