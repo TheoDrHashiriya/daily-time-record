@@ -17,7 +17,7 @@
 		if ($_SESSION["user_number_is_admin"] === true): ?>
 			<script>document.addEventListener("DOMContentLoaded", () => showLoginUsernamePasswordModal())</script>
 		<?php elseif ($_SESSION["user_number_is_admin"] === false): ?>
-			<script src="<?= JS_URL ?>/jsqr/dist/jsQR.js" defer></script>
+			<script src="<?= ASSETS_URL ?>/jsqr/dist/jsQR.js" defer></script>
 			<script src="<?= JS_URL ?>/home/qr-code.js" defer></script>
 			<script>document.addEventListener("DOMContentLoaded", () => showLoginQrCodeModal())</script>
 		<?php endif;
