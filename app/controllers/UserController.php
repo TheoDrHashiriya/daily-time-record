@@ -87,12 +87,18 @@ class UserController extends Controller
 		}
 
 		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+		do
+			$user_number = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+		while ($this->userModel->userNumberExists($user_number));
+
 		$user_id = $this->userModel->create(
 			$first_name,
 			$last_name,
 			$middle_name,
 			$username,
 			$hashed_password,
+			$user_number,
 			$user_role,
 			$department,
 			$created_by
