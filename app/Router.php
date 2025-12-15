@@ -82,7 +82,7 @@ class Router
 
 		switch ($path) {
 			case "":
-			case ".";
+			case ".":
 			case "/":
 			case "home":
 			case "index":
