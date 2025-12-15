@@ -59,10 +59,9 @@ class EventRecordController extends Controller
 		$event_time = trim($_POST["event_time"] ?? "");
 		$event_type = trim($_POST["event_type"] ?? "");
 
-		// Validate user input
 		if (empty($user_id))
 			$errors["user_id"] = "Please enter the record creator.";
-		if (ValidationService::isIncompleteDateTime($event_time))
+		if (ValidationService::isIncompleteDateTimeLocal($event_time))
 			$errors["event_time"] = "Please enter the complete time of the event.";
 		if (empty($event_time))
 			$errors["event_time"] = "Please enter the time of the event.";
@@ -72,6 +71,18 @@ class EventRecordController extends Controller
 		if (!empty($errors)) {
 			header("Content-Type: application/json");
 			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$isIn = str_contains($event_type, "in");
+		if (ValidationService::isAMFromString($event_time))
+			$event_type = $isIn ? AM_IN : AM_OUT;
+		else
+			$event_type = $isIn ? PM_IN : PM_OUT;
+
+		if ($this->recordModel->hasRecorded($user_id, $event_type)) {
+			$_SESSION["message"]["error"] = "Record already exists for today.";
+			header("Location: dashboard");
 			exit();
 		}
 
