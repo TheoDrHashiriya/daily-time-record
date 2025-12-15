@@ -5,7 +5,7 @@
 			<div class="right actions">
 				<div class="row">
 					<div class="search-container">
-						<form action="" method="GET">
+						<form action="" method="GET" data-normal="1">
 							<input type="search" name="users" id="users" placeholder="Search"
 								value="<?= isset($users["search"]) ? htmlspecialchars($users["search"]) : "" ?>">
 							<button type="submit"><i class="fa-solid fa-search"></i></button>
@@ -60,10 +60,10 @@
 											  	htmlspecialchars(
 											  		json_encode([
 											  			"base_url" => BASE_URL,
-														"public_url"=> PUBLIC_URL,
+											  			"public_url" => PUBLIC_URL,
 											  			"full_name_formatted" => $row["full_name_formatted"],
 											  			"user_number" => $row["user_number"],
-							  						])
+											  		])
 											  	) ?>">
 											<i class="fa-solid fa-qrcode"></i>QR
 										</button>
@@ -97,7 +97,7 @@
 							<td><?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?></td>
 							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
-							<td><?=$row["email"]?  htmlspecialchars($row["email"]): "<em>No email.</em>" ?></td>
+							<td><?= $row["email"] ? htmlspecialchars($row["email"]) : "<em>No email.</em>" ?></td>
 							<td><?= htmlspecialchars($row["role_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["department_name_formatted"]) ?></td>
 							<td>
