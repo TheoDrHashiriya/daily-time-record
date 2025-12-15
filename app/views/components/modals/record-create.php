@@ -9,11 +9,12 @@
 
 			<label for="user_id">Created By</label>
 			<select id="user_id" name="user_id">
+				<option value="" disabled selected hidden>Select user</option>
 				<?php foreach ($users["data"] as $user): ?>
 					<option value="<?= $user["id"] ?>">
 						<?= $user["full_name_formatted"] ?>
 					</option>
-				<?php endforeach ?>
+					<?php endforeach ?>
 			</select>
 			<p class="error"><?= $errors["user_id"] ?? "" ?></p>
 
@@ -27,6 +28,7 @@
 				<div class="column">
 					<label for="event_type">Record Type</label>
 					<select id="event_type" name="event_type">
+						<option value="" disabled selected hidden>Select record type</option>
 						<option value="in">IN</option>
 						<option value="out">OUT</option>
 					</select>
@@ -34,6 +36,8 @@
 				</div>
 			</div>
 
+			<p class="error-general"><?= $errors["general"] ?? "" ?></p>
+			
 			<div class="modal-actions">
 				<button class="close-button" type="button" id="cancel">Cancel</button>
 				<button type="submit">Go</button>
