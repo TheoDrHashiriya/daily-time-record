@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				form.reset();
 				form.closest(".modal-container").classList.remove("show");
 
+				if (result.redirect) window.location.href = result.redirect;
+
 				if (result.logoutAfter)
 					window.location.href = "logout";
 				else
