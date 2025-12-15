@@ -121,7 +121,7 @@ class EventRecordController extends Controller
 			$message["success"] = "Record updated successfully.";
 			$response = ["success" => true, "redirect" => "dashboard"];
 		} else {
-			$message["error"] = "Failed to updated record.";
+			$message["error"] = "Failed to update record.";
 			$response = ["success" => false, "redirect" => "dashboard"];
 		}
 
