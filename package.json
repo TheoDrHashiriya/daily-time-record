@@ -20,7 +20,8 @@
   "homepage": "https://github.com/TheoDrHashiriya/daily-time-record#readme",
   "dependencies": {
     "chart.js": "^4.5.1",
-    "jsqr": "^1.4.0"
+    "jsqr": "^1.4.0",
+    "tom-select": "^2.4.3"
   },
   "devDependencies": {
     "vite": "^6.4.1"
