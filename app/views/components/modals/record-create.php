@@ -27,11 +27,8 @@
 				<div class="column">
 					<label for="event_type">Record Type</label>
 					<select id="event_type" name="event_type">
-						<?php foreach ($record_types["data"] as $type): ?>
-							<option value="<?= $type["id"] ?>">
-								<?= $type["type_name_formatted"] ?>
-							</option>
-						<?php endforeach ?>
+						<option value="in">IN</option>
+						<option value="out">OUT</option>
 					</select>
 					<p class="error"><?= $errors["event_type"] ?? "" ?></p>
 				</div>
