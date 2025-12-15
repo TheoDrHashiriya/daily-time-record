@@ -14,6 +14,7 @@ const FONTS_PATH = PUBLIC_PATH . "/fonts";
 const BASE_URL = "";
 
 const PUBLIC_URL = BASE_URL . "/public";
+const ASSETS_URL = PUBLIC_URL . "/assets";
 const CSS_URL = PUBLIC_URL . "/css";
 const JS_URL = PUBLIC_URL . "/js";
 const VENDOR_URL = BASE_URL . "/vendor";
