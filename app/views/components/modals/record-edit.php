@@ -5,7 +5,7 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="edit-form" method="post" action="edit-record">
+		<form method="post" action="edit-record">
 			<input type="hidden" name="entity_id" value="">
 
 			<label for="user_id">Created By</label>

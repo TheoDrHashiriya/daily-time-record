@@ -5,7 +5,7 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="delete-form" method="post" action="delete-record">
+		<form method="post" action="delete-record">
 			<input type="hidden" name="entity_id" value="">
 
 			<p>Are you sure you want to delete the current record?</p>

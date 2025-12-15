@@ -5,7 +5,7 @@
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
-		<form class="edit-form" method="post" action="edit-system-log">
+		<form method="post" action="edit-system-log">
 			<input type="hidden" name="entity_id" value="">
 
 			<div class="row">
