@@ -1,5 +1,5 @@
 const form = document.getElementById("authenticate");
-const input = form.getElementById("user_number");
+const input = form.querySelector("#user_number");
 
 // Remove input autofocus for mobile devices
 if (/Mobi|Android/i.test(navigator.userAgent))
