@@ -290,9 +290,16 @@ class HomeController extends Controller
 		$user = $result["user"];
 		$this->authService->login($user);
 
-		if ($this->authService->isAdmin())
-			header("Location: dashboard");
+		if ($this->authService->isAdmin()) {
+			$_SESSION["message"]["success-title"] = "Logged In";
+			$_SESSION["message"]["success"] = "Welcome, " . $user["first_name"] . ".";
+			header("Content-Type: application/json");
+			echo json_encode(["success" => true, "redirect" => "dashboard"]);
+			exit();
+		}
 
+		header("Content-Type: application/json");
+		echo json_encode(["success" => true, "redirect" => "home"]);
 		exit();
 	}
 }
