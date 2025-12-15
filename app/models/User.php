@@ -92,7 +92,7 @@ class User
 		$search = '',
 		$fullname = '',
 		$user_number = '',
-		$role = '',
+		$role_name = '',
 		$department_name = '',
 		$abbreviation = ''
 	) {
@@ -117,6 +117,8 @@ class User
 
 		if ($search !== '') {
 			$sql .= " AND CONCAT_WS(' ', u.first_name, u.middle_name, u.last_name) LIKE :search
+							OR u.email LIKE :search
+							OR u.username LIKE :search
 							OR u.user_number LIKE :search
 							OR ur.role_name LIKE :search
 							OR d.department_name LIKE :search
