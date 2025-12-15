@@ -41,6 +41,7 @@
 						<th>Middle Name</th>
 						<th>Last Name</th>
 						<th>Username</th>
+						<th>Email</th>
 						<th>Role</th>
 						<th>Department</th>
 						<th>Created By</th>
@@ -96,6 +97,7 @@
 							<td><?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?></td>
 							<td><?= htmlspecialchars($row["last_name"]) ?></td>
 							<td><?= htmlspecialchars($row["username"]) ?></td>
+							<td><?=$row["email"]?  htmlspecialchars($row["email"]): "<em>No email.</em>" ?></td>
 							<td><?= htmlspecialchars($row["role_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["department_name_formatted"]) ?></td>
 							<td>
