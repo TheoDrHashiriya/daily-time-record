@@ -68,12 +68,6 @@ class EventRecordController extends Controller
 		if (empty($event_type))
 			$errors["event_type"] = "Please enter the record type.";
 
-		if (!empty($errors)) {
-			header("Content-Type: application/json");
-			echo json_encode(["success" => false, "errors" => $errors]);
-			exit();
-		}
-
 		$isIn = str_contains($event_type, "in");
 		if (ValidationService::isAMFromString($event_time))
 			$event_type = $isIn ? AM_IN : AM_OUT;
@@ -81,16 +75,27 @@ class EventRecordController extends Controller
 			$event_type = $isIn ? PM_IN : PM_OUT;
 
 		if ($this->recordModel->hasRecorded($user_id, $event_type)) {
-			$_SESSION["message"]["error"] = "Record already exists for today.";
-			header("Location: dashboard");
+			$errors["general"] = "Record already exists for today.";
+		}
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
 			exit();
 		}
 
 		$created = $this->recordModel->create($user_id, $event_time, $event_type);
-		$created ? $message["success"] = "Record created successfully." : $message["error"] = "Failed to create record.";
+		if ($created) {
+			$message["success"] = "Record created successfully.";
+			$response = ["success" => true, "redirect" => "dashboard"];
+		} else {
+			$message["error"] = "Failed to create record.";
+			$response = ["success" => false, "redirect" => "dashboard"];
+		}
 
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 
@@ -112,10 +117,17 @@ class EventRecordController extends Controller
 		}
 
 		$updated = $this->recordModel->update($id, $event_time, $event_type, $user_id);
-		$updated ? $message["success"] = "Record updated successfully." : $message["error"] = "Failed to updated record.";
+		if ($updated) {
+			$message["success"] = "Record updated successfully.";
+			$response = ["success" => true, "redirect" => "dashboard"];
+		} else {
+			$message["error"] = "Failed to updated record.";
+			$response = ["success" => false, "redirect" => "dashboard"];
+		}
 
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 
@@ -123,9 +135,17 @@ class EventRecordController extends Controller
 	{
 		$id = trim($_POST["entity_id"]);
 		$deleted = $this->recordModel->delete($id);
-		$deleted ? $message["success"] = "Record deleted successfully." : $message["error"] = "Failed to delete record.";
+		if ($deleted) {
+			$message["success"] = "Record deleted successfully.";
+			$response = ["success" => true, "redirect" => "dashboard"];
+		} else {
+			$message["error"] = "Failed to delete record.";
+			$response = ["success" => false, "redirect" => "dashboard"];
+		}
+
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 
