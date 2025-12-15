@@ -103,15 +103,23 @@ class UserController extends Controller
 			$department,
 			$created_by
 		);
-		$user_id ? $message["success"] = "User created successfully." : $message["error"] = "Failed to create user.";
 
 		do
 			$qr_string = bin2hex(random_bytes(32));
 		while ($this->userModel->qrStringExists($qr_string));
 		$this->userModel->generateQrString($user_id, $qr_string);
 
+		if ($user_id) {
+			$message["success"] = "User created successfully.";
+			$response = ["success" => true, "redirect" => "dashboard"];
+		} else {
+			$message["error"] = "Failed to create user.";
+			$response = ["success" => false, "redirect" => "dashboard"];
+		}
+
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 
@@ -172,10 +180,18 @@ class UserController extends Controller
 			$created_by,
 			$hashed_password ?? ''
 		);
-		$updated ? $message["success"] = "User updated successfully." : $message["error"] = "Failed to update user.";
+
+		if ($updated) {
+			$message["success"] = "User updated successfully.";
+			$response = ["success" => true, "redirect" => "dashboard"];
+		} else {
+			$message["error"] = "Failed to update user.";
+			$response = ["success" => false, "redirect" => "dashboard"];
+		}
 
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 
@@ -183,17 +199,22 @@ class UserController extends Controller
 	{
 		$id = trim($_POST["entity_id"]);
 		$message = [];
+		$response = [];
 
 		try {
 			$deleted = $this->userModel->delete($id);
-			$deleted ? $message["success"] = "User deleted successfully." : $message["error"] = "Failed to delete user.";
+			if ($deleted) {
+				$message["success"] = "User deleted successfully.";
+				$response = ["success" => true, "redirect" => "dashboard"];
+			} else {
+				$message["error"] = "Failed to delete user.";
+				$response = ["success" => false, "redirect" => "dashboard"];
+			}
 		} catch (PDOException $e) {
 			switch ($e->getCode()) {
 				case 23000:
 					$message["error-title"] = "User In Use";
 					$message["error"] = "Cannot delete user because it is referenced elsewhere.";
-					$_SESSION["message"] = $message;
-					header("Location: dashboard");
 					break;
 
 				default:
@@ -201,10 +222,12 @@ class UserController extends Controller
 					$message["error"] = $e->getMessage();
 					break;
 			}
+			$response = ["success" => false, "redirect" => "dashboard"];
 		}
 
 		$_SESSION["message"] = $message;
-		header("Location: dashboard");
+		header("Content-Type: application/json");
+		echo json_encode($response);
 		exit();
 	}
 }
