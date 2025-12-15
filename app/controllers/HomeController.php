@@ -71,7 +71,8 @@ class HomeController extends Controller
 
 		// Show login modal instead of recording time in/out
 		if ($userNumberIsFromAdmin) {
-			header("Location: home");
+			header("Content-Type: application/json");
+			echo json_encode(["success" => true, "redirect" => "home"]);
 			exit();
 		}
 
@@ -88,7 +89,9 @@ class HomeController extends Controller
 		$user = $result["user"];
 		$_SESSION["user_id"] = $user["id"];
 		$_SESSION["first_name"] = $user["first_name"];
-		header("Location: home");
+
+		header("Content-Type: application/json");
+		echo json_encode(["success" => true, "redirect" => "home"]);
 		exit();
 	}
 
@@ -150,9 +153,8 @@ class HomeController extends Controller
 			$_SESSION["message"]["info"] = "You have already clocked out for this " . strtolower($timeMessage) . ".";
 		}
 
-		ob_clean();
 		header("Content-Type: application/json");
-		echo json_encode(["success" => true, "user" => $result["user"], "logoutAfter" => true]);
+		echo json_encode(["success" => true, "user" => $result["user"], "redirect" => "logout"]);
 		exit();
 	}
 
