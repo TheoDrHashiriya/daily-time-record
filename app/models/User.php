@@ -146,6 +146,11 @@ class User
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function userNumberExists($user_number)
+	{
+		return !empty($this->getByUserNumber($user_number));
+	}
+
 	public function usernameExists($username)
 	{
 		return !empty($this->getByUsername($username));
