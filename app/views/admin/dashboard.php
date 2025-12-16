@@ -135,6 +135,7 @@
 			<?php include VIEWS_PATH . "/components/modals/user-qr.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-delete.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/user-records.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/users.php"; ?>
 			<?php include VIEWS_PATH . "/components/tables/user-roles.php"; ?>
 		</main>
