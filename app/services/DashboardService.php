@@ -62,7 +62,7 @@ class DashboardService
 		];
 	}
 
-	private function getDepartments(): array
+	public function getDepartments(): array
 	{
 		$rows = $this->departmentModel->getAll();
 		$total = \count($rows);
@@ -83,7 +83,7 @@ class DashboardService
 		];
 	}
 
-	private function getSystemLogs(): array
+	public function getSystemLogs(): array
 	{
 		$system_logs = $this->systemLogModel->getAll();
 		$notifications_unread = $this->systemLogModel->getAllUnread($_SESSION["user_id"] ?? "");
@@ -107,7 +107,7 @@ class DashboardService
 		];
 	}
 
-	private function getSystemLogTypes(): array
+	public function getSystemLogTypes(): array
 	{
 		$rows = $this->systemLogModel->getAllTypes();
 
@@ -120,7 +120,7 @@ class DashboardService
 		return ["data" => $rows];
 	}
 
-	private function getEventRecords(): array
+	public function getEventRecords(): array
 	{
 		//  SEARCH PARAMETERS
 		$search = $_GET["records"] ?? "";
@@ -154,7 +154,7 @@ class DashboardService
 		];
 	}
 
-	private function getEventRecordTypes(): array
+	public function getEventRecordTypes(): array
 	{
 		$rows = $this->recordModel->getAllTypes();
 
@@ -166,7 +166,7 @@ class DashboardService
 		return ["data" => $rows];
 	}
 
-	private function getUsers(): array
+	public function getUsers(): array
 	{
 		//  SEARCH PARAMETERS
 		$search = $_GET["users"] ?? "";
@@ -193,7 +193,6 @@ class DashboardService
 				$user["creator_last_name"],
 			) : null;
 			$user["created_at_formatted"] = FormatService::formatDate($user["created_at"]);
-			// $user["qr_code_base64"] = QRCodeService::render($user["qr_string"]) ?? "User has no QR Code.";
 		}
 		unset($user);
 
@@ -216,7 +215,7 @@ class DashboardService
 		];
 	}
 
-	private function getUserRoles(): array
+	public function getUserRoles(): array
 	{
 		$rows = $this->userRoleModel->getAll();
 
