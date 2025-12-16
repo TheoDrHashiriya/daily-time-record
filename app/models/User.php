@@ -49,6 +49,17 @@ class User
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function getIdsByDepartment(int $department)
+	{
+		$sql = "SELECT id
+				  FROM user
+				  WHERE department = :department";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":department", $department);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_COLUMN);
+	}
+
 	public function getById($id)
 	{
 		$sql = "SELECT u.*, qr.qr_string
