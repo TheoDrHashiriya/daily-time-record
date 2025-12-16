@@ -74,7 +74,7 @@
 			<!-- CHARTS CONTAINERS -->
 			<div class="chart row">
 				<div class="card">
-					<div class="card-title">Total Counts</div>
+					<div class="card-title">Attendance Summary (All Time)</div>
 					<canvas id="present-late-absent"></canvas>
 					<script>const totals = <?= json_encode($charts["totals"]) ?></script>
 					<script src="<?= JS_URL ?>/dashboard/charts/present-late-absent.js"></script>
