@@ -8,6 +8,10 @@ openFormButtons.forEach(button => {
 		const modal = document.querySelector(modalId);
 		if (!modal) return;
 
+		if (modal.id === "user-records") {
+			// modal.classList.add("show");
+			return;
+		}
 
 		const entityId = button.dataset.entityId;
 		let entityData = {};
