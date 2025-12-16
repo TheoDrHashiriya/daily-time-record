@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		let submitting = false;
 
 		form.addEventListener("submit", async (e) => {
+			if (form.target === "_blank")
+				return;
+
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			if (submitting) return;
