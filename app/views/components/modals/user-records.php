@@ -1,7 +1,7 @@
 <div class="modal-container" id="user-records">
 	<div class="modal">
 		<div class="row header">
-			<h2 class="header"><i class="symbol fa-solid fa-calendar"></i>User Records</h2>
+			<h2 class="header"><i class="symbol fa-solid fa-calendar"></i>Monthly Records</h2>
 			<button type="button" class="close-button icon"><i class="fa-solid fa-x"></i></button>
 		</div>
 
