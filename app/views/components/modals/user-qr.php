@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="modal-actions">
-			<form action="qr-code" method="post" target="_blank">
+			<form action="qr-code" method="post" target="_blank" data-normal="1">
 				<input type="hidden" name="entity_id" value="">
 				<?php if (isset($isAdmin) && $isAdmin): ?>
 					<button type="submit" class="action">
