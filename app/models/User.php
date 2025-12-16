@@ -49,13 +49,15 @@ class User
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
-	public function getIdsByDepartment(int $department)
+	public function getIdsByDepartmentAndRole(int $department, int $user_role = ROLE_EMPLOYEE): array
 	{
 		$sql = "SELECT id
 				  FROM user
-				  WHERE department = :department";
+				  WHERE department = :department
+				   AND user_role = :user_role";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":department", $department);
+		$query->bindParam(":user_role", $user_role);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_COLUMN);
 	}
