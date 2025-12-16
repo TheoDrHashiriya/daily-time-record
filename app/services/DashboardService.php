@@ -5,9 +5,11 @@ use App\Models\EventRecord;
 use App\Models\SystemLog;
 use App\Models\User;
 use App\Models\UserRole;
+use DateTime;
 
 class DashboardService
 {
+	private AttendanceService $attendanceService;
 	private AuthService $authService;
 	private Department $departmentModel;
 	private SystemLog $systemLogModel;
@@ -16,6 +18,7 @@ class DashboardService
 	private UserRole $userRoleModel;
 
 	public function __construct(
+		AttendanceService $attendanceService,
 		AuthService $authService,
 		Department $departmentModel,
 		SystemLog $systemLogModel,
@@ -23,6 +26,7 @@ class DashboardService
 		User $userModel,
 		UserRole $userRoleModel
 	) {
+		$this->attendanceService = $attendanceService;
 		$this->authService = $authService;
 		$this->departmentModel = $departmentModel;
 		$this->systemLogModel = $systemLogModel;
@@ -31,7 +35,7 @@ class DashboardService
 		$this->userRoleModel = $userRoleModel;
 	}
 
-	public function getAllData()
+	public function getAllData(): array
 	{
 		$isAdmin = $this->authService->isAdmin();
 
@@ -43,6 +47,8 @@ class DashboardService
 		$users = $this->getUsers();
 		$user_roles = $this->getUserRoles();
 
+		$charts = $this->getCharts();
+
 		return [
 			"isAdmin" => $isAdmin,
 			"departments" => $departments,
@@ -52,10 +58,11 @@ class DashboardService
 			"record_types" => $record_types,
 			"users" => $users,
 			"user_roles" => $user_roles,
+			"charts" => $charts,
 		];
 	}
 
-	public function getDepartments()
+	private function getDepartments(): array
 	{
 		$rows = $this->departmentModel->getAll();
 		$total = \count($rows);
@@ -76,7 +83,7 @@ class DashboardService
 		];
 	}
 
-	public function getSystemLogs()
+	private function getSystemLogs(): array
 	{
 		$system_logs = $this->systemLogModel->getAll();
 		$notifications_unread = $this->systemLogModel->getAllUnread($_SESSION["user_id"] ?? "");
@@ -100,7 +107,7 @@ class DashboardService
 		];
 	}
 
-	public function getSystemLogTypes()
+	private function getSystemLogTypes(): array
 	{
 		$rows = $this->systemLogModel->getAllTypes();
 
@@ -113,7 +120,7 @@ class DashboardService
 		return ["data" => $rows];
 	}
 
-	public function getEventRecords()
+	private function getEventRecords(): array
 	{
 		//  SEARCH PARAMETERS
 		$search = $_GET["records"] ?? "";
@@ -147,7 +154,7 @@ class DashboardService
 		];
 	}
 
-	public function getEventRecordTypes()
+	private function getEventRecordTypes(): array
 	{
 		$rows = $this->recordModel->getAllTypes();
 
@@ -159,7 +166,7 @@ class DashboardService
 		return ["data" => $rows];
 	}
 
-	public function getUsers()
+	private function getUsers(): array
 	{
 		//  SEARCH PARAMETERS
 		$search = $_GET["users"] ?? "";
@@ -209,7 +216,7 @@ class DashboardService
 		];
 	}
 
-	public function getUserRoles()
+	private function getUserRoles(): array
 	{
 		$rows = $this->userRoleModel->getAll();
 
@@ -219,5 +226,15 @@ class DashboardService
 		unset($role);
 
 		return ["data" => $rows];
+	}
+
+	private function getCharts(): array
+	{
+		$start = new DateTime("monday this week");
+		$end = new DateTime("saturday this week");
+
+		$attendanceThisWeek=$this->attendanceService->getWeeklySummaryAllDepartments($start, $end);
+
+		return ["attendanceThisWeek" => $attendanceThisWeek];
 	}
 }
