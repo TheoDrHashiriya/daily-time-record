@@ -1,14 +1,23 @@
 # Daily Time Record
+
 A daily time recording system with CRUD functionality, built on the MVCS design.
+
 ## Main Features
+
+- QR code-based time-in/time-out
 - Role-based access control
+- Attendance metrics
 - Responsive dashboard layout
 - Dark Mode
+
 ## Technical Stuff
-- MVCS (Models, Views, Controllers, Services) design pattern
-- PHP routing and the use of .htaccess for SEO-friendly URLs
+
+- **MVCS** (Models, Views, Controllers, Services) design pattern
+- PHP routing and the use of Apache's web server config for SEO-friendly URLs
 - Passwords are hashed when stored in the database for security
-- Fully normalized, 5NF-compliant database design
+- Normalized, 3NF-compliant database design
+
+
 ### CRUD Access Overview
 | Role     |                 Create                 | Read                              | Update                            | Delete                            |
 | -------- | :------------------------------------: | --------------------------------- | --------------------------------- | --------------------------------- |
