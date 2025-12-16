@@ -50,6 +50,14 @@ i.button:hover {
 	color: var(--secondary);
 }
 
+.modal-actions .open-button {
+	padding: 12px;
+}
+
+.modal-actions .open-button:hover {
+	color: white !important;
+}
+
 .open-button i {
 	color: inherit;
 }
