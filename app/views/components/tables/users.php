@@ -40,6 +40,7 @@
 						<?php if (isset($isAdmin) && $isAdmin): ?>
 							<th>Actions</th>
 						<?php endif ?>
+						<th>User ID</th>
 						<th>User Number</th>
 						<th>First Name</th>
 						<th>Middle Name</th>
@@ -98,6 +99,7 @@
 									</button>
 								</td>
 							<?php endif ?>
+							<td><?= htmlspecialchars($row["id"]) ?></td>
 							<td><?= htmlspecialchars($row["user_number"]) ?></td>
 							<td><?= htmlspecialchars($row["first_name"]) ?></td>
 							<td><?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?></td>
