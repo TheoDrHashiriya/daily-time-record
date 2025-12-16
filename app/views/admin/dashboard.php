@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/dashboard.css">
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 	<script src="<?= ASSETS_URL ?>/chart.js/dist/chart.umd.js"></script>
+	<script src="<?= JS_URL ?>/chart.js.defaults.js"></script>
 	<script src="<?= ASSETS_URL ?>/tom-select/dist/js/tom-select.complete.min.js"></script>
 	<!-- <script src="<?= JS_URL ?>/form-input.js" defer></script> -->
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
@@ -47,7 +48,7 @@
 			</div>
 
 			<!-- KPI CONTAINER -->
-			<div class="row">
+			<div class="kpi row">
 				<div class="card">
 					<div class="card-title">Total Records</div>
 					<div class="card-value"><?= $records["total"] ?></div>
@@ -70,13 +71,14 @@
 			</div>
 
 			<!-- CHARTS CONTAINER -->
-			<div class="row">
+			<div class="chart row">
 				<div class="card">
 					<div class="card-title">Attendance this Week</div>
 					<canvas id="attendance-this-week"></canvas>
 					<script>
 						const attendanceThisWeek = <?= json_encode($charts["attendanceThisWeek"]) ?>
 					</script>
+					<script src="<?= JS_URL ?>/dashboard/charts/attendance-this-week.js"></script>
 				</div>
 			</div>
 		</main>
