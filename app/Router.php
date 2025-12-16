@@ -50,7 +50,7 @@ class Router
 		$this->departmentController = new DepartmentController($departmentModel);
 		$this->systemLogController = new SystemLogController($dashboardService, $systemLogModel);
 		$this->pageController = new PageController($this->recordController);
-		$this->userController = new UserController($userModel, $dashboardService);
+		$this->userController = new UserController($attendanceService, $userModel, $dashboardService);
 		$this->run();
 	}
 
@@ -131,6 +131,11 @@ class Router
 
 			case "user-qr":
 				if (!$this->userController->showQr())
+					$this->respondWithStatus(405);
+				break;
+
+			case "user-records":
+				if (!$this->userController->streamToPdfUserRecords())
 					$this->respondWithStatus(405);
 				break;
 
