@@ -6,7 +6,7 @@ require_once __DIR__ . "/bootstrap.php";
 // Controllers
 use App\Controllers\{HomeController, DashboardController, DepartmentController, EventRecordController, SystemLogController, UserController, PageController};
 use App\Models\{Department, EventRecord, SystemLog, User, UserRole};
-use App\Services\{AuthService, DashboardService, HomeService};
+use App\Services\{AttendanceService, AuthService, DashboardService, HomeService};
 
 class Router
 {
@@ -30,9 +30,11 @@ class Router
 		$userRoleModel = new UserRole();
 
 		// Services
+		$attendanceService = new AttendanceService($departmentModel, $recordModel, $userModel);
 		$authService = new AuthService($userModel);
 		$homeService = new HomeService();
 		$dashboardService = new DashboardService(
+			$attendanceService,
 			$authService,
 			$departmentModel,
 			$systemLogModel,
