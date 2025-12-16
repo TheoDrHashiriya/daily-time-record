@@ -49,6 +49,7 @@
 
 			<!-- KPI CONTAINER -->
 			<div class="kpi row">
+
 				<div class="card">
 					<div class="card-title">Total Records</div>
 					<div class="card-value"><?= $records["total"] ?></div>
@@ -70,15 +71,45 @@
 				</div>
 			</div>
 
-			<!-- CHARTS CONTAINER -->
+			<!-- CHARTS CONTAINERS -->
 			<div class="chart row">
 				<div class="card">
-					<div class="card-title">Attendance this Week</div>
-					<canvas id="attendance-this-week"></canvas>
-					<script>
-						const attendanceThisWeek = <?= json_encode($charts["attendanceThisWeek"]) ?>
-					</script>
-					<script src="<?= JS_URL ?>/dashboard/charts/attendance-this-week.js"></script>
+					<div class="card-title">Total Counts</div>
+					<canvas id="present-late-absent"></canvas>
+					<script>const totals = <?= json_encode($charts["totals"]) ?></script>
+					<script src="<?= JS_URL ?>/dashboard/charts/present-late-absent.js"></script>
+				</div>
+
+				<div class="column">
+					<div class="card">
+						<div class="card-title">Attendance for the Past Week</div>
+						<canvas id="attendance-past-week"></canvas>
+						<script>const attendancePastWeek = <?= json_encode($charts["attendancePastWeek"]) ?></script>
+						<script src="<?= JS_URL ?>/dashboard/charts/attendance-past-week.js"></script>
+					</div>
+
+					<div class="card">
+						<div class="card-title">Worst Offenders</div>
+						<canvas id="top-late-absent"></canvas>
+						<script>const topLateAbsent = <?= json_encode($charts["topLateAbsent"]) ?></script>
+						<script src="<?= JS_URL ?>/dashboard/charts/top-late-absent.js"></script>
+					</div>
+				</div>
+			</div>
+
+			<div class="chart row">
+				<div class="card">
+					<div class="card-title">Top Late</div>
+					<canvas id="top-late"></canvas>
+					<script>const topLate = <?= json_encode($charts["topLate"]) ?></script>
+					<script src="<?= JS_URL ?>/dashboard/charts/top-late.js"></script>
+				</div>
+
+				<div class="card">
+					<div class="card-title">Top Absent</div>
+					<canvas id="top-absent"></canvas>
+					<script>const topAbsent = <?= json_encode($charts["topAbsent"]) ?></script>
+					<script src="<?= JS_URL ?>/dashboard/charts/top-absent.js"></script>
 				</div>
 			</div>
 		</main>
