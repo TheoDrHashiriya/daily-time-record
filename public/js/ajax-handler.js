@@ -42,9 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					const text = await response.text();
 					console.log("Non-JSON response:", text);
 					form.dataset.normal = "1";
-					// form.submit();
-					// form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-					// window.location.href = action;
 					return;
 				}
 
