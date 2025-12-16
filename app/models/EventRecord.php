@@ -48,7 +48,7 @@ class EventRecord
 
 	public function getByDepartmentAndDate(int $department, DateTime $date): array
 	{
-		$sql = "SELECT er.user_id, er.event_time, ert.type_name
+		$sql = "SELECT er.user_id, er.event_time, er.event_type, ert.type_name
 				  FROM event_record er
 				  	JOIN user u ON er.user_id = u.id
 				  	JOIN event_record_type ert ON er.event_type = ert.id
