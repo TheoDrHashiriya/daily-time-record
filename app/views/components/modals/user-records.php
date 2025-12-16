@@ -55,8 +55,6 @@
 				</div>
 			</div>
 
-			<?php include VIEWS_PATH . "/components/tables/user-records.php"; ?>
-
 			<div class="modal-actions">
 				<button class="close-button" type="button" id="cancel">Cancel</button>
 				<button type="submit">Go</button>
