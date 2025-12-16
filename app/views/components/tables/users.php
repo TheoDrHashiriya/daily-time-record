@@ -14,6 +14,10 @@
 				</div>
 
 				<div class="row">
+					<button type="button" class="open-button" data-target="#user-records" data-modal-type="user-records">
+						<i class="fa-solid fa-calendar"></i>Print Monthly Record
+					</button>
+
 					<button type="button" class="open-button" data-target="#user-create" data-modal-type="user-create">
 						<i class="fa-solid fa-user-plus"></i>Add User
 					</button>
