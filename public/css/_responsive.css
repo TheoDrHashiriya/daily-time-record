@@ -10,3 +10,10 @@
 		flex-direction: unset;
 	}
 }
+
+@media (max-width:700px) {
+	.chart.row {
+		display: flex;
+		flex-direction: column;
+	}
+}
