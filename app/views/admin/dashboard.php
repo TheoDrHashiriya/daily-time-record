@@ -73,27 +73,9 @@
 			<div class="row">
 				<div class="card">
 					<div class="card-title">Attendance this Week</div>
-					<canvas id="attendanceChart"></canvas>
+					<canvas id="attendance-this-week"></canvas>
 					<script>
-						new Chart(document.getElementById("attendanceChart"), {
-							type: "bar",
-							data: {
-								labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-								datasets: [
-									{ label: "Present", data: [20, 22, 21, 23, 24] },
-									{ label: "Late", data: [20, 22, 21, 23, 24] },
-									{ label: "Absent", data: [20, 22, 21, 23, 24] },
-									{ label: "Leave", data: [20, 22, 21, 23, 24] },
-								]
-							},
-							options: {
-								responsive: true,
-								scales: {
-									x: { stacked: true },
-									y: { stacked: true, beginAtZero: true }
-								}
-							}
-						});
+						const attendanceThisWeek = <?= json_encode($charts["attendanceThisWeek"]) ?>
 					</script>
 				</div>
 			</div>
