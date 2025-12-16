@@ -21,15 +21,20 @@
 			</div>
 		</div>
 
-		<div class="modal-actions">
-			<form action="qr-code" method="post" target="_blank" data-normal="1">
-				<input type="hidden" name="entity_id" value="">
-				<?php if (isset($isAdmin) && $isAdmin): ?>
+		<?php if (isset($isAdmin) && $isAdmin): ?>
+			<div class="modal-actions">
+				<button class="close-button" type="button" id="cancel">Cancel</button>
+
+				<form action="qr-code" method="post" target="_blank" data-normal="1">
+					<input type="hidden" name="entity_id" value="">
 					<button type="submit" class="action">
 						<i class="fa-solid fa-print"></i>Print to PDF
 					</button>
-				<?php endif ?>
-			</form>
-		</div>
+				</form>
+
+				<button class="open-button danger" type="button" data-target="#regenerate-qr" data-entity-id="">Regenerate QR
+				</button>
+			</div>
+		<?php endif ?>
 	</div>
 </div>
