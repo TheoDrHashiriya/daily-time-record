@@ -32,7 +32,7 @@ A daily time recording system with CRUD functionality, built on the MVCS design.
 config:
   layout: elk
 ---
-**erDiagram
+erDiagram
  direction TB
  DEPARTMENT {
   int id PK ""  
@@ -117,8 +117,8 @@ config:
  USER||--o{SYSTEM_LOG:"creates"
  SYSTEM_LOG||--o{NOTIFICATION_READ:"has"
  USER||--o{NOTIFICATION_READ:"reads"
- USER||--o{USER:"created_by"**
-  ```
+ USER||--o{USER:"created_by"
+```
 
 ### MVCS Flow
 
