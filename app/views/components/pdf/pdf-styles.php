@@ -24,6 +24,45 @@
 		font-weight: bold;
 	}
 
+	/* MONTHLY RECORDS */
+
+	.card.monthly-records .top {
+		justify-content: center;
+	}
+
+	.card.monthly-records p {
+		text-align: left;
+		font-size: 16px;
+	}
+
+	.card.monthly-records h2 {
+		text-align: center;
+		padding: 0.5rem;
+		border: 1px solid black;
+		font-weight: bolder;
+	}
+
+	.monthly-records table {
+		border-radius: unset;
+	}
+
+	.monthly-records thead tr th {
+		text-align: center;
+	}
+
+	.monthly-records th,
+	.monthly-records td {
+		border: 0.1px solid black;
+		font-weight: 700;
+		text-align: center;
+		padding: 0.1rem 0;
+	}
+
+	.monthly-records .meridian {
+		font-size: x-large;
+		font-weight: 800;
+	}
+
 	:root {
 		/* INDEX PAGE */
 		--header: ;
