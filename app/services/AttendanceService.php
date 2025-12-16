@@ -19,6 +19,101 @@ class AttendanceService
 		$this->userModel = $userModel;
 	}
 
+	private function calculateUndertime(array $records, array $schedule): string
+	{
+		$undertimeMinutes = 0;
+		$dateStr = isset($records[0]["event_time"])
+			? substr($records[0]["event_time"], 0, 10)
+			: date("Y-m-d");
+
+		$amOut = null;
+		$pmOut = null;
+
+		foreach ($records as $r) {
+			if ($r["event_type"] === AM_OUT)
+				$amOut = new DateTime($r["event_time"]);
+			if ($r["event_type"] === PM_OUT)
+				$pmOut = new DateTime($r["event_time"]);
+		}
+
+		if ($amOut) {
+			$scheduledAmOut = new DateTime($dateStr . " " . $schedule["standard_am_time_out"]);
+			if ($amOut < $scheduledAmOut)
+				$undertimeMinutes += ($scheduledAmOut->getTimestamp() - $amOut->getTimestamp()) / 60;
+		}
+
+		if ($pmOut) {
+			$scheduledPmOut = new DateTime($dateStr . " " . $schedule["standard_pm_time_out"]);
+			if ($pmOut < $scheduledPmOut)
+				$undertimeMinutes += ($scheduledPmOut->getTimestamp() - $pmOut->getTimestamp()) / 60;
+		}
+
+		if (!$amOut) {
+			$scheduledAmOut = new DateTime($dateStr . " " . $schedule["standard_am_time_out"]);
+			$scheduledAmIn = new DateTime($dateStr . " " . $schedule["standard_am_time_in"]);
+			$undertimeMinutes += ($scheduledAmOut->getTimestamp() - $scheduledAmIn->getTimestamp()) / 60;
+		}
+
+		if (!$pmOut) {
+			$scheduledPmOut = new DateTime($dateStr . " " . $schedule["standard_pm_time_out"]);
+			$scheduledPmIn = new DateTime($dateStr . " " . $schedule["standard_pm_time_in"]);
+			$undertimeMinutes += ($scheduledPmOut->getTimestamp() - $scheduledPmIn->getTimestamp()) / 60;
+		}
+		$hours = floor($undertimeMinutes / 60);
+		$minutes = $undertimeMinutes % 60;
+
+		return \sprintf("%d:%02d", $hours, $minutes);
+	}
+
+	public function getMonthlyRecordsForUser(int $userId, int $year, int $month): array
+	{
+		$monthlyRecords = [];
+		$start = new DateTime("$year-$month-01");
+		$end = (clone $start)->modify("last day of this month");
+
+		$day = clone $start;
+
+		$user = $this->userModel->getById($userId);
+		$department = $user["department"];
+
+		$schedule = $this->departmentModel->getSchedule($department);
+
+		while ($day <= $end) {
+			$dateStr = $day->format("Y-m-d");
+
+			$dailyRecord = [
+				"am_in" => null,
+				"am_out" => null,
+				"pm_in" => null,
+				"pm_out" => null,
+				"undertime" => null,
+				"status" => "absent",
+			];
+
+			$records = $this->recordModel->getByDepartmentAndDate($department, $day);
+			$userRecords = array_filter($records, fn($r) => $r["user_id"] === $userId);
+
+			if (!empty($userRecords)) {
+				foreach ($userRecords as $r) {
+					if ($r["event_type"] === AM_IN)
+						$dailyRecord["am_in"] = FormatService::formatTime($r["event_time"]);
+					if ($r["event_type"] === AM_OUT)
+						$dailyRecord["am_out"] = FormatService::formatTime($r["event_time"]);
+					if ($r["event_type"] === PM_IN)
+						$dailyRecord["pm_in"] = FormatService::formatTime($r["event_time"]);
+					if ($r["event_type"] === PM_OUT)
+						$dailyRecord["pm_out"] = FormatService::formatTime($r["event_time"]);
+				}
+				$dailyRecord["status"] = $this->evaluateUser($userRecords, $schedule);
+				$dailyRecord["undertime"] = $this->calculateUndertime($userRecords, $schedule);
+			}
+
+			$monthlyRecords[$userId][$dateStr] = $dailyRecord;
+			$day->modify("+1 day");
+		}
+		return $monthlyRecords;
+	}
+
 	private function filterActiveUsersByDate(array $userIds, DateTime $day)
 	{
 		return array_filter($userIds, function ($id) use ($day) {
@@ -176,7 +271,7 @@ class AttendanceService
 
 		uasort(
 			$userCounts,
-			fn($a, $b) => $b["late"] * 1.5 + $b["absent"] <=> $a["late"] * 1.5 + $a["absent"]
+			fn($a, $b) => $b["late"] + $b["absent"] * 1.5 <=> $a["late"] + $a["absent"] * 1.5
 		);
 
 		$userCounts = \array_slice($userCounts, 0, $limit, true);
@@ -197,18 +292,17 @@ class AttendanceService
 		$schedule = $this->departmentModel->getSchedule($department);
 		$day = clone $start;
 
-		
+
 		$labels = $present = $late = $absent = [];
-		
-		
+
 		while ($day <= $end) {
 			$labels[] = $day->format("D");
-			
+
 			$users = $this->filterActiveUsersByDate(
 				$this->userModel->getIdsByDepartmentAndRole($department),
 				$day
 			);
-			
+
 			$records = $this->recordModel->getByDepartmentAndDate($department, $day);
 
 			$counts = $this->classifyDay($users, $records, $schedule);
