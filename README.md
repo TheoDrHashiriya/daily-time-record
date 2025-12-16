@@ -17,84 +17,111 @@ A daily time recording system with CRUD functionality, built on the MVCS design.
 - Passwords are hashed when stored in the database for security
 - Normalized, 3NF-compliant database design
 
-
 ### CRUD Access Overview
+
 | Role     |                 Create                 | Read                              | Update                            | Delete                            |
 | -------- | :------------------------------------: | --------------------------------- | --------------------------------- | --------------------------------- |
 | Admin    | Register Users (of all roles), Records | Own profile, Any user, Any record | Own profile, Any user, Any record | Own profile, Any user, Any record |
 | Manager  |              Own records               | Any user, Any record              | Any user, Any record              | None                              |
 | Employee |              Own records               | Any record                        | None                              | None                              |
-### Simple Entity-Relationship Diagram
+
+### Physical Data Model
+
 ```mermaid
 ---
 config:
   layout: elk
 ---
-erDiagram
-	direction TB
-	department {
-		int id PK ""  
-		string department_name UK ""  
-		string abbreviation UK ""  
-		time standard_time_in  ""  
-		time standard_time_out  ""  
-		datetime created_at  ""  
-	}
-	user_role {
-		int id PK ""  
-		string role_name UK ""  
-	}
-	notification {
-		int id PK ""  
-		string title  ""  
-		string content  ""  
-		boolean has_been_read  ""  
-		datetime created_at  ""  
-		int created_by FK "references user(id)"  
-	}
-	event_record_type {
-		int id PK ""  
-		string type_name UK ""  
-	}
-	full_name {
-		int id PK ""  
-		string first_name  ""  
-		string middle_name  ""  
-		string last_name  ""  
-	}
-	employee_type {
-		int id PK ""  
-		string type_name  ""  
-	}
-	user {
-		int id PK ""  
-		int full_name FK "references full_name(id)"  
-		string username UK ""  
-		string email UK ""  
-		string hashed_password  ""  
-		datetime created_at  ""  
-		int employee_type FK "references employee_type(id)"  
-		int user_role FK "references user_role(id)"  
-		int department FK "references department(id)"  
-		int created_by FK "references user(id)"  
-	}
-	event_record {
-		int id PK ""  
-		int user_id FK ""  
-		datetime event_time  ""  
-		int event_type FK "references event_record_type(id)"  
-	}
+**erDiagram
+ direction TB
+ DEPARTMENT {
+  int id PK ""  
+  varchar department_name  ""  
+  varchar abbreviation  ""  
+  time standard_am_time_in  ""  
+  time standard_am_time_out  ""  
+  time standard_pm_time_in  ""  
+  time standard_pm_time_out  ""  
+  datetime created_at  ""  
+ }
 
-	user||--o{user:"creates"
-	user_role||--o{user:"of"
-	user}|--||department:"is in"
-	user||--o{notification:"creates"
-	user||--o{event_record:"logs"
-	event_record_type||--o{event_record:"has"
-	full_name||--|{user:"of"
-	employee_type}|--|{user:"of"
-```
+ USER_ROLE {
+  int id PK ""  
+  varchar role_name  ""  
+ }
+
+ USER {
+  int id PK ""  
+  varchar first_name  ""  
+  varchar last_name  ""  
+  varchar middle_name  ""  
+  varchar username  ""  
+  varchar email  ""  
+  varchar hashed_password  ""  
+  char user_number  ""  
+  datetime created_at  ""  
+  int created_by FK ""  
+  int user_role FK ""  
+  int department FK ""  
+  datetime attendance_effective_date  ""  
+ }
+
+ EVENT_RECORD_TYPE {
+  int id PK ""  
+  varchar type_name  ""  
+ }
+
+ EVENT_RECORD {
+  int id PK ""  
+  datetime event_time  ""  
+  int event_type FK ""  
+  int user_id FK ""  
+ }
+
+ QR_CODE {
+  int id PK ""  
+  int user_id FK ""  
+  varchar qr_string  ""  
+  datetime created_on  ""  
+  datetime expired_on  ""  
+ }
+
+ SYSTEM_LOG_TYPE {
+  int id PK ""  
+  varchar type_name  ""  
+  boolean is_notification  ""  
+ }
+
+ SYSTEM_LOG {
+  int id PK ""  
+  int system_log_type FK ""  
+  varchar title  ""  
+  text content  ""  
+  datetime created_at  ""  
+  int created_by FK ""  
+ }
+
+ NOTIFICATION_READ {
+  int id PK ""  
+  int system_log FK ""  
+  int user_id FK ""  
+  datetime read_at  ""  
+ }
+
+ DEPARTMENT||--o{USER:"has"
+ USER_ROLE||--o{USER:"assigned to"
+ USER||--o{EVENT_RECORD:"creates"
+ EVENT_RECORD_TYPE||--o{EVENT_RECORD:"categorizes"
+ USER||--o{QR_CODE:"owns"
+ SYSTEM_LOG_TYPE||--o{SYSTEM_LOG:"defines"
+ USER||--o{SYSTEM_LOG:"creates"
+ SYSTEM_LOG||--o{NOTIFICATION_READ:"has"
+ USER||--o{NOTIFICATION_READ:"reads"
+ USER||--o{USER:"created_by"**
+  ```
+
 ### MVCS Flow
+
 ```mermaid
 ---
 config:
