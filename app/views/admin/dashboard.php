@@ -133,6 +133,7 @@
 		<main class="main section" id="users-section">
 			<?php include VIEWS_PATH . "/components/modals/user-create.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-qr.php"; ?>
+			<?php include VIEWS_PATH . "/components/modals/regenerate-qr.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-edit.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-delete.php"; ?>
 			<?php include VIEWS_PATH . "/components/modals/user-records.php"; ?>
