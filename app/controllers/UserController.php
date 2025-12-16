@@ -1,19 +1,20 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
-use App\Services\FormatService;
-use App\Services\DashboardService;
-use App\Services\QRCodeService;
+use App\Services\{AttendanceService, FormatService, DashboardService, QRCodeService};
+use DateTime;
 use PDOException;
 use PrintService;
 
 class UserController extends Controller
 {
+	private AttendanceService $attendanceService;
 	private DashboardService $dashboardService;
 	private User $userModel;
 
-	public function __construct(User $userModel, DashboardService $dashboardService)
+	public function __construct(AttendanceService $attendanceService, User $userModel, DashboardService $dashboardService)
 	{
+		$this->attendanceService = $attendanceService;
 		$this->dashboardService = $dashboardService;
 		$this->userModel = $userModel;
 	}
@@ -47,10 +48,65 @@ class UserController extends Controller
 		$user["qr_code_base64"] = QRCodeService::render($user["qr_string"]);
 
 		PrintService::streamPdf(
-			"qr-code-" . FormatService::formatPdfName(strtolower($id ."-". $user["full_name_formatted"])),
+			"qr-code-" . FormatService::formatPdfName(strtolower($id . "-" . $user["full_name_formatted"])),
 			["components/pdf/modals", "components/modals/user-qr"],
 			["user" => $user]
 		);
+		exit();
+	}
+
+	public function streamToPdfUserRecords()
+	{
+		$user_id = (int) trim($_GET["user_id"]);
+		$year = (int) trim($_GET["year"]);
+		$month = (int) trim($_GET["month"]);
+
+		if (empty($user_id))
+			$errors["user_id"] = "User is required.";
+		if (empty($year))
+			$errors["year"] = "Year is required.";
+		if (empty($month))
+			$errors["month"] = "Month is required.";
+
+		if (!empty($errors)) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$user = $this->userModel->getById($user_id);
+		if (!$user) {
+			echo json_encode(["success" => false, "message" => "User not found."]);
+			exit();
+		}
+
+		$records = $this->attendanceService->getMonthlyRecordsForUser($user_id, $year, $month);
+		$recordsForView = $records[$user_id] ?? [];
+
+		// echo "<prev>";
+		// var_dump($records);
+		// echo "</prev>";
+		// exit;
+
+		$user["full_name_formatted"] = FormatService::formatFullName(
+			$user["first_name"],
+			$user["middle_name"],
+			$user["last_name"],
+		);
+
+		$monthLabel = DateTime::createFromFormat("!m", $month)->format("F");
+
+		PrintService::streamPdf(
+			"dtr-{$user_id}-{$year}-{$month}",
+			["components/pdf/pdf-styles", "components/tables/user-records"],
+			[
+				"user" => $user,
+				"records" => $recordsForView,
+				"year" => $year,
+				"month" => $monthLabel,
+			]
+		);
+
 		exit();
 	}
 
