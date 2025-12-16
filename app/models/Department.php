@@ -42,6 +42,21 @@ class Department
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function getSchedule(int $id)
+	{
+		$sql = "SELECT
+					standard_am_time_in,
+					standard_am_time_out,
+					standard_pm_time_in,
+					standard_pm_time_out
+				  FROM department
+				  WHERE id = :id";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":id", $id);
+		$query->execute();
+		return $query->fetch(PDO::FETCH_ASSOC);
+	}
+
 	public function getAll()
 	{
 		$sql = "SELECT * FROM department ORDER BY id";

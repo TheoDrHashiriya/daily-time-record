@@ -2,6 +2,7 @@
 namespace App\Models;
 use App\Models\Database;
 use PDO;
+use DateTime;
 
 class EventRecord
 {
@@ -43,6 +44,22 @@ class EventRecord
 		$query = $this->db->connect()->prepare($sql);
 		$query->execute();
 		return $query->fetchColumn();
+	}
+
+	public function getByDepartmentAndDate(int $department, DateTime $date): array
+	{
+		$sql = "SELECT er.user_id, er.event_time, ert.type_name
+				  FROM event_record er
+				  	JOIN user u ON er.user_id = u.id
+				  	JOIN event_record_type ert ON er.event_type = ert.id
+				  WHERE u.department =:department
+				   AND DATE(er.event_time) = :date";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":department", $department);
+		$dateString = $date->format("Y-m-d");
+		$query->bindParam(":date", $dateString);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function getAll($search = '', $date = '')
