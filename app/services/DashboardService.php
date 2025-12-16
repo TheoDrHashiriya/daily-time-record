@@ -229,11 +229,36 @@ class DashboardService
 
 	private function getCharts(): array
 	{
-		$start = new DateTime("monday this week");
-		$end = new DateTime("saturday this week");
+		$earliest = new DateTime(
+			min(
+				array_map(
+					fn($u) => $u["attendance_effective_date"] ?? "today",
+					$this->userModel->getAll()
+				)
+			)
+		);
+		$end = new DateTime("today");
 
-		$attendanceThisWeek=$this->attendanceService->getWeeklySummaryAllDepartments($start, $end);
+		$start = new DateTime("today -6 days");
+		$attendancePastWeek = $this->attendanceService->getWeeklySummaryAllDepartments($start, $end);
 
-		return ["attendanceThisWeek" => $attendanceThisWeek];
+		$attendanceTotal = $this->attendanceService->getWeeklySummaryAllDepartments($earliest, $end);
+		$totals = [
+			"present" => array_sum($attendanceTotal["present"]),
+			"late" => array_sum($attendanceTotal["late"]),
+			"absent" => array_sum($attendanceTotal["absent"]),
+		];
+
+		$topLate = $this->attendanceService->getTopLate(10, $earliest);
+		$topAbsent = $this->attendanceService->getTopAbsent(10, $earliest);
+		$topLateAbsent = $this->attendanceService->getTopLateAndAbsent(10, $earliest);
+
+		return [
+			"totals" => $totals,
+			"attendancePastWeek" => $attendancePastWeek,
+			"topLate" => $topLate,
+			"topAbsent" => $topAbsent,
+			"topLateAbsent" => $topLateAbsent
+		];
 	}
 }
