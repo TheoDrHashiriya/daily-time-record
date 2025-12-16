@@ -22,7 +22,7 @@ class UserController extends Controller
 	{
 		$users = $this->dashboardService->getUsers();
 		PrintService::streamPdf(
-			"all-events.pdf",
+			"all-users-" . FormatService::formatPdfName(FormatService::getCurrentDate()),
 			["components/pdf/pdf-styles", "components/tables/users"],
 			["users" => $users]
 		);
@@ -47,7 +47,7 @@ class UserController extends Controller
 		$user["qr_code_base64"] = QRCodeService::render($user["qr_string"]);
 
 		PrintService::streamPdf(
-			"qr-code-" . FormatService::formatPdfName(strtolower($user["full_name_formatted"])) . ".pdf",
+			"qr-code-" . FormatService::formatPdfName(strtolower($id ."-". $user["full_name_formatted"])),
 			["components/pdf/modals", "components/modals/user-qr"],
 			["user" => $user]
 		);
