@@ -129,6 +129,11 @@ class Router
 					$this->respondWithStatus(405);
 				break;
 
+			case "regenerate-qr":
+				if (!$this->userController->regenerateQr())
+					$this->respondWithStatus(405);
+				break;
+
 			case "user-qr":
 				if (!$this->userController->showQr())
 					$this->respondWithStatus(405);

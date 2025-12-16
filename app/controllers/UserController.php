@@ -193,6 +193,55 @@ class UserController extends Controller
 		exit;
 	}
 
+	public function regenerateQr()
+	{
+		$user_id = $_POST["entity_id"] ?? null;
+
+		if (!$user_id)
+			$errors["general"] = "Invalid user ID.";
+
+		if (!$user_id) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$user = $this->userModel->getById($user_id);
+		if (!$user)
+			$errors["general"] = "User not found.";
+
+		if (!$user) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		$old_qr_string = $user["qr_string"];
+
+		$expired = $this->userModel->expireQrString($old_qr_string);
+		if (!$expired)
+			$errors["general"] = "Failed to expire QR code.";
+
+		if (!$expired) {
+			header("Content-Type: application/json");
+			echo json_encode(["success" => false, "errors" => $errors]);
+			exit();
+		}
+
+		do
+			$new_qr_string = bin2hex(random_bytes(32));
+		while ($this->userModel->qrStringExists($new_qr_string));
+		$this->userModel->generateQrString($user_id, $new_qr_string);
+
+		$message["success"] = "QR code regenerated successfully.";
+		$response = ["success" => true, "redirect" => "dashboard"];
+
+		$_SESSION["message"] = $message;
+		header("Content-Type: application/json");
+		echo json_encode($response);
+		exit();
+	}
+
 	public function edit()
 	{
 		$id = trim($_POST["entity_id"]);
