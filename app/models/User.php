@@ -49,6 +49,16 @@ class User
 		return $query->fetch(PDO::FETCH_ASSOC) ?: null;
 	}
 
+	public function expireQrString($qr_string): int
+	{
+		$sql = "UPDATE qr_code SET expired_on = NOW()
+				  WHERE qr_string = :qr_string";
+		$query = $this->db->connect()->prepare($sql);
+		$query->bindParam(":qr_string", $qr_string);
+		$query->execute();
+		return $query->rowCount();
+	}
+
 	public function getIdsByDepartmentAndRole(int $department, int $user_role = ROLE_EMPLOYEE): array
 	{
 		$sql = "SELECT id
@@ -66,8 +76,9 @@ class User
 	{
 		$sql = "SELECT u.*, qr.qr_string
 				  FROM user u
-				  LEFT JOIN qr_code qr ON u.id = qr.user_id
-				  WHERE u.id = :id LIMIT 1";
+				  LEFT JOIN qr_code qr ON u.id = qr.user_id AND qr.expired_on IS NULL
+				  WHERE u.id = :id
+				  LIMIT 1";
 		$query = $this->db->connect()->prepare($sql);
 		$query->bindParam(":id", $id);
 		$query->execute();
@@ -122,7 +133,7 @@ class User
 				user u
 				LEFT JOIN user_role ur ON u.user_role = ur.id
 				LEFT JOIN department d ON u.department = d.id
-				LEFT JOIN qr_code qr ON u.id = qr.user_id
+				LEFT JOIN qr_code qr ON u.id = qr.user_id AND qr.expired_on IS NULL
 				LEFT JOIN user uu ON u.created_by = uu.id
 			WHERE 1 = 1";
 
