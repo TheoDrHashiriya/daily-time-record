@@ -27,8 +27,8 @@ const LOG_PM_OUT_NULL = 16;
 
 // User Roles
 const ROLE_ADMIN = 1;
-const ROLE_MANAGER = 2;
-const ROLE_EMPLOYEE = 3;
+const ROLE_EMPLOYEE = 2;
+const ROLE_MANAGER = 3;
 
 // Record Types
 const AM_IN = 1;
