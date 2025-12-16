@@ -40,8 +40,10 @@
 						<th>First Name</th>
 						<th>Middle Name</th>
 						<th>Last Name</th>
-						<th>Username</th>
-						<th>Email</th>
+						<?php if (isset($isAdmin) && $isAdmin): ?>
+							<th>Username</th>
+							<th>Email</th>
+						<?php endif ?>
 						<th>Role</th>
 						<th>Department</th>
 						<th>Created By</th>
@@ -96,8 +98,10 @@
 							<td><?= htmlspecialchars($row["first_name"]) ?></td>
 							<td><?= $row["middle_name"] ? htmlspecialchars($row["middle_name"]) : "<em>No middle name.</em>" ?></td>
 							<td><?= htmlspecialchars($row["last_name"]) ?></td>
-							<td><?= htmlspecialchars($row["username"]) ?></td>
-							<td><?= $row["email"] ? htmlspecialchars($row["email"]) : "<em>No email.</em>" ?></td>
+							<?php if (isset($isAdmin) && $isAdmin): ?>
+								<td><?= htmlspecialchars($row["username"]) ?></td>
+								<td><?= $row["email"] ? htmlspecialchars($row["email"]) : "<em>No email.</em>" ?></td>
+							<?php endif ?>
 							<td><?= htmlspecialchars($row["role_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["department_name_formatted"]) ?></td>
 							<td>
