@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	links.forEach((link) => {
 		link.addEventListener("click", (e) => {
-			e.preventDefault();
+			if (link.classList.contains("sidebar-link"))
+				e.preventDefault();
 			showSection(link.dataset.target);
 		})
 	});

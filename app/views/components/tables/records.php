@@ -75,7 +75,13 @@
 								<td><?= htmlspecialchars($row["id"]) ?></td>
 							<?php endif ?>
 							<td><?= htmlspecialchars($row["user_number"]) ?></td>
-							<td><?= htmlspecialchars($row["full_name_formatted"] ?? "") ?></td>
+							<?php if (isset($isAdmin) && $isAdmin): ?>
+								<td><a class="nav" data-target="users-section"
+										href="?users=<?= $row["user_number"] ?>"><?= htmlspecialchars($row["full_name_formatted"] ?? "") ?></a>
+								</td>
+							<?php else: ?>
+								<td><?= htmlspecialchars($row["full_name_formatted"] ?? "") ?> </td>
+							<?php endif ?>
 							<td class="type"><?= htmlspecialchars($row["type_name_formatted"]) ?></td>
 							<td><?= htmlspecialchars($row["event_date_formatted"]) ?></td>
 							<td>
