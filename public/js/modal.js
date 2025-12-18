@@ -76,6 +76,9 @@ modalContainers.forEach(modalContainer => {
 			fetch("logout", { method: "POST" });
 		}
 
+		if (modalContainer.id === "login-username-password")
+			fetch("logout", { method: "POST" });
+
 		modalContainer.classList.remove("show");
 	});
 });
