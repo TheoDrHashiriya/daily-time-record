@@ -4,31 +4,24 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Daily Time Records | theonary</title>
+	<title>Daily Time Record | theonary</title>
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/home.css">
 	<!-- Theming script must start early to avoid flash of light mode -->
 	<script src="<?= JS_URL ?>/theme.js"></script>
+	<script src="<?= JS_URL ?>/home/auth-form.js" defer></script>
 	<script src="<?= JS_URL ?>/ajax-handler.js" defer></script>
 	<script src="<?= JS_URL ?>/modal.js" defer></script>
 	<script src="<?= JS_URL ?>/time.js" defer></script>
 
-	<script>
-		window.qrLoginConfig = {
-			jsQR: "<?= ASSETS_URL ?>/jsqr/dist/jsQR.js",
-			qrCodeJs: "<?= JS_URL ?>/home/qr-code.js",
-		};
-	</script>
-	<script src="<?= ASSETS_URL ?>/jsqr/dist/jsQR.js" defer></script>
-	<script src="<?= JS_URL ?>/home/qr-code.js" defer></script>
-	<script src="<?= JS_URL ?>/home/auth-form.js" defer></script>
-
-	<!-- <?php if (isset($_SESSION["user_number_is_admin"])):
+	<?php if (isset($_SESSION["user_number_is_admin"])):
 		if ($_SESSION["user_number_is_admin"] === true): ?>
 			<script>document.addEventListener("DOMContentLoaded", () => showLoginUsernamePasswordModal())</script>
 		<?php elseif ($_SESSION["user_number_is_admin"] === false): ?>
+			<script src="<?= ASSETS_URL ?>/jsqr/dist/jsQR.js" defer></script>
+			<script src="<?= JS_URL ?>/home/qr-code.js" defer></script>
 			<script>document.addEventListener("DOMContentLoaded", () => showLoginQrCodeModal())</script>
 		<?php endif;
-	endif ?> -->
+	endif ?>
 
 	<link rel="stylesheet" href="<?= VENDOR_URL ?>/fortawesome/font-awesome/css/all.min.css" />
 </head>

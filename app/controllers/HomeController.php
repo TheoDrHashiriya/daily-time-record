@@ -67,14 +67,12 @@ class HomeController extends Controller
 
 		// Authentication
 		$userNumberIsFromAdmin = $this->authService->userNumberIsFromAdmin($userNumber);
+		$_SESSION["user_number_is_admin"] = $userNumberIsFromAdmin;
 
 		// Show login modal instead of recording time in/out
 		if ($userNumberIsFromAdmin) {
 			header("Content-Type: application/json");
-			echo json_encode([
-				"success" => true,
-				"user_number_is_admin" => $userNumberIsFromAdmin,
-			]);
+			echo json_encode(["success" => true, "redirect" => "home"]);
 			exit();
 		}
 
@@ -293,8 +291,8 @@ class HomeController extends Controller
 		$this->authService->login($user);
 
 		if ($this->authService->isAdmin()) {
-			// 	$_SESSION["message"]["success-title"] = "Logged In";
-			// 	$_SESSION["message"]["success"] = "Welcome, " . $user["first_name"] . ".";
+			$_SESSION["message"]["success-title"] = "Logged In";
+			$_SESSION["message"]["success"] = "Welcome, " . $user["first_name"] . ".";
 			header("Content-Type: application/json");
 			echo json_encode(["success" => true, "redirect" => "dashboard"]);
 			exit();
