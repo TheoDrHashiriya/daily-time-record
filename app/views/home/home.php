@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Daily Time Record | theonary</title>
+	<title>Daily Time Records | theonary</title>
 	<link rel="stylesheet" href="<?= CSS_URL ?>/pages/home.css">
 	<!-- Theming script must start early to avoid flash of light mode -->
 	<script src="<?= JS_URL ?>/theme.js"></script>
